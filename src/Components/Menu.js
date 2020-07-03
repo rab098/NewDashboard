@@ -231,7 +231,7 @@ function Menu(props) {
       {isDesktop ? (
         <div className={"menu-div"}>
           <img alt="" className={"logo"} src={image} />
-          <p className={"menu-heading-main"}>Sindh Solid Waste Management</p>
+          <p className={"menu-heading-main"}>Sindh</p>
         </div>
       ) : (
         <IconButton color="inherit" onClick={showDrawer}>
