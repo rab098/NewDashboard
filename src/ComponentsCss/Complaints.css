@@ -1,0 +1,150 @@
+.status {
+  /* text-align: center; */
+  border-radius: 1em;
+  font-size: smaller !important;
+  background-color: #daf4db;
+  color: #008081;
+  max-width: 150px;
+  width: fit-content;
+  padding-right: 10px;
+
+  box-shadow: 1px 1px 1px 0px rgba(112, 112, 112, 0.16);
+  padding: 7px 13px;
+
+  margin-left: 10px;
+
+  border: none;
+}
+
+.visualize {
+  align-items: flex-start;
+  justify-content: left;
+  margin-left: 10px;
+  box-shadow: 6px 6px 10px 0 rgba(112, 112, 112, 0.16);
+
+  min-width: 200px;
+  height: auto;
+  min-height: 190px;
+  padding: 10px;
+  background-color: white;
+  margin-bottom: 10px;
+}
+
+.name {
+  text-align: left !important;
+  font-size: x-small;
+  font-weight: 600;
+}
+.value {
+  align-items: center;
+  text-align: right !important;
+  top: 0 !important;
+
+  font-weight: 600;
+}
+.compainImage {
+  height: 250px;
+  /* max-height: 250px; */
+  max-width: 200px;
+}
+.image {
+  height: fit-content;
+  width: fit-content;
+  justify-content: center;
+  align-items: center;
+  min-height: 100px;
+  border: grey 1px solid;
+  /* max-width: 500px; */
+  min-width: 100px;
+  width: fit-content;
+}
+
+/* .tableContainer {
+  max-height: 500px;
+} */
+.tableHead {
+  /* font-family: monospace !important; */
+  font-weight: bold;
+  font-size: 10px !important;
+  background-color: transparent;
+  border: none !important;
+}
+
+.tableBody {
+  background-color: transparent;
+}
+.toolbar {
+  background-color: white;
+}
+
+.tableRow {
+  /* border-top: 1px solid
+  rgba(224, 224, 224, 1); */
+  background-color: white;
+  border-top: 10px solid #f3f3f3;
+  border-bottom: 10px solid #f3f3f3;
+}
+.MuiTableCell-root {
+  border: none !important;
+}
+.status:focus {
+  box-shadow: 2px 2px 2px 0px rgba(90, 89, 89, 0.678);
+  /* border:1px solid #008081; */
+  outline: 0;
+}
+
+.table {
+  min-height: 79vh;
+}
+
+.bar {
+  max-height: 30px !important;
+}
+
+.filter {
+  align-items: flex-start;
+  justify-content: left;
+  padding: 5px;
+  height: 100%;
+
+  background-color: white;
+
+  margin-bottom: 10px;
+}
+
+.clearButton {
+  color: teal !important;
+}
+
+.clearButton:disabled {
+  color: grey !important;
+}
+
+.MuiDialog-paperScrollPaper {
+  min-height: max-content !important;
+}
+
+.MuiListItem-root.Mui-selected,
+.MuiListItem-root.Mui-selected:hover {
+  background-color: rgba(218, 244, 219, 0.5) !important;
+}
+.MuiFormLabel-root {
+  font-size: 0.85rem !important;
+}
+
+.MuiTab-textColorPrimary.Mui-selected {
+  color: teal !important;
+  text-decoration-color: teal !important;
+}
+
+.MuiTabs-indicator {
+  background-color: teal !important;
+}
+
+.MuiButton-textPrimary {
+  color: teal !important;
+}
+
+.elevationPaper {
+  box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.14) !important;
+}

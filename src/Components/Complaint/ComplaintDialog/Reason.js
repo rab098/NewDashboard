@@ -1,0 +1,81 @@
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import PropTypes from "prop-types";
+import { makeStyles } from "@material-ui/core/styles";
+import FormControl from "@material-ui/core/FormControl";
+import Select from "@material-ui/core/Select";
+import InputLabel from "@material-ui/core/InputLabel";
+import MenuItem from "@material-ui/core/MenuItem";
+
+const useStyles = makeStyles((theme) => ({
+  formControl: {
+    margin: theme.spacing(1),
+    minWidth: 180,
+  },
+}));
+
+export default function Reason(props) {
+  const { name, changeValue, display, value } = props;
+  const classes = useStyles();
+
+  const [hasError, setErrors] = useState(false);
+
+  const [reasons, setReason] = useState([]);
+  const [values, setValues] = useState(value);
+
+  const getReasons = () => {
+    var finalObj = [];
+    axios
+      .get("https://m2r31169.herokuapp.com/api/getRejectTags")
+      .then((res) => {
+        console.log(res.data);
+        for (var i in res.data.Reasons) {
+          finalObj.push(res.data.Reasons[i]);
+        }
+        console.log("Reject tags" + finalObj.toString());
+        setReason(finalObj);
+      })
+      .catch((err) => setErrors(err));
+  };
+
+  useEffect(() => {
+    setValues(value);
+    getReasons();
+  }, []);
+
+  const handleChange = (event) => {
+    console.log("target valyeeeeeeeeeeee" + event.target.value);
+    setValues(event.target.value);
+    changeValue(event.target.value);
+  };
+
+  return (
+    <FormControl
+      variant="outlined"
+      className={classes.formControl}
+      style={{ display: display }}
+    >
+      <InputLabel id="demo-simple-select-outlined-label">{name}</InputLabel>
+      <Select
+        labelId="demo-simple-select-outlined-label"
+        id="demo-simple-select-outlined"
+        value={values}
+        onChange={handleChange}
+        label={name}
+      >
+        {reasons.map((reason) => (
+          <MenuItem key={reason} value={reason}>
+            {reason}
+          </MenuItem>
+        ))}
+      </Select>
+    </FormControl>
+  );
+}
+
+Reason.propTypes = {
+  name: PropTypes.string.isRequired,
+  display: PropTypes.string.isRequired,
+
+  changeValue: PropTypes.func.isRequired,
+};

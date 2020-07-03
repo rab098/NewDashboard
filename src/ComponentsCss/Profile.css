@@ -1,0 +1,59 @@
+.elevation {
+  box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.14) !important;
+  background-color: white;
+  border-radius: 5px !important;
+  margin-right: 0.3rem !important;
+  margin-bottom: 0.2rem !important;
+}
+
+.list {
+  /* border-top: 0.5px solid #c2b8b8f2; */
+  padding: 10px;
+  min-height: 50px;
+  /* text-align: center; */
+
+  font-size: 3rem;
+}
+.MuiFormControl-root {
+  margin: 8px !important;
+}
+
+.alertList {
+  box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.14) !important;
+  background-color: white;
+  border-radius: 5px !important;
+  margin-bottom: 0.3rem;
+  font-size: 0.7rem !important;
+}
+
+.MuiOutlinedInput-root {
+  background-color: white;
+}
+.mainSetting {
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+.settingInput {
+  width: 40vw;
+}
+@media (min-width: 600px) {
+  .settingInput {
+    width: 200px;
+  }
+}
+/* @media (min-width: 960px) {
+  .settingInput {
+    width: 200px;
+  }
+} */
+
+@media (min-width: 1280px) {
+  .settingInput {
+    width: 250px;
+  }
+}
+
+/* .settingInput {
+  max-width: 200px;
+} */

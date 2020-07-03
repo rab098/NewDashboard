@@ -1,0 +1,514 @@
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import Menu from "../Components/Menu";
+import Card from "@material-ui/core/Card";
+import IconButton from "@material-ui/core/IconButton";
+import Badge from "@material-ui/core/Badge";
+import NotificationsIcon from "@material-ui/icons/Notifications";
+import avatarImage from "../assets/images/admin.png";
+import { Grid, styled } from "@material-ui/core";
+import Home from "../Components/Home/Home";
+import Complaints from "../Components/Complaint/Complaints";
+import Supervisors from "../Components/Supervisors";
+import Employees from "../Components/Employees/Employees";
+import Profile from "../Components/Profile/Profile";
+import ManageComplaints from "../Components/ManageComplaints/ManageComplaints";
+import Notification from "../Components/Notification";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Redirect,
+  Link,
+} from "react-router-dom";
+
+import Moment from "moment";
+
+import { makeStyles } from "@material-ui/core/styles";
+import Avatar from "@material-ui/core/Avatar";
+import Toolbar from "@material-ui/core/Toolbar";
+import { Scrollbars } from "react-custom-scrollbars";
+import GenerateReports from "../Components/Reports/GenerateReports";
+import ClickAwayListener from "@material-ui/core/ClickAwayListener";
+import Collapse from "@material-ui/core/Collapse";
+import Paper from "@material-ui/core/Paper";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemText from "@material-ui/core/ListItemText";
+import AdminRoute from "../Components/Routes/AdminRoute";
+
+import { messaging } from "../init-fcm";
+import PrivateRoute from "../Components/Routes/PrivateRoute";
+import ListItemAvatar from "@material-ui/core/ListItemAvatar";
+import List from "@material-ui/core/List";
+import Divider from "@material-ui/core/Divider";
+
+let store = require("store");
+
+const styles = {
+  root: {
+    position: "relative",
+  },
+  myCard: {
+    borderRadius: 20,
+    background: "#f3f3f3",
+    // boxShadow: '6px 6px 10px 0px rgba(112,112,112,0.16), -6px -6px 10px 0px #FFFFFF',
+    padding: "10px 20px",
+    minHeight: "89vh",
+    minWidth: "70vw",
+    marginRight: 17,
+  },
+
+  myAvatar: {
+    marginLeft: "12px",
+  },
+
+  myToolbar: {
+    color: "teal",
+    minHeight: 20,
+    display: "flex",
+    justifyContent: "flex-end",
+  },
+  gridContainer: {
+    width: "auto",
+  },
+  paper: {
+    backgroundColor: "white",
+    color: "teal",
+    position: "absolute",
+    marginTop: "5px",
+    zIndex: 1,
+    right: "50px",
+    height: "100%",
+    maxHeight: 200,
+    width: "100%",
+    maxWidth: 300,
+    overflow: "auto",
+    padding: "10px",
+  },
+  notifDropdown: {
+    display: "flex",
+    backgroundColor: "#97DED0",
+    marginBottom: "10px",
+    height: "100%",
+    maxHeight: 100,
+    borderRadius: 9,
+  },
+  notifDropdownWithoutColor: {
+    display: "flex",
+    backgroundColor: "#F3F3F3",
+    marginBottom: "10px",
+    height: "100%",
+    maxHeight: 100,
+    borderRadius: 9,
+  },
+  hideNoNotif: {
+    display: "none",
+  },
+  noNotifDropdown: {
+    display: "flex",
+    marginBottom: "10px",
+    height: "100%",
+    maxHeight: 70,
+    borderRadius: 9,
+    justifyContent: "center",
+    alignItems: "center",
+    border: "1px solid #97DED0",
+  },
+};
+
+const useStyles = makeStyles(styles);
+
+function Dashboard({ match }) {
+  const a = Moment(); // today
+  // let b = moment("2017-08-01T23:28:56.782Z"); // target date
+  const [notifications, setNotifications] = useState({});
+
+  const [dropdownNotifs, setDropDownNotifs] = useState([]);
+
+  const [notifCount, setNotifCount] = useState(0);
+
+  const [notifState, setNotifState] = useState("closed");
+
+  window.addEventListener("storage", function (e) {
+    if (e.key === "logoutEvent") {
+      window.location = "/";
+      console.log("logout hogya ballay ballay");
+    }
+  });
+
+  const classes = useStyles();
+  // const [notifList, setNotifList] = useState(false);
+  //
+  // function showNotificationList() {
+  //     setNotifList(true);
+  // }
+
+  const [open, setOpen] = React.useState(false);
+
+  const handleClick = (event) => {
+    event.preventDefault();
+    setOpen((prev) => !prev);
+  };
+  const handleClickAway = (event) => {
+    setOpen(false);
+  };
+
+  const [userData, setUserData] = useState({});
+
+  useEffect(() => {
+    setUserData(store.get("userData"));
+  }, []);
+
+  const headers = {
+    "Content-Type": "application/json",
+    "x-access-token": userData.accessToken,
+  };
+
+  const closeNotif = (notificationId, notificationStatus) => {
+    // event.preventDefault();
+    console.log("notificationId", notificationStatus);
+    // setOpen(false);
+    // window.location = "/dashboard/complaints";
+
+    if (notificationStatus) {
+      //   window.location = "/dashboard/complaints";
+      console.log("notif was opened");
+    } else {
+      axios
+        .post(
+          `https://m2r31169.herokuapp.com/api/dashboard/openNotification`,
+          { notificationId },
+          {
+            headers: headers,
+          }
+        )
+        .then((res) => {
+          console.log("notif wasnt opened", res.data);
+          // setNotifState(res.data)
+          //   window.location = "/dashboard/complaints";
+        })
+        .catch((err) => {
+          console.error(err);
+          console.log("not open");
+        });
+    }
+  };
+  function sentTokenToServer(Ntoken) {
+    //console.log("suserrrrrr?????", userData.accessToken);
+
+    axios
+      .post(
+        `https://m2r31169.herokuapp.com/api/notificationToken`,
+        {},
+        {
+          headers: headers,
+          data: {
+            token: Ntoken,
+          },
+        }
+      )
+      .then((res) => {
+        console.log(res);
+      });
+  }
+
+  useEffect(() => {
+    messaging
+      .requestPermission()
+      .then(async function () {
+        const token = await messaging.getToken();
+        console.log("token-->" + token);
+        ///  sentTokenToServer(token);
+
+        // console.log(
+        //   "suserrrrrr????? firebase wlaa ------  ",
+        //   userData.accessToken
+        // );
+        // console.log(
+        //   "prper wala????? accessToken =====    ",
+        //   userData.accessToken
+        // );
+        if (userData.accessToken !== undefined) {
+          sentTokenToServer(token);
+        }
+      })
+      .catch(function (err) {
+        console.log("Unable to get permission to notify.", err);
+      });
+    // Callback fired if Instance ID token is updated.
+    messaging.onTokenRefresh(function () {
+      messaging
+        .getToken()
+        .then(function (refreshedToken) {
+          console.log("Token refreshed.");
+          if (userData.accessToken !== undefined) {
+            sentTokenToServer(refreshedToken);
+          }
+          // Indicate that the new Instance ID token has not yet been sent to the
+          // app server.
+          // setTokenSentToServer(false);
+          // // Send Instance ID token to app server.
+          // sendTokenToServer(refreshedToken);
+          // ...
+        })
+        .catch(function (err) {
+          console.log("Unable to retrieve refreshed token ", err);
+          //    showToken("Unable to retrieve refreshed token ", err);
+        });
+    });
+
+    navigator.serviceWorker.addEventListener("message", (message) =>
+      console.log(message)
+    );
+  }, [userData.accessToken]);
+
+  // console.log(match.path);
+
+  let dropdownNotifications = [];
+  useEffect(() => {
+    if (userData.accessToken !== null) {
+      axios
+        .get("https://m2r31169.herokuapp.com/api/dashboard/getNotifications", {
+          headers: headers,
+        })
+        .then((res) => {
+          console.log("dropdown notifs??", res.data);
+          for (let i in res.data.notifications)
+            dropdownNotifications[i] = res.data.notifications[i];
+
+          setDropDownNotifs(dropdownNotifications);
+          setNotifCount(res.data.count);
+
+          // console.log("what the coming???????", dropdownNotifs);
+        })
+        .catch((err) => {
+          console.error(err);
+          console.log("not getting notifs");
+        });
+    }
+  }, [userData.accessToken]);
+
+  messaging.onMessage((payload) => {
+    console.log("Message received!!! payload. ", payload);
+
+    payload !== null ? setNotifications(payload) : setNotifications({});
+  });
+
+  const timeBox = (props) => {
+    console.log("moment wala time", props);
+    let difference = props;
+    const secondsInMilli = 1000;
+    const minutesInMilli = secondsInMilli * 60;
+    const hoursInMilli = minutesInMilli * 60;
+    const daysInMilli = hoursInMilli * 24;
+    const elapsedDays = difference / daysInMilli;
+    difference = difference % daysInMilli;
+    const elapsedHours = difference / hoursInMilli;
+    difference = difference % hoursInMilli;
+    const elapsedMinutes = difference / minutesInMilli;
+    difference = difference % minutesInMilli;
+    const elapsedSeconds = difference / secondsInMilli;
+
+    if (elapsedDays > 365)
+      return (
+        <ListItemText
+          secondary={Math.round(elapsedDays / 365).toString() + " yr"}
+        />
+      );
+    if (elapsedDays >= 7)
+      return (
+        <ListItemText
+          secondary={Math.round(elapsedDays / 7).toString() + " w"}
+        />
+      );
+    if (elapsedDays >= 1)
+      return (
+        <ListItemText secondary={Math.round(elapsedDays).toString() + "d "} />
+      );
+    else if (elapsedHours >= 1)
+      return (
+        <ListItemText secondary={Math.round(elapsedHours).toString() + "h"} />
+      );
+    else if (elapsedMinutes >= 1)
+      return (
+        <ListItemText secondary={Math.round(elapsedMinutes).toString() + "m"} />
+      );
+    else
+      return (
+        <ListItemText secondary={Math.round(elapsedSeconds).toString() + "s"} />
+      );
+  };
+
+  return (
+    //new grid
+
+    <div className="dashboard-grid">
+      {Object.keys(notifications).length > 0 && (
+        <Notification key={notifications.length} value={notifications} />
+      )}
+
+      <div className="menu-view">
+        <Menu role={userData.Role} />
+      </div>
+      <div className="card-view-grid">
+        <div className="top-bar">
+          <ClickAwayListener onClickAway={handleClickAway}>
+            <div>
+              <IconButton
+                aria-label="show 17 new notifications"
+                color="inherit"
+                onClick={handleClick}
+              >
+                <Badge badgeContent={notifCount} color="secondary">
+                  <NotificationsIcon />
+                </Badge>
+              </IconButton>
+              <Paper elevation={4} className={classes.paper} hidden={!open}>
+                <div
+                  className={
+                    notifCount === 0
+                      ? classes.noNotifDropdown
+                      : classes.hideNoNotif
+                  }
+                >
+                  <p>No new notifications</p>
+                </div>
+
+                {dropdownNotifs.map((obj) => {
+                  return (
+                    <div
+                      className={
+                        obj.notificationStatus
+                          ? classes.notifDropdownWithoutColor
+                          : classes.notifDropdown
+                      }
+                    >
+                      <Link
+                        to={{
+                          pathname: "/dashboard/complaints",
+                          complainIdOpen: obj.ComplainId,
+                        }}
+                        onClick={() =>
+                          closeNotif(obj.notificationId, obj.notificationStatus)
+                        }
+                      >
+                        <ListItem
+                        // onClick={(e) => closeNotif(e, obj.notificationId, obj.notificationStatus)}
+                        >
+                          <ListItemAvatar>
+                            <Avatar alt="C" src={obj.complainImage} />
+                          </ListItemAvatar>
+
+                          <ListItemText
+                            primary={"Complaint" + " " + obj.statusType}
+                            secondary={
+                              userData.Role === "ADMIN"
+                                ? "Complaint #" +
+                                  obj.ComplainId +
+                                  " " +
+                                  "is" +
+                                  " " +
+                                  obj.statusType.toLowerCase() +
+                                  " " +
+                                  "by" +
+                                  " " +
+                                  obj.supervisor
+                                : "Complaint #" +
+                                  obj.ComplainId +
+                                  " " +
+                                  "has been" +
+                                  " " +
+                                  obj.statusType.toLowerCase() +
+                                  " " +
+                                  "to you"
+                            }
+                          />
+
+                          {timeBox(Moment().diff(Moment(obj.timeAndDate)))}
+                        </ListItem>
+                      </Link>
+                    </div>
+                  );
+                })}
+              </Paper>
+            </div>
+          </ClickAwayListener>
+
+          <Avatar
+            className={classes.myAvatar}
+            src={
+              Object.keys(userData) > 0 && userData.userData.image !== null
+                ? "https://m2r31169.herokuapp.com" + userData.userData.image
+                : avatarImage
+            }
+          />
+          <p key={userData.length} className="username-padding">
+            {" "}
+            {Object.keys(userData).length > 0 &&
+            userData.userData.username.length > 0
+              ? userData.userData.username
+              : "dummy123"}
+          </p>
+        </div>
+        <div className="content">
+          <Scrollbars style={{ minWidth: 100, minHeight: 370 }}>
+            <Switch>
+              <Route
+                path={`${match.path}/`}
+                exact
+                render={() => <Redirect to="/dashboard/home" />}
+              />
+              {/* {/<Route path={"/"} exact component={Dashboard} />/}
+                            {/<Route path={`${match.path}/home`} exact component={Home} />/} */}
+              <Route
+                path={`${match.path}/home`}
+                exact
+                render={() => <Home />}
+              />
+
+              <Route
+                path={`${match.path}/complaints`}
+                exact
+                component={Complaints}
+              />
+              <AdminRoute
+                path={`${match.path}/supervisors`}
+                exact
+                component={Supervisors}
+                role={userData.Role}
+              />
+              <Route
+                path={`${match.path}/reports`}
+                exact
+                component={GenerateReports}
+              />
+              <Route
+                path={`${match.path}/profile`}
+                exact
+                render={() => (
+                  <Profile
+                    key={dropdownNotifs.length}
+                    notification={dropdownNotifs}
+                  />
+                )}
+              />
+              <Route
+                path={`${match.path}/employees`}
+                exact
+                component={Employees}
+              />
+              <AdminRoute
+                path={`${match.path}/manage`}
+                exact
+                component={ManageComplaints}
+                role={userData.Role}
+              />
+            </Switch>
+          </Scrollbars>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default Dashboard;
