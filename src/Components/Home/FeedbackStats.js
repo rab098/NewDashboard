@@ -9,7 +9,9 @@ import Paper from "@material-ui/core/Paper";
 let Chartist = require("chartist");
 
 function FeedbackStats(props) {
-  const [feedback, setFeedback] = useState({
+  const [checkFeedback, setCheckFeedback] = useState(0);
+
+    const [feedback, setFeedback] = useState({
     positive: 80,
     neg: 20,
   });
@@ -28,11 +30,13 @@ function FeedbackStats(props) {
             positive: res.data.Feedback[0].postive,
             neg: res.data.Feedback[1].negative,
           });
-        else
+        else {
+          setCheckFeedback(1)
           setFeedback({
             positive: 0,
             neg: 0,
           });
+        }
       })
       .catch((err) => console.error(err));
   }, []);
@@ -105,6 +109,22 @@ function FeedbackStats(props) {
         props.role === "ADMIN" ? "feedback-main" : "feedback-main-hidden"
       }
     >
+
+      {checkFeedback === 1 ?
+
+          <ChartistGraph
+              data={piechart.data}
+              type="Pie"
+              options={piechart.options}
+              style={{ padding: "10px" }}
+          />
+
+          :
+
+          <div className="no-resolve-time-heading">
+            <p className="resolve-text">Not available</p>
+          </div>
+      }
       <ChartistGraph
         data={piechart.data}
         type="Pie"
@@ -114,7 +134,6 @@ function FeedbackStats(props) {
 
       <div className="feedback-heading">
         <p className="feedback-text">Feedback Summary</p>
-      </div>
 
       <Box
         textAlign="left"
@@ -158,6 +177,9 @@ function FeedbackStats(props) {
         {" "}
         Negative
       </Box>
+
+      </div>
+
     </div>
   );
 }

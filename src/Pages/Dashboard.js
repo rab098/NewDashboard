@@ -77,7 +77,7 @@ const styles = {
     position: "absolute",
     marginTop: "5px",
     zIndex: 1,
-    right: "50px",
+    right: "38px",
     height: "100%",
     maxHeight: 200,
     width: "100%",
@@ -318,18 +318,18 @@ function Dashboard({ match }) {
     if (elapsedDays > 365)
       return (
         <ListItemText
-          secondary={Math.round(elapsedDays / 365).toString() + " yr"}
+          secondary={Math.round(elapsedDays / 365).toString() + "yr"}
         />
       );
     if (elapsedDays >= 7)
       return (
         <ListItemText
-          secondary={Math.round(elapsedDays / 7).toString() + " w"}
+          secondary={Math.round(elapsedDays / 7).toString() + "w"}
         />
       );
     if (elapsedDays >= 1)
       return (
-        <ListItemText secondary={Math.round(elapsedDays).toString() + "d "} />
+        <ListItemText secondary={Math.round(elapsedDays).toString() + "d"} />
       );
     else if (elapsedHours >= 1)
       return (
@@ -396,8 +396,9 @@ function Dashboard({ match }) {
                       {/*  }}*/}
                       {/*  */}
                       {/*>*/}
+
                         <ListItem
-                            style={{padding:0}}
+                            style={{padding:"0.5em"}}
                             button={true}
                         // onClick={(e) => closeNotif(e, obj.notificationId, obj.notificationStatus)}
                             onClick={(e) =>
@@ -409,6 +410,7 @@ function Dashboard({ match }) {
                           </ListItemAvatar>
 
                           <ListItemText
+                              style={{maxWidth:"212px"}}
                             primary={"Complaint" + " " + obj.statusType}
                             secondary={
                               userData.Role === "ADMIN"
