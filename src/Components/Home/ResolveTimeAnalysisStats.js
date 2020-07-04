@@ -14,7 +14,11 @@ function ResolveTimeAnalysisStats() {
     high: 10,
   });
 
-  useEffect(() => {
+
+    const [resolveTimeCheck, setResolveTimeCheck] = useState(0);
+
+
+        useEffect(() => {
     axios
       .get("https://m2r31169.herokuapp.com/api/getresolveTime")
       .then((res) => {
@@ -29,12 +33,15 @@ function ResolveTimeAnalysisStats() {
             medium: res.data._10_to_16,
             high: res.data._17_to_24,
           });
-        } else
-          setResolveTime({
-            less: 0,
-            medium: 0,
-            high: 0,
-          });
+        } else{
+            setResolveTimeCheck(1);
+            setResolveTime({
+                less: 0,
+                medium: 0,
+                high: 0,
+            });
+        }
+
       })
       .catch((err) => console.error(err));
   }, []);
@@ -53,16 +60,22 @@ function ResolveTimeAnalysisStats() {
 
   return (
     <div className="resolve-main">
-      <ChartistGraph
-        data={piechart.data}
-        type="Pie"
-        options={piechart.options}
-        style={{ padding: "10px" }}
-      />
+        {resolveTimeCheck === 0 ?
+        <ChartistGraph
+            data={piechart.data}
+            type="Pie"
+            options={piechart.options}
+            style={{ padding: "10px" }}
+            />
+        :
+            <div className="no-resolve-time-heading">
+                <p className="resolve-text">Not available.</p>
+            </div>
+        }
 
       <div className="resolve-heading">
         <p className="resolve-text">Resolve Time Analysis</p>
-      </div>
+
 
       <Box
         textAlign="left"
@@ -123,6 +136,8 @@ function ResolveTimeAnalysisStats() {
         {" "}
         17 to 24 hours
       </Box>
+
+        </div>
     </div>
   );
 }

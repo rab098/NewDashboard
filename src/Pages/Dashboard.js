@@ -164,8 +164,8 @@ function Dashboard({ match }) {
     "x-access-token": userData.accessToken,
   };
 
-  const closeNotif = (notificationId, notificationStatus) => {
-    // event.preventDefault();
+  const closeNotif = (event,notificationId, notificationStatus,complainId) => {
+    event.preventDefault();
     console.log("notificationId", notificationStatus);
     // setOpen(false);
     // window.location = "/dashboard/complaints";
@@ -173,6 +173,10 @@ function Dashboard({ match }) {
     if (notificationStatus) {
       //   window.location = "/dashboard/complaints";
       console.log("notif was opened");
+        // setOpen(false);
+        window.location = `/dashboard/complaints?complainIdOpen=${complainId}`;
+
+
     } else {
       axios
         .post(
@@ -184,8 +188,10 @@ function Dashboard({ match }) {
         )
         .then((res) => {
           console.log("notif wasnt opened", res.data);
-          // setNotifState(res.data)
-          //   window.location = "/dashboard/complaints";
+            // setOpen(false);
+
+            // setNotifState(res.data)
+            window.location = `/dashboard/complaints?complainIdOpen=${complainId}`;
         })
         .catch((err) => {
           console.error(err);
@@ -383,17 +389,18 @@ function Dashboard({ match }) {
                           : classes.notifDropdown
                       }
                     >
-                      <Link
-                        to={{
-                          pathname: "/dashboard/complaints",
-                          complainIdOpen: obj.ComplainId,
-                        }}
-                        onClick={() =>
-                          closeNotif(obj.notificationId, obj.notificationStatus)
-                        }
-                      >
+                      {/*<Link*/}
+                      {/*  to={{*/}
+                      {/*    pathname: "/dashboard/complaints",*/}
+                      {/*    complainIdOpen: obj.ComplainId,*/}
+                      {/*  }}*/}
+                      {/*  */}
+                      {/*>*/}
                         <ListItem
                         // onClick={(e) => closeNotif(e, obj.notificationId, obj.notificationStatus)}
+                            onClick={(e) =>
+                                closeNotif(e,obj.notificationId, obj.notificationStatus,obj.ComplainId)
+                            }
                         >
                           <ListItemAvatar>
                             <Avatar alt="C" src={obj.complainImage} />
@@ -426,7 +433,7 @@ function Dashboard({ match }) {
 
                           {timeBox(Moment().diff(Moment(obj.timeAndDate)))}
                         </ListItem>
-                      </Link>
+                      {/*</Link>*/}
                     </div>
                   );
                 })}

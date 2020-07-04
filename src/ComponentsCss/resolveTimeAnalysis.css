@@ -7,7 +7,16 @@
 
 .resolve-heading{
     text-align: left;
+    height: max-content;
     border-top: 1px solid #99999957 ;
+}
+
+
+
+.no-resolve-time-heading{
+    text-align: center;
+
+
 }
 
 .resolve-text{

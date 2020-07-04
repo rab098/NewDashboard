@@ -187,12 +187,15 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Complaints(props) {
   const classes = useStyles();
+
+  const search = props.location.search; // returns the URL query String
+  const params = new URLSearchParams(search);
+  const complainIdOpen = params.get('complainIdOpen');
   const {
     statusFilter,
     typeFilter,
     notifFilter,
     nootifId,
-    complainIdOpen,
   } = props.location;
 
   const [filter, setFilter] = useState({
