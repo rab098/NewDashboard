@@ -69,7 +69,7 @@ function ResolveTimeAnalysisStats() {
             />
         :
             <div className="no-resolve-time-heading">
-                <p className="resolve-text">Not available.</p>
+                <p className="resolve-text">Not available</p>
             </div>
         }
 

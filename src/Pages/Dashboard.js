@@ -397,6 +397,7 @@ function Dashboard({ match }) {
                       {/*  */}
                       {/*>*/}
                         <ListItem
+                            style={{padding:0}}
                             button={true}
                         // onClick={(e) => closeNotif(e, obj.notificationId, obj.notificationStatus)}
                             onClick={(e) =>

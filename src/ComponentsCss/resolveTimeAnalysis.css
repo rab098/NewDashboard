@@ -15,7 +15,10 @@
 
 .no-resolve-time-heading{
     text-align: center;
-
+    min-height: 166px;
+    justify-content: center;
+    align-items: center;
+    display: flex;
 
 }
 
