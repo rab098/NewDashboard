@@ -190,13 +190,10 @@ export default function Complaints(props) {
 
   const search = props.location.search; // returns the URL query String
   const params = new URLSearchParams(search);
-  const complainIdOpen = params.get('complainIdOpen');
-  const {
-    statusFilter,
-    typeFilter,
-    notifFilter,
-    nootifId,
-  } = props.location;
+  const [complainIdOpen, setComplainIdOpen] = useState(
+    params.get("complainIdOpen")
+  );
+  const { statusFilter, typeFilter, notifFilter, nootifId } = props.location;
 
   const [filter, setFilter] = useState({
     statusType: [],
@@ -287,6 +284,7 @@ export default function Complaints(props) {
 
   const handleClose = () => {
     setOpen(false);
+    setComplainIdOpen(null);
   };
 
   const handleAssignDialogClose = () => {
