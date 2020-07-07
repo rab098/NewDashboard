@@ -112,7 +112,12 @@ function AlertList(props) {
       <Link
         to={{
           pathname: "/dashboard/complaints",
-          statusFilter: notification == "Unresolved" ? null : notification,
+          statusFilter:
+            notification == "Unresolved"
+              ? null
+              : notification == "Verified"
+              ? "Resolved"
+              : notification,
           typeFilter: type,
         }}
       >

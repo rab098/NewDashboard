@@ -42,13 +42,13 @@
     width: 200px;
   }
 }
-/* @media (min-width: 960px) {
+@media (min-width: 960px) {
   .settingInput {
-    width: 200px;
+    width: 170px;
   }
-} */
+}
 
-@media (min-width: 1280px) {
+@media (min-width: 1210px) {
   .settingInput {
     width: 250px;
   }
