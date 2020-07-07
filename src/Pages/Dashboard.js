@@ -6,7 +6,6 @@ import IconButton from "@material-ui/core/IconButton";
 import Badge from "@material-ui/core/Badge";
 import NotificationsIcon from "@material-ui/icons/Notifications";
 import avatarImage from "../assets/images/admin.png";
-import { Grid, styled } from "@material-ui/core";
 import Home from "../Components/Home/Home";
 import Complaints from "../Components/Complaint/Complaints";
 import Supervisors from "../Components/Supervisors";
@@ -30,17 +29,15 @@ import Toolbar from "@material-ui/core/Toolbar";
 import { Scrollbars } from "react-custom-scrollbars";
 import GenerateReports from "../Components/Reports/GenerateReports";
 import ClickAwayListener from "@material-ui/core/ClickAwayListener";
-import Collapse from "@material-ui/core/Collapse";
+
 import Paper from "@material-ui/core/Paper";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import AdminRoute from "../Components/Routes/AdminRoute";
 
 import { messaging } from "../init-fcm";
-import PrivateRoute from "../Components/Routes/PrivateRoute";
+
 import ListItemAvatar from "@material-ui/core/ListItemAvatar";
-import List from "@material-ui/core/List";
-import Divider from "@material-ui/core/Divider";
 
 let store = require("store");
 
@@ -164,7 +161,12 @@ function Dashboard({ match }) {
     "x-access-token": userData.accessToken,
   };
 
-  const closeNotif = (event,notificationId, notificationStatus,complainId) => {
+  const closeNotif = (
+    event,
+    notificationId,
+    notificationStatus,
+    complainId
+  ) => {
     event.preventDefault();
     console.log("notificationId", notificationStatus);
     // setOpen(false);
@@ -173,10 +175,8 @@ function Dashboard({ match }) {
     if (notificationStatus) {
       //   window.location = "/dashboard/complaints";
       console.log("notif was opened");
-        // setOpen(false);
-        window.location = `/dashboard/complaints?complainIdOpen=${complainId}`;
-
-
+      // setOpen(false);
+      window.location = `/dashboard/complaints?complainIdOpen=${complainId}`;
     } else {
       axios
         .post(
@@ -188,10 +188,10 @@ function Dashboard({ match }) {
         )
         .then((res) => {
           console.log("notif wasnt opened", res.data);
-            // setOpen(false);
+          // setOpen(false);
 
-            // setNotifState(res.data)
-            window.location = `/dashboard/complaints?complainIdOpen=${complainId}`;
+          // setNotifState(res.data)
+          window.location = `/dashboard/complaints?complainIdOpen=${complainId}`;
         })
         .catch((err) => {
           console.error(err);
@@ -397,46 +397,51 @@ function Dashboard({ match }) {
                       {/*  */}
                       {/*>*/}
 
-                        <ListItem
-                            style={{padding:"0.5em"}}
-                            button={true}
+                      <ListItem
+                        style={{ padding: "0.5em" }}
+                        button={true}
                         // onClick={(e) => closeNotif(e, obj.notificationId, obj.notificationStatus)}
-                            onClick={(e) =>
-                                closeNotif(e,obj.notificationId, obj.notificationStatus,obj.ComplainId)
-                            }
-                        >
-                          <ListItemAvatar>
-                            <Avatar alt="C" src={obj.complainImage} />
-                          </ListItemAvatar>
+                        onClick={(e) =>
+                          closeNotif(
+                            e,
+                            obj.notificationId,
+                            obj.notificationStatus,
+                            obj.ComplainId
+                          )
+                        }
+                      >
+                        <ListItemAvatar>
+                          <Avatar alt="C" src={obj.complainImage} />
+                        </ListItemAvatar>
 
-                          <ListItemText
-                              style={{maxWidth:"212px"}}
-                            primary={"Complaint" + " " + obj.statusType}
-                            secondary={
-                              userData.Role === "ADMIN"
-                                ? "Complaint #" +
-                                  obj.ComplainId +
-                                  " " +
-                                  "is" +
-                                  " " +
-                                  obj.statusType.toLowerCase() +
-                                  " " +
-                                  "by" +
-                                  " " +
-                                  obj.supervisor
-                                : "Complaint #" +
-                                  obj.ComplainId +
-                                  " " +
-                                  "has been" +
-                                  " " +
-                                  obj.statusType.toLowerCase() +
-                                  " " +
-                                  "to you"
-                            }
-                          />
+                        <ListItemText
+                          style={{ maxWidth: "212px" }}
+                          primary={"Complaint" + " " + obj.statusType}
+                          secondary={
+                            userData.Role === "ADMIN"
+                              ? "Complaint #" +
+                                obj.ComplainId +
+                                " " +
+                                "is" +
+                                " " +
+                                obj.statusType.toLowerCase() +
+                                " " +
+                                "by" +
+                                " " +
+                                obj.supervisor
+                              : "Complaint #" +
+                                obj.ComplainId +
+                                " " +
+                                "has been" +
+                                " " +
+                                obj.statusType.toLowerCase() +
+                                " " +
+                                "to you"
+                          }
+                        />
 
-                          {timeBox(Moment().diff(Moment(obj.timeAndDate)))}
-                        </ListItem>
+                        {timeBox(Moment().diff(Moment(obj.timeAndDate)))}
+                      </ListItem>
                       {/*</Link>*/}
                     </div>
                   );

@@ -278,6 +278,12 @@ export default function Complaints(props) {
   };
 
   const handleClickOpen = (row) => {
+    // window.location = `/dashboard/complaints?complainIdOpen=${row.id}`;
+    window.history.pushState(
+      null,
+      "",
+      `/dashboard/complaints?complainIdOpen=${row.id}`
+    );
     setOpen(true);
     setSel(row);
   };
@@ -285,6 +291,9 @@ export default function Complaints(props) {
   const handleClose = () => {
     setOpen(false);
     setComplainIdOpen(null);
+    window.history.pushState(null, "", "/dashboard/complaints");
+    // window.history.back();
+    // window.location = `/dashboard/complaints`;
   };
 
   const handleAssignDialogClose = () => {
