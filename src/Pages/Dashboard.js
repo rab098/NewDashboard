@@ -278,75 +278,6 @@ function Dashboard({match}) {
                 });
         });
 
-<<<<<<< HEAD
-                {dropdownNotifs.map((obj) => {
-                  return (
-                    <div
-                      className={
-                        obj.notificationStatus
-                          ? classes.notifDropdownWithoutColor
-                          : classes.notifDropdown
-                      }
-                    >
-                      {/*<Link*/}
-                      {/*  to={{*/}
-                      {/*    pathname: "/dashboard/complaints",*/}
-                      {/*    complainIdOpen: obj.ComplainId,*/}
-                      {/*  }}*/}
-                      {/*  */}
-                      {/*>*/}
-
-                      <ListItem
-                        style={{ padding: "0.5em" }}
-                        button={true}
-                        // onClick={(e) => closeNotif(e, obj.notificationId, obj.notificationStatus)}
-                        onClick={(e) =>
-                          closeNotif(
-                            e,
-                            obj.notificationId,
-                            obj.notificationStatus,
-                            obj.ComplainId
-                          )
-                        }
-                      >
-                        <ListItemAvatar>
-                          <Avatar alt="C" src={obj.complainImage} />
-                        </ListItemAvatar>
-
-                        <ListItemText
-                          style={{ maxWidth: "212px" }}
-                          primary={"Complaint" + " " + obj.statusType}
-                          secondary={
-                            userData.Role === "ADMIN"
-                              ? "Complaint #" +
-                                obj.ComplainId +
-                                " " +
-                                "is" +
-                                " " +
-                                obj.statusType.toLowerCase() +
-                                " " +
-                                "by" +
-                                " " +
-                                obj.supervisor
-                              : "Complaint #" +
-                                obj.ComplainId +
-                                " " +
-                                "has been" +
-                                " " +
-                                obj.statusType.toLowerCase() +
-                                " " +
-                                "to you"
-                          }
-                        />
-
-                        {timeBox(Moment().diff(Moment(obj.timeAndDate)))}
-                      </ListItem>
-                      {/*</Link>*/}
-                    </div>
-                  );
-                })}
-              </Paper>
-=======
         navigator.serviceWorker.addEventListener("message", (message) =>
             console.log(message)
         );
@@ -449,7 +380,6 @@ function Dashboard({match}) {
 
             <div className="menu-view">
                 <Menu role={userData.Role}/>
->>>>>>> b4a7a3795fc817017971d6d71b2b8da2c3801857
             </div>
             <div className="card-view-grid">
                 <div className="top-bar">
