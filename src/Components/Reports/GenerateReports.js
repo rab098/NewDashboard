@@ -70,42 +70,42 @@ function GenerateReports(props) {
 
             <div className="report-filter-main">
                 <div className="report-filter">
-                <p>Generate Report on: </p>
-                <Select
-                    labelId="demo-simple-select-label"
-                    id="demo-simple-select"
-                    value={reportType}
-                    onChange={handleChange}
-                >
-                    <MenuItem value='Total Complaints Yearly'>Total Complaints Yearly</MenuItem>
-                    <MenuItem value='Total Complaints Monthly'>Total Complaints Monthly</MenuItem>
-                    <MenuItem value='Total Complaints Daily'>Total Complaints Daily</MenuItem>
-                </Select>
+                <h3>Generate Report</h3>
+                {/*<Select*/}
+                {/*    labelId="demo-simple-select-label"*/}
+                {/*    id="demo-simple-select"*/}
+                {/*    value={reportType}*/}
+                {/*    onChange={handleChange}*/}
+                {/*>*/}
+                {/*    <MenuItem value='Total Complaints Yearly'>Total Complaints Yearly</MenuItem>*/}
+                {/*    <MenuItem value='Total Complaints Monthly'>Total Complaints Monthly</MenuItem>*/}
+                {/*    <MenuItem value='Total Complaints Daily'>Total Complaints Daily</MenuItem>*/}
+                {/*</Select>*/}
                 </div>
 
-                <div className="report-filter">
-                    <button className='report-pdf-button' onClick={_exportPdfTable}>
-                        Download Report
-                    </button>
-                </div>
+                {/*<div className="report-filter">*/}
+                {/*    <button className='report-pdf-button' onClick={_exportPdfTable}>*/}
+                {/*        Download Report*/}
+                {/*    </button>*/}
+                {/*</div>*/}
 
                 {/*<button className='report-pdf-button' onClick={exportPDF}>Download PDF</button>*/}
 
 
             </div>
 
-            <div className="report-filter-main-pdf">
-                <header >
-                    <h1 >Report Heading</h1>
-                    <p>                    Date: Day-Month-Year
-                    </p>
-                </header>
-                <h6>Report Description</h6>
-                <p>
-                    Content goes here
-                </p>
+            {/*<div className="report-filter-main-pdf">*/}
+            {/*    <header >*/}
+            {/*        <h1 >Report Heading</h1>*/}
+            {/*        <p>                    Date: Day-Month-Year*/}
+            {/*        </p>*/}
+            {/*    </header>*/}
+            {/*    <h6>Report Description</h6>*/}
+            {/*    <p>*/}
+            {/*        Content goes here*/}
+            {/*    </p>*/}
 
-            </div>
+            {/*</div>*/}
         </div>
     )
 }
