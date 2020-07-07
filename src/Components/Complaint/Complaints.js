@@ -686,14 +686,14 @@ export default function Complaints(props) {
                             >
                               {row.id}
                             </TableCell>
-                            <TableCell align="center">{row.type}</TableCell>
-                            {/* <TableCell align="center">{row.longitude}</TableCell> */}
-                            <TableCell align="center">
+                            <TableCell align="left">{row.type}</TableCell>
+                            {/* <TableCell align="left">{row.longitude}</TableCell> */}
+                            <TableCell align="left">
                               {Moment(row.date).format("DD/MM/YY")}
                             </TableCell>
                             <TableCell align="center">{row.requests}</TableCell>
-                            <TableCell align="center">{row.town}</TableCell>
-                            <TableCell align="center">
+                            <TableCell align="left">{row.town}</TableCell>
+                            <TableCell align="left">
                               {/* {row.Status.statusType} */}
                               <Status
                                 name={row.statusType}
@@ -712,7 +712,7 @@ export default function Complaints(props) {
                                 ""
                               )}
                             </TableCell>
-                            <TableCell align="center">
+                            <TableCell align="left">
                               <MoreHorizIcon
                                 style={{
                                   fontSize: "20px",

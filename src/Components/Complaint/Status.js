@@ -42,6 +42,7 @@ export default function Status(props) {
         alignItems: "center",
         background: bgcolor,
         color: color,
+        minWidth: "80px",
       }}
     >
       {name == "Resolved" && (

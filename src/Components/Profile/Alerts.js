@@ -25,9 +25,9 @@ export default function Alerts(props) {
   const classes = useStyles();
 
   const chooseColor = (status) => {
-    return status == "Resolved"
+    return status == "Resolved" || status == "Verified"
       ? "#008081"
-      : status == "Active"
+      : status == "Active" || status == "Assigned"
       ? "rgb(142, 36, 170)"
       : status == "Rejected"
       ? "#FFB400"
@@ -133,7 +133,7 @@ function AlertList(props) {
                   className={classes.inline}
                   color="textPrimary"
                 >
-                  {notification == "Unresolved"
+                  {notification == "Assigned"
                     ? "New Complaint Assigned"
                     : notification}
                 </Box>
@@ -165,7 +165,7 @@ function AlertList(props) {
                 : notification.statusType == "Rejected"
                 ? ". Click here to view reason of rejection"
                 : "")} */}
-                {notification != "Unresolved"
+                {notification != "Assigned"
                   ? number +
                     " new Complaint" +
                     (number == 1 ? "" : "s") +
