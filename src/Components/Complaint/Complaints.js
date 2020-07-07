@@ -514,31 +514,34 @@ export default function Complaints(props) {
       <Grid container justify="flex-start" alignItems="flex-start">
         <Grid item xs={12} sm={12} md={12} lg={9}>
           <Paper className="filter elevationPaper">
-            <div>
-              <Box
-                textAlign="left"
-                color="#008080"
-                fontWeight="600"
-                fontSize="18"
-                component="span"
-              >
-                Filters
-              </Box>
-              <Box style={{ float: "right" }}>
-                <FormControl className={classes.formControl}>
-                  <Select
-                    value={complaintFilter}
-                    onChange={handleChangeFilter}
-                    displayEmpty
-                    // className={classes.selectEmpty}
-                    inputProps={{ "aria-label": "Without label" }}
-                  >
-                    <MenuItem value={"active"}>Active Complaints</MenuItem>
-                    <MenuItem value={"inactive"}>Inactive Complaints</MenuItem>
-                    <MenuItem value={"all"}>All Complaints</MenuItem>
-                  </Select>
-                </FormControl>
-                {/* <Button
+            <Grid item xs={12} sm={12} md={12} lg={12}>
+              <div>
+                <Box
+                  textAlign="left"
+                  color="#008080"
+                  fontWeight="600"
+                  fontSize="18"
+                  component="span"
+                >
+                  Filters
+                </Box>
+                <Box style={{ float: "right" }}>
+                  <FormControl className={classes.formControl}>
+                    <Select
+                      value={complaintFilter}
+                      onChange={handleChangeFilter}
+                      displayEmpty
+                      // className={classes.selectEmpty}
+                      inputProps={{ "aria-label": "Without label" }}
+                    >
+                      <MenuItem value={"active"}>Active Complaints</MenuItem>
+                      <MenuItem value={"inactive"}>
+                        Inactive Complaints
+                      </MenuItem>
+                      <MenuItem value={"all"}>All Complaints</MenuItem>
+                    </Select>
+                  </FormControl>
+                  {/* <Button
                   variant="contained"
                   title={"Click to view only complaints that are in progress"}
                   style={{ color: "teal" }}
@@ -562,83 +565,86 @@ export default function Complaints(props) {
                 >
                   {active ? "All Complaints" : "Only Active Complaints"}
                 </Button> */}
-                <br />
-                <Button
-                  disabled={clear}
-                  className="clearButton"
-                  onClick={() => {
-                    setFilter({
-                      statusType: [],
-                      type: [],
-                      priority: [],
-                      town: [],
-                      supervisorName: [],
-                      otherStatus: [],
-                    });
-                  }}
-                >
-                  Clear All
-                </Button>
-              </Box>
-            </div>
-            <SelectFilter
-              key={filter["statusType"][0]}
-              orignalData={orignalData}
-              label="Status"
-              name="statusType"
-              value={filter["statusType"]}
-              filterValue={filterTable}
-            />
-
-            <SelectFilter
-              key={filter["priority"][0]}
-              orignalData={orignalData}
-              label="Priority"
-              name="priority"
-              value={filter["priority"]}
-              filterValue={filterTable}
-            />
-
-            <SelectFilter
-              name="type"
-              orignalData={orignalData}
-              label="Complaint Type"
-              value={filter["type"]}
-              key={filter["type"][0]}
-              filterValue={filterTable}
-            />
-
-            <SelectFilter
-              name="town"
-              orignalData={orignalData}
-              label="Town"
-              value={filter["town"]}
-              key={filter["town"][0]}
-              filterValue={filterTable}
-            />
-
-            {userData.Role == "ADMIN" && (
+                  <br />
+                  <Button
+                    disabled={clear}
+                    className="clearButton"
+                    onClick={() => {
+                      setFilter({
+                        statusType: [],
+                        type: [],
+                        priority: [],
+                        town: [],
+                        supervisorName: [],
+                        otherStatus: [],
+                      });
+                    }}
+                  >
+                    Clear All
+                  </Button>
+                </Box>
+              </div>
+            </Grid>
+            <Grid item xs={9} sm={9} md={12} lg={12}>
               <SelectFilter
-                name="supervisorName"
+                key={filter["statusType"][0]}
                 orignalData={orignalData}
-                label="Supervisor"
-                value={filter["supervisorName"]}
-                key={filter["supervisorName"][0]}
+                label="Status"
+                name="statusType"
+                value={filter["statusType"]}
                 filterValue={filterTable}
               />
-            )}
-            {userData.Role == "ADMIN" && (
+
               <SelectFilter
-                name="otherStatus"
+                key={filter["priority"][0]}
                 orignalData={orignalData}
-                label="Supervisor Status"
-                value={filter["otherStatus"]}
-                key={filter["otherStatus"][0]}
+                label="Priority"
+                name="priority"
+                value={filter["priority"]}
                 filterValue={filterTable}
               />
-            )}
 
-            {/* <DateFilter /> */}
+              <SelectFilter
+                name="type"
+                orignalData={orignalData}
+                label="Complaint Type"
+                value={filter["type"]}
+                key={filter["type"][0]}
+                filterValue={filterTable}
+              />
+
+              <SelectFilter
+                name="town"
+                orignalData={orignalData}
+                label="Town"
+                value={filter["town"]}
+                key={filter["town"][0]}
+                filterValue={filterTable}
+              />
+
+              {userData.Role == "ADMIN" && (
+                <SelectFilter
+                  name="supervisorName"
+                  orignalData={orignalData}
+                  label="Supervisor"
+                  value={filter["supervisorName"]}
+                  key={filter["supervisorName"][0]}
+                  filterValue={filterTable}
+                />
+              )}
+              {userData.Role == "ADMIN" && (
+                <SelectFilter
+                  name="otherStatus"
+                  orignalData={orignalData}
+                  label="Supervisor Status"
+                  value={filter["otherStatus"]}
+                  key={filter["otherStatus"][0]}
+                  filterValue={filterTable}
+                />
+              )}
+
+              {/* <DateFilter /> */}
+            </Grid>
           </Paper>
 
           <Scrollbars style={{ minWidth: 100, minHeight: 400 }}>
