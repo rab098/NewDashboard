@@ -136,6 +136,7 @@ class EnhancedTableHead extends React.Component {
               </TableSortLabel>
             </TableCell>
           ))}
+          <TableCell align="center"></TableCell>
         </TableRow>
       </TableHead>
     );
@@ -740,43 +741,47 @@ export default function Complaints(props) {
             onChangeRowsPerPage={handleChangeRowsPerPage}
           />
         </Grid>
-        <Grid item xs={12} sm={12} md={12} lg={3}>
-          <Grid container>
-            <Grid item xs={12} sm={12} md={6} lg={12}>
-              <Visualize
-                key={mainData.length}
-                resolved={
-                  mainData.filter((obj) => obj.statusType === "Resolved").length
-                }
-                unresolved={
-                  mainData.filter((obj) => obj.statusType === "Unresolved")
-                    .length
-                }
-                rejected={
-                  mainData.filter((obj) => obj.statusType === "Rejected").length
-                }
-                assigned={
-                  userData.Role === "ADMIN"
-                    ? mainData.filter((obj) => obj.statusType === "Assigned")
-                        .length
-                    : mainData.filter((obj) => obj.statusType === "Active")
-                        .length
-                }
-                total={mainData.length}
-              />
-            </Grid>
-            <Grid item xs={12} sm={12} md={6} lg={12}>
-              {" "}
-              <PriorityVisualize
-                high={mainData.filter((obj) => obj.priority == "high").length}
-                medium={
-                  mainData.filter((obj) => obj.priority == "medium").length
-                }
-                low={mainData.filter((obj) => obj.priority == "low").length}
-              />
+        {window.innerWidth > 500 && (
+          <Grid item xs={12} sm={12} md={12} lg={3}>
+            <Grid container>
+              <Grid item xs={12} sm={12} md={6} lg={12}>
+                <Visualize
+                  key={mainData.length}
+                  resolved={
+                    mainData.filter((obj) => obj.statusType === "Resolved")
+                      .length
+                  }
+                  unresolved={
+                    mainData.filter((obj) => obj.statusType === "Unresolved")
+                      .length
+                  }
+                  rejected={
+                    mainData.filter((obj) => obj.statusType === "Rejected")
+                      .length
+                  }
+                  assigned={
+                    userData.Role === "ADMIN"
+                      ? mainData.filter((obj) => obj.statusType === "Assigned")
+                          .length
+                      : mainData.filter((obj) => obj.statusType === "Active")
+                          .length
+                  }
+                  total={mainData.length}
+                />
+              </Grid>
+              <Grid item xs={12} sm={12} md={6} lg={12}>
+                {" "}
+                <PriorityVisualize
+                  high={mainData.filter((obj) => obj.priority == "high").length}
+                  medium={
+                    mainData.filter((obj) => obj.priority == "medium").length
+                  }
+                  low={mainData.filter((obj) => obj.priority == "low").length}
+                />
+              </Grid>
             </Grid>
           </Grid>
-        </Grid>
+        )}
       </Grid>
 
       <Backdrop key={rows.length} className={classes.backdrop} open={loading}>

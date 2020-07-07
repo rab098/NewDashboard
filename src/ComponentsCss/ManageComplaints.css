@@ -12,3 +12,7 @@
   transition: 0.3s ease;
   background-color: rgba(161, 158, 158, 0.137);
 }
+
+.myclass > .MuiBox-root {
+  padding: 0 !important;
+}

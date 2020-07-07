@@ -6,7 +6,8 @@ import ListItem from "@material-ui/core/ListItem";
 
 import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
 import ListItemText from "@material-ui/core/ListItemText";
-import AddIcon from "@material-ui/icons/Add";
+import DeleteIcon from "@material-ui/icons/Delete";
+import AddCircleOutlineRoundedIcon from "@material-ui/icons/AddCircleOutlineRounded";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -16,7 +17,7 @@ const useStyles = makeStyles((theme) => ({
   list: {},
   listItem: {
     background: "white",
-    margin: 10,
+    marginTop: 15,
   },
 }));
 
@@ -97,7 +98,7 @@ export default function Rejection(props) {
               <ListItemText primary={item} />
               <ListItemSecondaryAction>
                 <Button color="primary" onClick={() => deleteReason(item)}>
-                  Delete
+                  {window.innerWidth > 500 ? " Delete" : <DeleteIcon />}
                 </Button>
                 {/* <IconButton edge="end" aria-label="delete">
                     <EditIcon />
@@ -115,28 +116,36 @@ export default function Rejection(props) {
             placeholder="Enter new reason"
             id="standard-required"
             value={newReason}
-            style={{ width: "80%" }}
+            style={{ width: window.innerWidth > 500 ? "70%" : "100" }}
             onChange={(event) => {
               setNewReason(event.target.value);
             }}
           />
           <ListItemSecondaryAction>
-            <Button
-              variant="contained"
-              style={{
-                Width: "15%",
-                background: "teal",
-                border: 0,
-                color: "white",
-                padding: 10,
-                textDecoration: "none",
-              }}
-              onClick={() => {
-                AddReason();
-              }}
-            >
-              Add Reason
-            </Button>
+            {window.innerWidth > 500 ? (
+              <Button
+                variant="contained"
+                style={{
+                  background: "teal",
+                  border: 0,
+                  color: "white",
+
+                  textDecoration: "none",
+                }}
+                onClick={() => {
+                  AddReason();
+                }}
+              >
+                {"Add Reason"}{" "}
+              </Button>
+            ) : (
+              <AddCircleOutlineRoundedIcon
+                color="primary"
+                onClick={() => {
+                  AddReason();
+                }}
+              />
+            )}
           </ListItemSecondaryAction>
         </ListItem>
       </List>

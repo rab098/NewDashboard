@@ -13,13 +13,12 @@ import CameraAltIcon from "@material-ui/icons/CameraAlt";
 
 const useStyles = makeStyles({
   root: {
-    maxWidth: 400,
     minWidth: 260,
     margin: 10,
     position: "relative",
   },
   media: {
-    height: 250,
+    height: 270,
   },
 
   input: { display: "none" },

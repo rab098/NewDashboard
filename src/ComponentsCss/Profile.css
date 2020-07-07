@@ -35,7 +35,7 @@
 }
 
 .settingInput {
-  width: 40vw;
+  width: 60vw;
 }
 @media (min-width: 600px) {
   .settingInput {

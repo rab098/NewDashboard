@@ -72,19 +72,20 @@ export default function ManageComplaints() {
 
   return (
     <div className={classes.root}>
-      <AppBar position="static" color="default">
+      <AppBar position="sticky" color="default">
         <Tabs
           value={value}
           onChange={handleChange}
           indicatorColor="primary"
           textColor="primary"
+          scrollButtons="auto"
+          variant="scrollable"
           // variant="fullWidth"
           aria-label="full width tabs example"
-          centered
         >
-          <Tab label="Complaint Types" {...a11yProps(0)} />
-          <Tab label="Feedback Tags" {...a11yProps(1)} />
-          <Tab label="Reasons for Rejection" {...a11yProps(2)} />
+          <Tab wrapped label="Complaint Types" {...a11yProps(0)} />
+          <Tab wrapped label="Feedback Tags" {...a11yProps(1)} />
+          <Tab wrapped label="Reasons for Rejection" {...a11yProps(2)} />
         </Tabs>
       </AppBar>
 
@@ -93,21 +94,36 @@ export default function ManageComplaints() {
         index={value}
         onChangeIndex={handleChangeIndex}
       >
-        <TabPanel value={value} index={0} dir={theme.direction}>
-          <Scrollbars style={{ minWidth: 100, minHeight: 500 }}>
-            <ComplaintTypes token={userData.accessToken} />
-          </Scrollbars>
+        <TabPanel
+          className="myclass"
+          value={value}
+          index={0}
+          dir={theme.direction}
+        >
+          {/* <Scrollbars style={{ minWidth: 100, minHeight: 510 }}> */}
+          <ComplaintTypes token={userData.accessToken} />
+          {/* </Scrollbars> */}
         </TabPanel>
-        <TabPanel value={value} index={1} dir={theme.direction}>
-          <Scrollbars style={{ minWidth: 100, minHeight: 500 }}>
-            <FeedbackTags token={userData.accessToken} />
-          </Scrollbars>
+        <TabPanel
+          className="myclass"
+          value={value}
+          index={1}
+          dir={theme.direction}
+        >
+          {/* <Scrollbars style={{ minWidth: 100, minHeight: 510 }}> */}
+          <FeedbackTags token={userData.accessToken} />
+          {/* </Scrollbars> */}
         </TabPanel>
-        <TabPanel value={value} index={2} dir={theme.direction}>
+        <TabPanel
+          className="myclass"
+          value={value}
+          index={2}
+          dir={theme.direction}
+        >
           {" "}
-          <Scrollbars style={{ minWidth: 100, minHeight: 500 }}>
-            <Rejection token={userData.accessToken} />
-          </Scrollbars>
+          {/* <Scrollbars style={{ minWidth: 100, minHeight: 510 }}> */}
+          <Rejection token={userData.accessToken} />
+          {/* </Scrollbars> */}
         </TabPanel>
       </SwipeableViews>
     </div>

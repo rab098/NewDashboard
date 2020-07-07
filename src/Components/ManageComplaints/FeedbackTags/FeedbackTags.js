@@ -17,6 +17,7 @@ import {
   Tab,
   ListItem,
 } from "@material-ui/core";
+import AddCircleOutlineRoundedIcon from "@material-ui/icons/AddCircleOutlineRounded";
 import Rating from "@material-ui/lab/Rating";
 import Stars from "./Stars";
 import DeleteIcon from "@material-ui/icons/Delete";
@@ -25,6 +26,7 @@ const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
     maxWidth: 752,
+    Width: window.innerWidth,
   },
   chip: {
     margin: theme.spacing(0.5),
@@ -140,7 +142,7 @@ export default function FeedbackTags(props) {
                       deleteTag(item.id);
                     }}
                   >
-                    Delete
+                    {window.innerWidth > 500 ? " Delete" : <DeleteIcon />}
                   </Button>
                 </TableCell>
               </TableRow>
@@ -153,34 +155,39 @@ export default function FeedbackTags(props) {
           {/* <TableCell align="center"> */}
           <TextField
             variant="outlined"
-            placeholder="Enter new tag"
+            placeholder="Enter new Tag"
             id="standard-required"
-            // value={newReason}
-            style={{ width: "80%" }}
+            value={newTag}
+            style={{ width: window.innerWidth > 500 ? "70%" : "100" }}
             onChange={(event) => {
               setNewTag(event.target.value);
             }}
           />
-          {/* </TableCell> */}
           <ListItemSecondaryAction>
-            {/* <TableCell></TableCell> */}
-            {/* <TableCell align="center"> */}
-            <Button
-              variant="contained"
-              style={{
-                Width: "15%",
-                background: "teal",
-                border: 0,
-                color: "white",
-                padding: 10,
-                textDecoration: "none",
-              }}
-              onClick={() => {
-                AddTag();
-              }}
-            >
-              Add Tags
-            </Button>
+            {window.innerWidth > 500 ? (
+              <Button
+                variant="contained"
+                style={{
+                  background: "teal",
+                  border: 0,
+                  color: "white",
+
+                  textDecoration: "none",
+                }}
+                onClick={() => {
+                  AddTag();
+                }}
+              >
+                {"Add Tag"}{" "}
+              </Button>
+            ) : (
+              <AddCircleOutlineRoundedIcon
+                color="primary"
+                onClick={() => {
+                  AddTag();
+                }}
+              />
+            )}
           </ListItemSecondaryAction>
           {/* </TableCell> */}
         </ListItem>

@@ -262,7 +262,7 @@ function Profile(props) {
             md={12}
             lg={12}
             item={true}
-            justify="space-around"
+            justify={window.innerWidth < 500 ? "flex-start" : "space-around"}
             style={{ paddingTop: "2rem" }}
           >
             <Box className="elevation" style={{ margin: "10px" }}>
@@ -446,14 +446,19 @@ function Profile(props) {
             </Button>
           </Grid>
         </Grid>
-        <Grid container item={true} xs={12} sm={12} md={4} lg={4}>
-          <Grid item xs={12} sm={6} md={12} lg={12}>
-            <Alerts data={notification} key={notification.length} />
+        {window.innerWidth > 500 && (
+          <Grid container item={true} xs={12} sm={12} md={4} lg={4}>
+            <Grid item xs={12} sm={6} md={12} lg={12}>
+              <Alerts data={notification} key={notification.length} />
+            </Grid>
+            <Grid item xs={12} sm={6} md={12} lg={12}>
+              <UserStatistics
+                token={userData.accessToken}
+                role={userData.Role}
+              />
+            </Grid>
           </Grid>
-          <Grid item xs={12} sm={6} md={12} lg={12}>
-            <UserStatistics token={userData.accessToken} role={userData.Role} />
-          </Grid>
-        </Grid>
+        )}
       </Grid>
     </div>
   );

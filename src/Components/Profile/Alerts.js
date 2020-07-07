@@ -12,7 +12,7 @@ import Moment from "moment";
 const useStyles = makeStyles((theme) => ({
   root: {
     width: "99%",
-    maxWidth: "45ch",
+    maxWidth: "50ch",
     backgroundColor: "theme.palette.background.paper",
   },
   inline: {
