@@ -250,7 +250,7 @@ function Profile(props) {
                 Object.keys(userData).length > 0 &&
                 (userData.userData.image == null
                   ? null
-                  : "https://m2r31169.herokuapp.com" + userData.userData.image)
+                  : userData.userData.image)
               }
             />
           </Grid>

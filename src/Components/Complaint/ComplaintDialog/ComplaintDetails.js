@@ -82,7 +82,7 @@ export default function ComplaintDetails(props) {
           color="black"
           m={1}
         >
-          Complaint Image - Before
+          Complaint Image - Before {sel.longitude + sel.latitude}
         </Box>
 
         <Paper className="image">
@@ -91,7 +91,7 @@ export default function ComplaintDetails(props) {
             height="250px"
             alt="Error Loading Image"
             width="auto"
-            src={"https://m2r31169.herokuapp.com" + sel.image}
+            src={sel.image}
           />
         </Paper>
       </Grid>

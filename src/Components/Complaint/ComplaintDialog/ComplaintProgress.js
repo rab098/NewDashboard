@@ -325,7 +325,7 @@ export default function ComplaintProgress(props) {
                 height="250px"
                 alt="Error Loading Image"
                 width="auto"
-                src={"https://m2r31169.herokuapp.com" + sel.afterImage}
+                src={sel.afterImage}
               />
             </Paper>
           </Grid>

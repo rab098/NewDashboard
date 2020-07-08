@@ -44,7 +44,7 @@ export default function ComplaintTypes(props) {
         <Type
           id={type.id}
           name={type.typeName}
-          image={"https://m2r31169.herokuapp.com" + type.image}
+          image={type.image}
           enable={type.isEnable}
           token={token}
           edit={(id) => {
