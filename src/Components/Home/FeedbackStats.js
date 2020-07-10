@@ -110,7 +110,7 @@ function FeedbackStats(props) {
       }
     >
 
-      {checkFeedback === 1 ?
+      {checkFeedback === 0 ?
 
           <ChartistGraph
               data={piechart.data}
@@ -125,12 +125,12 @@ function FeedbackStats(props) {
             <p className="resolve-text">Not available</p>
           </div>
       }
-      <ChartistGraph
-        data={piechart.data}
-        type="Pie"
-        options={piechart.options}
-        style={{ padding: "10px" }}
-      />
+      {/*<ChartistGraph*/}
+      {/*  data={piechart.data}*/}
+      {/*  type="Pie"*/}
+      {/*  options={piechart.options}*/}
+      {/*  style={{ padding: "10px" }}*/}
+      {/*/>*/}
 
       <div className="feedback-heading">
         <p className="feedback-text">Feedback Summary</p>

@@ -136,7 +136,7 @@ function Home() {
         //                 gridTemplateColumns: `repeat(${grid},1fr)`
         //             }}
         <div className="home-grid">
-            <div className={userData.Role === "ADMIN" ? "counts" : "supervisor-counts"} >
+            <div className="counts" >
                 <div className="total-complaints">
                     <AssignmentRoundedIcon
                         style={{
@@ -257,24 +257,42 @@ function Home() {
                         {/*sendingTime.Rejected[0].updatedAt}*/}
                     </div>
                 </div>
-                <div className={userData.Role === "ADMIN" ? "total-supervisors" : "total-supervisors-hidden"}>
-                    <SupervisorAccountRoundedIcon
-                        style={{
-                            float: "left",
-                            marginTop: "-20px",
-                            background: "linear-gradient(60deg,#FFEE75,#FFDF00)",
-                            borderRadius: "5px",
-                            color: "white",
-                            width: "30px",
-                            height: "30px",
-                            padding: "10px",
-                            position: "absolute",
-                            boxShadow:
-                                "rgba(0, 0, 0, 0.14) 0px 4px 20px 0px, rgba(234, 212, 56, 0.64) 0px 7px 10px -5px",
-                        }}
-                    />
-                    <p className="count-title">Supervisors</p>
-                    <p className="count-value">{count.supervisors}</p>
+                <div className="total-supervisors">
+                    {userData.Role === "ADMIN" ?
+                        <SupervisorAccountRoundedIcon
+                            style={{
+                                float: "left",
+                                marginTop: "-20px",
+                                background: "linear-gradient(60deg,#FFEE75,#FFDF00)",
+                                borderRadius: "5px",
+                                color: "white",
+                                width: "30px",
+                                height: "30px",
+                                padding: "10px",
+                                position: "absolute",
+                                boxShadow:
+                                    "rgba(0, 0, 0, 0.14) 0px 4px 20px 0px, rgba(234, 212, 56, 0.64) 0px 7px 10px -5px",
+                            }}
+                        />
+                        :
+                        <AccessTimeIcon
+                            style={{
+                                float: "left",
+                                marginTop: "-20px",
+                                background: "linear-gradient(60deg,#FFEE75,#FFDF00)",
+                                borderRadius: "5px",
+                                color: "white",
+                                width: "30px",
+                                height: "30px",
+                                padding: "10px",
+                                position: "absolute",
+                                boxShadow:
+                                    "rgba(0, 0, 0, 0.14) 0px 4px 20px 0px, rgba(234, 212, 56, 0.64) 0px 7px 10px -5px",
+                            }}
+                        />
+                    }
+                    <p className="count-title">{userData.Role === "ADMIN" ? "Supervisors": "Pending"}</p>
+                    <p className="count-value">{userData.Role === "ADMIN" ? count.supervisors : "19"}</p>
                     <div className={classes.stats}>
                         <UpdateIcon fontSize="small"/> Last updated {" "} {lastUpdatedState.Supervisors}
                         {/*{Object.keys(sendingTime).length > 0 &&*/}
