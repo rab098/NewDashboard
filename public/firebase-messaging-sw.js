@@ -48,7 +48,7 @@ messaging.setBackgroundMessageHandler(function (payload) {
   const title = payload.data.title;
   const options = {
     body: payload.data.message,
-    icon: image,
+    //  icon: image,
     //    icon: payload.notification.icon,
   };
 
