@@ -6,7 +6,7 @@ importScripts("https://www.gstatic.com/firebasejs/7.14.5/firebase-app.js");
 importScripts(
   "https://www.gstatic.com/firebasejs/7.14.5/firebase-messaging.js"
 );
-
+import image from "./assets/images/app_icon_without_bg.png";
 if ("serviceWorker" in navigator) {
   navigator.serviceWorker
     .register("./firebase-messaging-sw.js")
@@ -40,14 +40,15 @@ const messaging = firebase.messaging();
 //   `messaging.setBackgroundMessageHandler` handler.
 
 messaging.setBackgroundMessageHandler(function (payload) {
-  console.log(
-    "[firebase-messaging-sw.js] Received background message ",
-    payload
-  );
+  // console.log(
+  //   "[firebase-messaging-sw.js] Received background message ",
+  //   payload
+  // );
   // Customize notification here
-  const title = "payload.notification.title";
+  const title = payload.data.title;
   const options = {
     body: payload.data.message,
+    icon: image,
     //    icon: payload.notification.icon,
   };
 
@@ -56,4 +57,5 @@ messaging.setBackgroundMessageHandler(function (payload) {
 
 self.addEventListener("notificationclick", function (event) {
   console.log(event);
+  clients.openWindow("/");
 });
