@@ -6,7 +6,7 @@ importScripts("https://www.gstatic.com/firebasejs/7.14.5/firebase-app.js");
 importScripts(
   "https://www.gstatic.com/firebasejs/7.14.5/firebase-messaging.js"
 );
-import image from "./assets/images/app_icon_without_bg.png";
+import image from "../src/assets/images/app_icon_without_bg.png";
 if ("serviceWorker" in navigator) {
   navigator.serviceWorker
     .register("./firebase-messaging-sw.js")
@@ -51,6 +51,7 @@ messaging.setBackgroundMessageHandler(function (payload) {
     icon: image,
     //    icon: payload.notification.icon,
   };
+
 
   return self.registration.showNotification(title, options);
 });
