@@ -40,12 +40,12 @@ const messaging = firebase.messaging();
 //   `messaging.setBackgroundMessageHandler` handler.
 
 messaging.setBackgroundMessageHandler(function (payload) {
-  // console.log(
-  //   "[firebase-messaging-sw.js] Received background message ",
-  //   payload
-  // );
-  // Customize notification here
-  const title = payload.data.title;
+  console.log(
+    "[firebase-messaging-sw.js] Received background message ",
+    payload
+  );
+  //Customize notification here
+  const title = "payload.data.title";
   const options = {
     body: payload.data.message,
     icon: image,
