@@ -47,13 +47,17 @@ messaging.setBackgroundMessageHandler(function (payload) {
   //Customize notification here
   // const title =;
   const options = {
-    title: payload.data.message,
-    body: payload.data.title,
-    //  icon: image,
+    title: payload.data.title,
+    body: payload.data.message,
+    icon: image,
     //    icon: payload.notification.icon,
   };
 
-  return self.registration.showNotification(options.title, options.body);
+  return self.registration.showNotification(
+    options.title,
+    options.body,
+    options.icon
+  );
 });
 
 self.addEventListener("notificationclick", function (event) {
