@@ -290,7 +290,10 @@ function Dashboard({ match }) {
         })
         .then((res) => {
 
+          console.log("status??", res.status)
           if(res.status === 401){
+            console.log("status??", res.status)
+
             store.set("logoutEvent", "logout" + Math.random());
             console.log(res.data);
             store.remove("userData");
@@ -325,7 +328,7 @@ function Dashboard({ match }) {
   });
 
   const timeBox = (props) => {
-    console.log("moment wala time", props);
+    // console.log("moment wala time", props);
     let difference = props;
     const secondsInMilli = 1000;
     const minutesInMilli = secondsInMilli * 60;

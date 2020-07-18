@@ -11,7 +11,8 @@ function ResolveTimeAnalysisStats() {
   const [resolveTime, setResolveTime] = useState({
     less: 70,
     medium: 20,
-    high: 10,
+    high: 5,
+      greaterThanTwentyFour: 5
   });
 
 
@@ -26,12 +27,14 @@ function ResolveTimeAnalysisStats() {
         if (
           res.data._1_to_9 !== null &&
           res.data._10_to_16 !== null &&
-          res.data._17_to_24 !== null
+          res.data._17_to_24 !== null &&
+            res.data.geraterThan24 !== null
         ) {
           setResolveTime({
             less: res.data._1_to_9,
             medium: res.data._10_to_16,
             high: res.data._17_to_24,
+              greaterThanTwentyFour: res.data.geraterThan24
           });
         } else{
             setResolveTimeCheck(1);
@@ -39,6 +42,7 @@ function ResolveTimeAnalysisStats() {
                 less: 0,
                 medium: 0,
                 high: 0,
+                greaterThanTwentyFour: 0
             });
         }
 
@@ -48,7 +52,7 @@ function ResolveTimeAnalysisStats() {
 
   const piechart = {
     data: {
-      series: [resolveTime.high, resolveTime.less, resolveTime.medium],
+      series: [resolveTime.high, resolveTime.less, resolveTime.medium, resolveTime.greaterThanTwentyFour],
     },
     options: {
       labelInterpolationFnc: function (value) {
@@ -136,6 +140,27 @@ function ResolveTimeAnalysisStats() {
         {" "}
         17 to 24 hours
       </Box>
+
+          <Box
+              textAlign="left"
+              color="#FF0000"
+              fontWeight="bold"
+              component="span"
+              fontSize="3rem"
+              marginLeft={1}
+          >
+              .
+          </Box>
+          <Box
+              textAlign="left"
+              color="#008080"
+              fontWeight="600"
+              component="span"
+              fontSize="0.75rem"
+          >
+              {" "}
+              more than 24 hours
+          </Box>
 
         </div>
     </div>

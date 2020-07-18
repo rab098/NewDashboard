@@ -83,6 +83,10 @@ stroke: rgba(249, 255, 235, 0.84);
     fill: #fb8c00;
 }
 
+.ct-series-d .ct-slice-pie {
+    fill: #ff0000;
+}
+
 
 .ct-series-a .ct-line{
     stroke-width: 1px;
