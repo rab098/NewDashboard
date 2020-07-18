@@ -45,13 +45,13 @@ messaging.setBackgroundMessageHandler(function (payload) {
     payload
   );
   //Customize notification here
-  const title = payload.data.title;
+  // const title =;
   const options = {
-    body: payload.data.message,
+    title: payload.data.message,
+    body: payload.data.title,
     //  icon: image,
     //    icon: payload.notification.icon,
   };
-
 
   return self.registration.showNotification(title, options);
 });
