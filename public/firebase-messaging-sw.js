@@ -53,7 +53,7 @@ messaging.setBackgroundMessageHandler(function (payload) {
     //    icon: payload.notification.icon,
   };
 
-  return self.registration.showNotification(options);
+  return self.registration.showNotification(options.title, options.body);
 });
 
 self.addEventListener("notificationclick", function (event) {
