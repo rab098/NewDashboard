@@ -100,7 +100,11 @@ function Home() {
         axios
             .get("https://m2r31169.herokuapp.com/api/getLastUpdatedTime")
             .then((res) => {
-                setLastUpdated(res.data.lastUpdated);
+                // if(res.status === 401){
+                //     window.location = `/`
+                // }
+                // else
+                    setLastUpdated(res.data.lastUpdated);
             })
             .catch((err) => console.error(err));
     };

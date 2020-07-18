@@ -224,6 +224,7 @@ function Dashboard({ match }) {
         }
       )
       .then((res) => {
+
         console.log(res);
       });
   }
@@ -288,17 +289,30 @@ function Dashboard({ match }) {
           headers: headers,
         })
         .then((res) => {
-          console.log("dropdown notifs??", res.data);
-          for (let i in res.data.notifications)
-            dropdownNotifications[i] = res.data.notifications[i];
 
-          setDropDownNotifs(dropdownNotifications);
-          setNotifCount(res.data.count);
+          if(res.status === 401){
+            store.set("logoutEvent", "logout" + Math.random());
+            console.log(res.data);
+            store.remove("userData");
+            store.clearAll();
+            setUserData({});
+            window.location = "/";
+          }
+          else{
+            console.log("dropdown notifs??", res.data);
+            for (let i in res.data.notifications)
+              dropdownNotifications[i] = res.data.notifications[i];
+
+            setDropDownNotifs(dropdownNotifications);
+            setNotifCount(res.data.count);
+          }
+
 
           // console.log("what the coming???????", dropdownNotifs);
         })
         .catch((err) => {
           console.error(err);
+
           console.log("not getting notifs");
         });
     }
