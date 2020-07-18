@@ -45,15 +45,19 @@ messaging.setBackgroundMessageHandler(function (payload) {
     payload
   );
   //Customize notification here
-  const title = payload.data.title;
+  // const title =;
   const options = {
+    title: payload.data.title,
     body: payload.data.message,
-    //  icon: image,
+    icon: image,
     //    icon: payload.notification.icon,
   };
 
-
-  return self.registration.showNotification(title, options);
+  return self.registration.showNotification(
+    options.title,
+    options.body,
+    options.icon
+  );
 });
 
 self.addEventListener("notificationclick", function (event) {
