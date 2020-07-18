@@ -254,6 +254,13 @@ export default function Complaints(props) {
       });
   };
 
+  const handleLogoutAutomatically = () => {
+    store.remove("userData");
+    store.clearAll();
+    setUserData({});
+    window.location = "/";
+  };
+
   const assignComplaints = () => {
     const unresolved = orignalData.filter(
       (obj) => obj.statusType === "Unresolved"
@@ -478,6 +485,9 @@ export default function Complaints(props) {
         if (err.response) {
           if (err.response.status == 400) {
             setLoading(false);
+          }
+          if (err.response.status == 403) {
+            handleLogoutAutomatically();
           }
         }
 

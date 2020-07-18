@@ -82,7 +82,7 @@ export default function ComplaintDetails(props) {
           color="black"
           m={1}
         >
-          Complaint Image - Before {sel.longitude + sel.latitude}
+          Complaint Image - Before
         </Box>
 
         <Paper className="image">
