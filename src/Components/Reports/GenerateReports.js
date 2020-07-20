@@ -69,19 +69,10 @@ function GenerateReports(props) {
         <div>
 
             <div className="report-filter-main">
-                <div className="report-filter">
-                <h3>Generate Report</h3>
-                {/*<Select*/}
-                {/*    labelId="demo-simple-select-label"*/}
-                {/*    id="demo-simple-select"*/}
-                {/*    value={reportType}*/}
-                {/*    onChange={handleChange}*/}
-                {/*>*/}
-                {/*    <MenuItem value='Total Complaints Yearly'>Total Complaints Yearly</MenuItem>*/}
-                {/*    <MenuItem value='Total Complaints Monthly'>Total Complaints Monthly</MenuItem>*/}
-                {/*    <MenuItem value='Total Complaints Daily'>Total Complaints Daily</MenuItem>*/}
-                {/*</Select>*/}
-                </div>
+
+                <p className="report-heading">Generate Report</p>
+
+
 
                 {/*<div className="report-filter">*/}
                 {/*    <button className='report-pdf-button' onClick={_exportPdfTable}>*/}

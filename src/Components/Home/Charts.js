@@ -5,6 +5,7 @@ import ChartistGraph from "react-chartist";
 import UpdateIcon from "@material-ui/icons/Update";
 
 let Chartist = require("chartist");
+let store = require("store");
 
 
 const styles = {
@@ -32,6 +33,15 @@ function Charts(props) {
     const classes = useStyles()
 
 
+    const [userData, setUserData] = useState(store.get("userData"));
+
+    const headers = {
+        "Content-Type": "application/json",
+        "x-access-token": userData.accessToken,
+    };
+
+
+
     const [whichType, setWhichType] = useState({
         seriesYearly: [],
         seriesMonthly: [],
@@ -48,35 +58,38 @@ function Charts(props) {
 
     useEffect(() => {
 
-        axios.get('https://m2r31169.herokuapp.com/api/getComplaintsYearlyMonthlyDaily')
-            .then(res => {
-                setData({
-                    totalCountResultDaily: res.data.daily.map(a => a.totalCount),
-                    totalCountResultMonthly: res.data.monthly.map(a => a.totalCount),
-                    totalCountResultYearly: res.data.yearly.map(a => a.totalCount),
-                    resolvedResultDaily: res.data.daily.map(a => a.Resolved),
-                    resolvedResultMonthly: res.data.monthly.map(a => a.Resolved),
-                    resolvedResultYearly: res.data.yearly.map(a => a.Resolved),
-                    unresolvedResultDaily: res.data.daily.map(a => a.Unresolved),
-                    unresolvedResultMonthly: res.data.monthly.map(a => a.Unresolved),
-                    unresolvedResultYearly: res.data.yearly.map(a => a.Unresolved),
-                    assignedResultDaily: res.data.daily.map(a => a.Assigned),
-                    assignedResultMonthly: res.data.monthly.map(a => a.Assigned),
-                    assignedResultYearly: res.data.yearly.map(a => a.Assigned),
-                    rejectedResultDaily: res.data.daily.map(a => a.Rejected),
-                    rejectedResultMonthly: res.data.monthly.map(a => a.Rejected),
-                    rejectedResultYearly: res.data.yearly.map(a => a.Rejected),
-                    labelForYearly: res.data.yearly.map(a => a.year)
-                })
-
-                // maxValue = Math.max.apply(null,allData.totalCountResultMonthly)
-                // console.log(maxValue)
-                console.log(res.data)
-
-
+        if (userData.accessToken !== null) {
+            axios.get('https://m2r31169.herokuapp.com/api/getComplaintsYearlyMonthlyDaily', {
+                headers: headers
             })
-            .catch(err => console.error(err))
+                .then(res => {
+                    setData({
+                        totalCountResultDaily: res.data.daily.map(a => a.totalCount),
+                        totalCountResultMonthly: res.data.monthly.map(a => a.totalCount),
+                        totalCountResultYearly: res.data.yearly.map(a => a.totalCount),
+                        resolvedResultDaily: res.data.daily.map(a => a.Resolved),
+                        resolvedResultMonthly: res.data.monthly.map(a => a.Resolved),
+                        resolvedResultYearly: res.data.yearly.map(a => a.Resolved),
+                        unresolvedResultDaily: res.data.daily.map(a => a.Unresolved),
+                        unresolvedResultMonthly: res.data.monthly.map(a => a.Unresolved),
+                        unresolvedResultYearly: res.data.yearly.map(a => a.Unresolved),
+                        assignedResultDaily: res.data.daily.map(a => a.Assigned),
+                        assignedResultMonthly: res.data.monthly.map(a => a.Assigned),
+                        assignedResultYearly: res.data.yearly.map(a => a.Assigned),
+                        rejectedResultDaily: res.data.daily.map(a => a.Rejected),
+                        rejectedResultMonthly: res.data.monthly.map(a => a.Rejected),
+                        rejectedResultYearly: res.data.yearly.map(a => a.Rejected),
+                        labelForYearly: res.data.yearly.map(a => a.year)
+                    })
 
+                    // maxValue = Math.max.apply(null,allData.totalCountResultMonthly)
+                    // console.log(maxValue)
+                    console.log(res.data)
+
+
+                })
+                .catch(err => console.error(err))
+        }
     }, [])
 
     // let maxValue = Math.max(resolvedResultMonthly)
@@ -100,8 +113,6 @@ function Charts(props) {
         rejectedResultYearly: []
 
     })
-
-
 
 
     useEffect(() => {
@@ -175,8 +186,6 @@ function Charts(props) {
     }, [props])
 
 
-
-
     let delays = 80,
         durations = 500;
     let delays2 = 80,
@@ -219,7 +228,7 @@ function Charts(props) {
                             easing: Chartist.Svg.Easing.easeOutQuint
                         }
                     });
-                } else if (data.type === "point" ) {
+                } else if (data.type === "point") {
                     data.element.animate({
                         opacity: {
                             begin: (data.index + 1) * delays,
@@ -283,7 +292,7 @@ function Charts(props) {
         ],
         animation: {
             draw: function (data) {
-                if (data.type === "bar" ) {
+                if (data.type === "bar") {
                     data.element.animate({
                         opacity: {
                             begin: (data.index + 1) * delays2,
@@ -320,7 +329,7 @@ function Charts(props) {
 
         animation: {
             draw: function (data) {
-                if (data.type === "line" ) {
+                if (data.type === "line") {
                     data.element.animate({
                         d: {
                             begin: 600,
@@ -334,7 +343,7 @@ function Charts(props) {
                             easing: Chartist.Svg.Easing.easeOutQuint
                         }
                     });
-                } else if (data.type === "point" ) {
+                } else if (data.type === "point") {
                     data.element.animate({
                         opacity: {
                             begin: (data.index + 1) * delays,
@@ -350,41 +359,37 @@ function Charts(props) {
     };
 
 
-        //     ,
-        // change :{
-        //     create: function (data) {
-        //         if (data.type === "line" || data.type === "area") {
-        //             data.element.animate({
-        //                 d: {
-        //                     begin: 600,
-        //                     dur: 700,
-        //                     from: data.path
-        //                         .clone()
-        //                         .scale(1, 0)
-        //                         .translate(0, data.chartRect.height())
-        //                         .stringify(),
-        //                     to: data.path.clone().stringify(),
-        //                     easing: Chartist.Svg.Easing.easeOutQuint
-        //                 }
-        //             });
-        //         } else if (data.type === "point") {
-        //             data.element.animate({
-        //                 opacity: {
-        //                     begin: (data.index + 1) * delays,
-        //                     dur: durations,
-        //                     from: 0,
-        //                     to: 1,
-        //                     easing: "ease"
-        //                 }
-        //             });
-        //         }
-        //
-        //     }
-        // }
-
-
-
-
+    //     ,
+    // change :{
+    //     create: function (data) {
+    //         if (data.type === "line" || data.type === "area") {
+    //             data.element.animate({
+    //                 d: {
+    //                     begin: 600,
+    //                     dur: 700,
+    //                     from: data.path
+    //                         .clone()
+    //                         .scale(1, 0)
+    //                         .translate(0, data.chartRect.height())
+    //                         .stringify(),
+    //                     to: data.path.clone().stringify(),
+    //                     easing: Chartist.Svg.Easing.easeOutQuint
+    //                 }
+    //             });
+    //         } else if (data.type === "point") {
+    //             data.element.animate({
+    //                 opacity: {
+    //                     begin: (data.index + 1) * delays,
+    //                     dur: durations,
+    //                     from: 0,
+    //                     to: 1,
+    //                     easing: "ease"
+    //                 }
+    //             });
+    //         }
+    //
+    //     }
+    // }
 
 
     return (
@@ -424,20 +429,20 @@ function Charts(props) {
             </div>
 
 
-                <div className="yearly-graph">
-                    <ChartistGraph
-                        className="ct-chart-background-resolved-complaints"
-                        data={yearlyComplaintsChart.data}
-                        type="Line"
-                        options={yearlyComplaintsChart.options}
-                        listener={yearlyComplaintsChart.animation}
-                    />
+            <div className="yearly-graph">
+                <ChartistGraph
+                    className="ct-chart-background-resolved-complaints"
+                    data={yearlyComplaintsChart.data}
+                    type="Line"
+                    options={yearlyComplaintsChart.options}
+                    listener={yearlyComplaintsChart.animation}
+                />
 
 
-                    <div className={classes.line}>
-                        <p>Yearly Complaints</p>
-                    </div>
+                <div className={classes.line}>
+                    <p>Yearly Complaints</p>
                 </div>
+            </div>
 
 
         </div>

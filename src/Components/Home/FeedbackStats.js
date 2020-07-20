@@ -7,8 +7,19 @@ import Box from "@material-ui/core/Box";
 import Paper from "@material-ui/core/Paper";
 
 let Chartist = require("chartist");
+let store = require("store");
+
 
 function FeedbackStats(props) {
+
+  const [userData, setUserData] = useState(store.get("userData"));
+
+  const headers = {
+    "Content-Type": "application/json",
+    "x-access-token": userData.accessToken,
+  };
+
+
   const [checkFeedback, setCheckFeedback] = useState(0);
 
     const [feedback, setFeedback] = useState({
@@ -18,7 +29,9 @@ function FeedbackStats(props) {
 
   useEffect(() => {
     axios
-      .get("https://m2r31169.herokuapp.com/api/getFeedbacks")
+      .get("https://m2r31169.herokuapp.com/api/getFeedbacks", {
+        headers:headers
+      })
       .then((res) => {
         console.log("feedbacks coming", res.data);
 

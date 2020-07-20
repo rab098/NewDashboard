@@ -20,12 +20,16 @@ function ResolveTimeAnalysisStats() {
   const [resolveTimeCheck, setResolveTimeCheck] = useState(0);
 
   const [userData, setUserData] = useState(store.get("userData"));
+
+  const headers = {
+    "Content-Type": "application/json",
+    "x-access-token": userData.accessToken,
+  };
+
   useEffect(() => {
     axios
       .get("https://m2r31169.herokuapp.com/api/getresolveTime", {
-        headers: {
-          "x-access-token": userData.accessToken, //the token is a variable which holds the token
-        },
+        headers: headers
       })
       .then((res) => {
         console.log("resolveTime coming", res.data);

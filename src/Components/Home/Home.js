@@ -44,16 +44,22 @@ function Home() {
     //     }
     // });
 
-    const [userData, setUserData] = useState({});
+    const [userData, setUserData] = useState(store.get("userData"));
 
-    const [grid,setGrid] = useState(5)
 
-    useEffect(() => {
-        setUserData(store.get("userData"));
-    },[]);
+    const [grid, setGrid] = useState(5)
+
+    // useEffect(() => {
+    //     setUserData(store.get("userData"));
+    // }, []);
 
     console.log("store?????", userData);
 
+
+    const headers = {
+        "Content-Type": "application/json",
+        "x-access-token": userData.accessToken,
+    };
 
     const classes = useStyles();
 
@@ -69,7 +75,7 @@ function Home() {
     const [chartType, setChartType] = useState("Total Complaints");
 
     const [lastUpdatedState, setLastUpdated] = useState({
-        Complaints:"00:00",
+        Complaints: "00:00",
         Resolved: "00:00",
         Assigned: "00:00",
         Rejected: "00:00",
@@ -97,36 +103,44 @@ function Home() {
     };
 
     const getTime = () => {
-        axios
-            .get("https://m2r31169.herokuapp.com/api/getLastUpdatedTime")
-            .then((res) => {
-                // if(res.status === 401){
-                //     window.location = `/`
-                // }
-                // else
+
+        if (userData.accessToken !== null) {
+            axios
+                .get("https://m2r31169.herokuapp.com/api/getLastUpdatedTime",
+                    {headers: headers})
+                .then((res) => {
+                    // if(res.status === 401){
+                    //     window.location = `/`
+                    // }
+                    // else
                     setLastUpdated(res.data.lastUpdated);
-            })
-            .catch((err) => console.error(err));
+                })
+                .catch((err) => console.error(err));
+        }
     };
 
     const getCount = () => {
-        axios
-            .get(
-                "https://m2r31169.herokuapp.com/api/totalSuervisorsAndComplaintsCount"
-            )
-            .then((res) => {
-                console.log(res.data);
 
-                setCount({
-                    totalComplaints: res.data[0].Count,
-                    resolvedComplaints: res.data[1].Count,
-                    unresolvedComplaints: res.data[2].Count,
-                    assignedComplaints: res.data[3].Count,
-                    rejectedComplaints: res.data[4].Count,
-                    supervisors: res.data[5].Count,
-                });
-            })
-            .catch((err) => console.error(err));
+        if (userData.accessToken !== null) {
+            axios
+                .get(
+                    "https://m2r31169.herokuapp.com/api/totalSuervisorsAndComplaintsCount",
+                    {headers: headers}
+                )
+                .then((res) => {
+                    console.log(res.data);
+
+                    setCount({
+                        totalComplaints: res.data[0].Count,
+                        resolvedComplaints: res.data[1].Count,
+                        unresolvedComplaints: res.data[2].Count,
+                        assignedComplaints: res.data[3].Count,
+                        rejectedComplaints: res.data[4].Count,
+                        supervisors: res.data[5].Count,
+                    });
+                })
+                .catch((err) => console.error(err));
+        }
     };
 
     useEffect(() => {
@@ -140,7 +154,7 @@ function Home() {
         //                 gridTemplateColumns: `repeat(${grid},1fr)`
         //             }}
         <div className="home-grid">
-            <div className="counts" >
+            <div className="counts">
                 <div className="total-complaints">
                     <AssignmentRoundedIcon
                         style={{
@@ -183,7 +197,7 @@ function Home() {
                     />
                     <p className="count-title">Resolved</p>
                     <p className="count-value">{count.resolvedComplaints}</p>
-                    <div  className={classes.stats}>
+                    <div className={classes.stats}>
                         <UpdateIcon fontSize="small"/> Last updated {" "} {lastUpdatedState.Resolved}
                         {/*{Object.keys(sendingTime).length > 0 &&*/}
                         {/*sendingTime.Resolved[0].updatedAt}*/}
@@ -295,7 +309,7 @@ function Home() {
                             }}
                         />
                     }
-                    <p className="count-title">{userData.Role === "ADMIN" ? "Supervisors": "Pending"}</p>
+                    <p className="count-title">{userData.Role === "ADMIN" ? "Supervisors" : "Pending"}</p>
                     <p className="count-value">{userData.Role === "ADMIN" ? count.supervisors : "19"}</p>
                     <div className={classes.stats}>
                         <UpdateIcon fontSize="small"/> Last updated {" "} {lastUpdatedState.Supervisors}
@@ -303,7 +317,6 @@ function Home() {
                         {/*sendingTime.Supervisors[0].updatedAt}*/}
                     </div>
                 </div>
-
 
 
             </div>

@@ -7,11 +7,11 @@
     /*background-color: white;*/
     /*box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.14);*/
     display: flex;
-    padding: 0 10px 10px 10px;
-    border-radius: 5px;
-    align-items: center;
-    justify-content: center;
     margin-bottom: 20px;
+}
+
+.report-heading{
+    font-size: 20px;
 }
 
 .report-filter-main-pdf{

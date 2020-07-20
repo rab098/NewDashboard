@@ -159,11 +159,11 @@ function Dashboard({ match }) {
     setOpen(false);
   };
 
-  const [userData, setUserData] = useState({});
+  const [userData, setUserData] = useState(store.get("userData"));
 
-  useEffect(() => {
-    setUserData(store.get("userData"));
-  }, []);
+  // useEffect(() => {
+  //   setUserData(store.get("userData"));
+  // }, []);
 
   const headers = {
     "Content-Type": "application/json",

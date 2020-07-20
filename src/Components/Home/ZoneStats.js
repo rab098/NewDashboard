@@ -8,9 +8,20 @@ import Box from "@material-ui/core/Box";
 import Paper from "@material-ui/core/Paper";
 
 let Chartist = require("chartist");
+let store = require("store");
 
 
 function ZoneStats() {
+
+    const [userData, setUserData] = useState(store.get("userData"));
+
+    const headers = {
+        "Content-Type": "application/json",
+        "x-access-token": userData.accessToken,
+    };
+
+
+
 
     const [allData, setData] = useState({
         LabelsState: [],
@@ -31,32 +42,34 @@ function ZoneStats() {
 
     useEffect( ()=>{
 
-        axios
-            .get('https://m2r31169.herokuapp.com/api/getTownWiseComplaints')
-            .then(res => {
-                console.log('towsn agye',res.data)
-                for (let i in res.data){
-                    Labels[i] =res.data[i].Town
-                    SeriesResolved[i] = res.data[i].Resolved
-                    SeriesUnresolved[i] = res.data[i].Unresolved
-                    SeriesAssigned[i] = res.data[i].Assigned
-                    finalHighestCount[i] = res.data[i].highestCount
-                }
+        if (userData.accessToken !== null) {
+            axios
+                .get('https://m2r31169.herokuapp.com/api/getTownWiseComplaints',
+                    {headers: headers})
+                .then(res => {
+                    console.log('towsn agye', res.data)
+                    for (let i in res.data) {
+                        Labels[i] = res.data[i].Town
+                        SeriesResolved[i] = res.data[i].Resolved
+                        SeriesUnresolved[i] = res.data[i].Unresolved
+                        SeriesAssigned[i] = res.data[i].Assigned
+                        finalHighestCount[i] = res.data[i].highestCount
+                    }
 
-                setData({
-                    LabelsState: Labels,
-                    SeriesResolvedState: SeriesResolved,
-                    SeriesAssignedState: SeriesAssigned,
-                    SeriesUnresolvedState: SeriesUnresolved,
-                    HighestCountState: finalHighestCount
+                    setData({
+                        LabelsState: Labels,
+                        SeriesResolvedState: SeriesResolved,
+                        SeriesAssignedState: SeriesAssigned,
+                        SeriesUnresolvedState: SeriesUnresolved,
+                        HighestCountState: finalHighestCount
 
+                    })
+
+                    console.log('final labels', Labels)
+                    console.log('highestcount!!', finalHighestCount)
                 })
-
-                console.log('final labels',Labels)
-                console.log('highestcount!!', finalHighestCount)
-            })
-            .catch(err => console.error(err))
-
+                .catch(err => console.error(err))
+        }
         console.log('HIGH!!',Math.max.apply(null, allData.HighestCountState))
     },[])
 
@@ -70,8 +83,11 @@ function ZoneStats() {
         data: {
             labels: allData.LabelsState,
             series: [allData.SeriesResolvedState,
-                allData.SeriesAssignedState,
-               allData.SeriesUnresolvedState]
+                    allData.SeriesAssignedState,
+                    allData.SeriesUnresolvedState]
+            // :
+            //         [allData.SeriesResolvedState]
+
         },
         options: {
             axisX: {
@@ -157,7 +173,7 @@ function ZoneStats() {
             />
 
             <div className='zone-heading'>
-                <p className='zone-text'>Town Wise Complaints</p>
+                <p className='zone-text'>{userData.Role === "ADMIN" ? "Town Wise Complaints" : "Complaint Type Progress"}</p>
             </div>
 
             <Box
