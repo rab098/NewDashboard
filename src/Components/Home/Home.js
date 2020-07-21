@@ -63,6 +63,15 @@ function Home() {
 
     const classes = useStyles();
 
+
+    const handleLogoutAutomatically = () => {
+        store.remove("userData");
+        store.clearAll();
+        setUserData({});
+        window.location = "/";
+    };
+
+
     const [count, setCount] = useState({
         totalComplaints: "0",
         resolvedComplaints: "0",
@@ -113,9 +122,20 @@ function Home() {
                     //     window.location = `/`
                     // }
                     // else
-                    setLastUpdated(res.data.lastUpdated);
+
+
+                        setLastUpdated(res.data.lastUpdated);
+
+
                 })
-                .catch((err) => console.error(err));
+                .catch((err) =>
+                {
+                    if (err.response) {
+                        if (err.response.status === 401) {
+                            handleLogoutAutomatically();
+                        }
+                    }
+                    console.error(err)});
         }
     };
 
@@ -128,18 +148,32 @@ function Home() {
                     {headers: headers}
                 )
                 .then((res) => {
-                    console.log(res.data);
 
-                    setCount({
-                        totalComplaints: res.data[0].Count,
-                        resolvedComplaints: res.data[1].Count,
-                        unresolvedComplaints: res.data[2].Count,
-                        assignedComplaints: res.data[3].Count,
-                        rejectedComplaints: res.data[4].Count,
-                        supervisors: res.data[5].Count,
-                    });
+
+
+                        console.log(res.data);
+
+                        setCount({
+                            totalComplaints: res.data[0].Count,
+                            resolvedComplaints: res.data[1].Count,
+                            unresolvedComplaints: res.data[2].Count,
+                            assignedComplaints: res.data[3].Count,
+                            rejectedComplaints: res.data[4].Count,
+                            supervisors: res.data[5].Count,
+                        });
+
+
+
                 })
-                .catch((err) => console.error(err));
+                .catch((err) =>
+                {
+                    if (err.response) {
+                        if (err.response.status === 401) {
+                            handleLogoutAutomatically();
+                        }
+                    }
+                    console.error(err);
+                })
         }
     };
 

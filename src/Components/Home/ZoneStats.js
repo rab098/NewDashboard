@@ -20,7 +20,12 @@ function ZoneStats() {
         "x-access-token": userData.accessToken,
     };
 
-
+    const handleLogoutAutomatically = () => {
+        store.remove("userData");
+        store.clearAll();
+        setUserData({});
+        window.location = "/";
+    };
 
 
     const [allData, setData] = useState({
@@ -40,7 +45,7 @@ function ZoneStats() {
     let finalHighestCount = []
 
 
-    useEffect( ()=>{
+    useEffect(() => {
 
         if (userData.accessToken !== null) {
             axios
@@ -48,30 +53,45 @@ function ZoneStats() {
                     {headers: headers})
                 .then(res => {
                     console.log('towsn agye', res.data)
-                    for (let i in res.data) {
-                        Labels[i] = res.data[i].Town
-                        SeriesResolved[i] = res.data[i].Resolved
-                        SeriesUnresolved[i] = res.data[i].Unresolved
-                        SeriesAssigned[i] = res.data[i].Assigned
-                        finalHighestCount[i] = res.data[i].highestCount
+
+
+                        for (let i in res.data) {
+                            Labels[i] = res.data[i].Town
+                            SeriesResolved[i] = res.data[i].Resolved
+                            SeriesUnresolved[i] = res.data[i].Unresolved
+                            SeriesAssigned[i] = res.data[i].Assigned
+                            finalHighestCount[i] = res.data[i].highestCount
+                        }
+
+                        setData({
+                            LabelsState: Labels,
+                            SeriesResolvedState: SeriesResolved,
+                            SeriesAssignedState: SeriesAssigned,
+                            SeriesUnresolvedState: SeriesUnresolved,
+                            HighestCountState: finalHighestCount
+
+                        })
+
+                        console.log('final labels', Labels)
+                        console.log('highestcount!!', finalHighestCount)
+
+
+
+                })
+                .catch(err => {
+                    if (err.response) {
+                        if (err.response.status === 401) {
+                            handleLogoutAutomatically();
+                        }
                     }
 
-                    setData({
-                        LabelsState: Labels,
-                        SeriesResolvedState: SeriesResolved,
-                        SeriesAssignedState: SeriesAssigned,
-                        SeriesUnresolvedState: SeriesUnresolved,
-                        HighestCountState: finalHighestCount
 
-                    })
+                    console.error(err)
 
-                    console.log('final labels', Labels)
-                    console.log('highestcount!!', finalHighestCount)
                 })
-                .catch(err => console.error(err))
         }
-        console.log('HIGH!!',Math.max.apply(null, allData.HighestCountState))
-    },[])
+        console.log('HIGH!!', Math.max.apply(null, allData.HighestCountState))
+    }, [])
 
 
     let delays2 = 80,
@@ -83,8 +103,19 @@ function ZoneStats() {
         data: {
             labels: allData.LabelsState,
             series: [allData.SeriesResolvedState,
-                    allData.SeriesAssignedState,
-                    allData.SeriesUnresolvedState]
+                allData.SeriesAssignedState,
+                allData.SeriesUnresolvedState]
+
+
+            // series:  userData.Role === "ADMIN" ?
+            //
+            //
+            //     [allData.SeriesResolvedState,
+            //     allData.SeriesAssignedState,
+            //     allData.SeriesUnresolvedState]
+            //     :
+            //     [allData.SeriesResolvedState]
+
             // :
             //         [allData.SeriesResolvedState]
 
@@ -155,12 +186,9 @@ function ZoneStats() {
     }
 
 
-
-
     return (
 
         <div className='zone-main'>
-
 
 
             <ChartistGraph

@@ -142,6 +142,7 @@ function Dashboard({ match }) {
     }
   });
 
+
   const classes = useStyles();
   // const [notifList, setNotifList] = useState(false);
   //
@@ -170,6 +171,14 @@ function Dashboard({ match }) {
     "x-access-token": userData.accessToken,
   };
 
+  const handleLogoutAutomatically = () => {
+    store.remove("userData");
+    store.clearAll();
+    setUserData({});
+    window.location = "/";
+  };
+
+
   const closeNotif = (
     event,
     notificationId,
@@ -197,12 +206,19 @@ function Dashboard({ match }) {
         )
         .then((res) => {
           console.log("notif wasnt opened", res.data);
-          // setOpen(false);
 
-          // setNotifState(res.data)
-          window.location = `/dashboard/complaints?complainIdOpen=${complainId}`;
+
+            window.location = `/dashboard/complaints?complainIdOpen=${complainId}`;
+
+
         })
         .catch((err) => {
+          if (err.response) {
+            if (err.response.status === 401) {
+              handleLogoutAutomatically();
+            }
+          }
+
           console.error(err);
           console.log("not open");
         });
@@ -225,8 +241,17 @@ function Dashboard({ match }) {
       )
       .then((res) => {
 
+
         console.log(res);
-      });
+      })
+        .catch((err) =>{
+          if (err.response) {
+            if (err.response.status === 401) {
+              handleLogoutAutomatically();
+            }
+          }
+    })
+
   }
 
   useEffect(() => {
@@ -250,6 +275,11 @@ function Dashboard({ match }) {
         }
       })
       .catch(function (err) {
+        if (err.response) {
+          if (err.response.status === 401) {
+            handleLogoutAutomatically();
+          }
+        }
         console.log("Unable to get permission to notify.", err);
       });
     // Callback fired if Instance ID token is updated.
@@ -269,6 +299,11 @@ function Dashboard({ match }) {
           // ...
         })
         .catch(function (err) {
+          if (err.response) {
+            if (err.response.status === 401) {
+              handleLogoutAutomatically();
+            }
+          }
           console.log("Unable to retrieve refreshed token ", err);
           //    showToken("Unable to retrieve refreshed token ", err);
         });
@@ -291,29 +326,25 @@ function Dashboard({ match }) {
         .then((res) => {
 
           console.log("status??", res.status)
-          if(res.status === 401){
-            console.log("status??", res.status)
 
-            store.set("logoutEvent", "logout" + Math.random());
-            console.log(res.data);
-            store.remove("userData");
-            store.clearAll();
-            setUserData({});
-            window.location = "/";
-          }
-          else{
+
             console.log("dropdown notifs??", res.data);
             for (let i in res.data.notifications)
               dropdownNotifications[i] = res.data.notifications[i];
 
             setDropDownNotifs(dropdownNotifications);
             setNotifCount(res.data.count);
-          }
 
 
           // console.log("what the coming???????", dropdownNotifs);
         })
         .catch((err) => {
+
+          if (err.response) {
+            if (err.response.status === 401) {
+              handleLogoutAutomatically();
+            }
+          }
           console.error(err);
 
           console.log("not getting notifs");
@@ -411,15 +442,15 @@ function Dashboard({ match }) {
                 </Badge>
               </IconButton>
               <Paper elevation={4} className={classes.paper} hidden={!open}>
-                <div
-                  className={
-                    notifCount === 0
-                      ? classes.noNotifDropdown
-                      : classes.hideNoNotif
-                  }
-                >
-                  <p>No new notifications</p>
-                </div>
+                {/*<div*/}
+                {/*  className={*/}
+                {/*    notifCount === 0*/}
+                {/*      ? classes.noNotifDropdown*/}
+                {/*      : classes.hideNoNotif*/}
+                {/*  }*/}
+                {/*>*/}
+                {/*  <p>No new notifications</p>*/}
+                {/*</div>*/}
 
                 {dropdownNotifs.map((obj) => {
                   return (

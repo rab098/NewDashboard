@@ -41,7 +41,6 @@ function Charts(props) {
     };
 
 
-
     const [whichType, setWhichType] = useState({
         seriesYearly: [],
         seriesMonthly: [],
@@ -55,6 +54,13 @@ function Charts(props) {
         highestValueYearly: 0
     })
 
+    const handleLogoutAutomatically = () => {
+        store.remove("userData");
+        store.clearAll();
+        setUserData({});
+        window.location = "/";
+    };
+
 
     useEffect(() => {
 
@@ -63,32 +69,43 @@ function Charts(props) {
                 headers: headers
             })
                 .then(res => {
-                    setData({
-                        totalCountResultDaily: res.data.daily.map(a => a.totalCount),
-                        totalCountResultMonthly: res.data.monthly.map(a => a.totalCount),
-                        totalCountResultYearly: res.data.yearly.map(a => a.totalCount),
-                        resolvedResultDaily: res.data.daily.map(a => a.Resolved),
-                        resolvedResultMonthly: res.data.monthly.map(a => a.Resolved),
-                        resolvedResultYearly: res.data.yearly.map(a => a.Resolved),
-                        unresolvedResultDaily: res.data.daily.map(a => a.Unresolved),
-                        unresolvedResultMonthly: res.data.monthly.map(a => a.Unresolved),
-                        unresolvedResultYearly: res.data.yearly.map(a => a.Unresolved),
-                        assignedResultDaily: res.data.daily.map(a => a.Assigned),
-                        assignedResultMonthly: res.data.monthly.map(a => a.Assigned),
-                        assignedResultYearly: res.data.yearly.map(a => a.Assigned),
-                        rejectedResultDaily: res.data.daily.map(a => a.Rejected),
-                        rejectedResultMonthly: res.data.monthly.map(a => a.Rejected),
-                        rejectedResultYearly: res.data.yearly.map(a => a.Rejected),
-                        labelForYearly: res.data.yearly.map(a => a.year)
-                    })
 
-                    // maxValue = Math.max.apply(null,allData.totalCountResultMonthly)
-                    // console.log(maxValue)
-                    console.log(res.data)
+
+                        setData({
+                            totalCountResultDaily: res.data.daily.map(a => a.totalCount),
+                            totalCountResultMonthly: res.data.monthly.map(a => a.totalCount),
+                            totalCountResultYearly: res.data.yearly.map(a => a.totalCount),
+                            resolvedResultDaily: res.data.daily.map(a => a.Resolved),
+                            resolvedResultMonthly: res.data.monthly.map(a => a.Resolved),
+                            resolvedResultYearly: res.data.yearly.map(a => a.Resolved),
+                            unresolvedResultDaily: res.data.daily.map(a => a.Unresolved),
+                            unresolvedResultMonthly: res.data.monthly.map(a => a.Unresolved),
+                            unresolvedResultYearly: res.data.yearly.map(a => a.Unresolved),
+                            assignedResultDaily: res.data.daily.map(a => a.Assigned),
+                            assignedResultMonthly: res.data.monthly.map(a => a.Assigned),
+                            assignedResultYearly: res.data.yearly.map(a => a.Assigned),
+                            rejectedResultDaily: res.data.daily.map(a => a.Rejected),
+                            rejectedResultMonthly: res.data.monthly.map(a => a.Rejected),
+                            rejectedResultYearly: res.data.yearly.map(a => a.Rejected),
+                            labelForYearly: res.data.yearly.map(a => a.year)
+                        })
+
+                        // maxValue = Math.max.apply(null,allData.totalCountResultMonthly)
+                        // console.log(maxValue)
+                        console.log(res.data)
+
+
 
 
                 })
-                .catch(err => console.error(err))
+                .catch(err => {
+                    if (err.response) {
+                        if (err.response.status === 401) {
+                            handleLogoutAutomatically();
+                        }
+                    }
+                    console.error(err)
+                })
         }
     }, [])
 
