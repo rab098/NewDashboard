@@ -214,7 +214,7 @@ function Dashboard({ match }) {
         })
         .catch((err) => {
           if (err.response) {
-            if (err.response.status === 401) {
+            if (err.response.status === 401  || err.response.status === 403) {
               handleLogoutAutomatically();
             }
           }
@@ -246,7 +246,7 @@ function Dashboard({ match }) {
       })
         .catch((err) =>{
           if (err.response) {
-            if (err.response.status === 401) {
+            if (err.response.status === 401  || err.response.status === 403) {
               handleLogoutAutomatically();
             }
           }
@@ -300,7 +300,7 @@ function Dashboard({ match }) {
         })
         .catch(function (err) {
           if (err.response) {
-            if (err.response.status === 401) {
+            if (err.response.status === 401  || err.response.status === 403) {
               handleLogoutAutomatically();
             }
           }
@@ -341,7 +341,7 @@ function Dashboard({ match }) {
         .catch((err) => {
 
           if (err.response) {
-            if (err.response.status === 401) {
+            if (err.response.status === 401  || err.response.status === 403) {
               handleLogoutAutomatically();
             }
           }

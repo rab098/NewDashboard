@@ -131,7 +131,7 @@ function Home() {
                 .catch((err) =>
                 {
                     if (err.response) {
-                        if (err.response.status === 401) {
+                        if (err.response.status === 401  || err.response.status === 403) {
                             handleLogoutAutomatically();
                         }
                     }
@@ -168,7 +168,7 @@ function Home() {
                 .catch((err) =>
                 {
                     if (err.response) {
-                        if (err.response.status === 401) {
+                        if (err.response.status === 401  || err.response.status === 403) {
                             handleLogoutAutomatically();
                         }
                     }

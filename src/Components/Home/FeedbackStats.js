@@ -41,15 +41,7 @@ function FeedbackStats(props) {
             })
             .then((res) => {
 
-                if (res.status === 401) {
-                    console.log("status??", res.status)
-                    // store.set("logoutEvent", "logout" + Math.random());
-                    console.log(res.data);
-                    store.remove("userData");
-                    store.clearAll();
-                    setUserData({});
-                    window.location = "/";
-                } else {
+
                     console.log("feedbacks coming", res.data);
 
                     if (
@@ -67,13 +59,13 @@ function FeedbackStats(props) {
                             neg: 0,
                         });
                     }
-                }
+
 
             })
             .catch((err) => {
 
                 if (err.response) {
-                    if (err.response.status === 401) {
+                    if (err.response.status === 401  || err.response.status === 403) {
                         handleLogoutAutomatically();
                     }
                 }
