@@ -75,30 +75,35 @@ export default function FeedbackTags(props) {
       });
   };
   const AddTag = () => {
-    // console.log("iteemmmmmmmmmmmmm" + item);
-    axios
-      .post(
-        "http://m2r31169.herokuapp.com/api/addFeedbackTag",
-        { tag: newTag },
-        {
-          headers: {
-            "x-access-token": token, //the token is a variable which holds the token
-          },
-        }
-      )
-      .then((res) => {
-        console.log("post hogayi" + res.data);
-        getTags();
-        setNewTag("");
-      })
-      .catch((err) => {
-        if (err.response) {
-          if (err.response.status === 401 || err.response.status === 403) {
-            handleLogoutAutomatically();
+    console.log("iteemmmmmmmmmmmmm" + newTag, allTags.includes(newTag));
+    if (allTags.some((e) => e.tags === newTag)) {
+      alert("The tag is already been added");
+      setNewTag("");
+    } else {
+      axios
+        .post(
+          "http://m2r31169.herokuapp.com/api/addFeedbackTag",
+          { tag: newTag },
+          {
+            headers: {
+              "x-access-token": token, //the token is a variable which holds the token
+            },
           }
-        }
-        console.log("error agaya" + err);
-      });
+        )
+        .then((res) => {
+          console.log("post hogayi" + res.data);
+          getTags();
+          setNewTag("");
+        })
+        .catch((err) => {
+          if (err.response) {
+            if (err.response.status === 401 || err.response.status === 403) {
+              handleLogoutAutomatically();
+            }
+          }
+          console.log("error agaya" + err);
+        });
+    }
   };
   const getTags = () => {
     var finalObj = [];

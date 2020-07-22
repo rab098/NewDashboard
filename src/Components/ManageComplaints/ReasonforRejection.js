@@ -39,29 +39,34 @@ export default function Rejection(props) {
 
   const AddReason = () => {
     console.log("iteemmmmmmmmmmmmm" + newReason);
-    axios
-      .post(
-        "http://m2r31169.herokuapp.com/api/addReasonForRejection",
-        { reason: newReason },
-        {
-          headers: {
-            "x-access-token": token, //the token is a variable which holds the token
-          },
-        }
-      )
-      .then((res) => {
-        console.log("post hogayi" + res.data);
-        setNewReason("");
-        getReason();
-      })
-      .catch((err) => {
-        if (err.response) {
-          if (err.response.status === 401 || err.response.status === 403) {
-            handleLogoutAutomatically();
+    if (reason.includes(newReason)) {
+      alert("The reason is already been added");
+      setNewReason("");
+    } else {
+      axios
+        .post(
+          "http://m2r31169.herokuapp.com/api/addReasonForRejection",
+          { reason: newReason },
+          {
+            headers: {
+              "x-access-token": token, //the token is a variable which holds the token
+            },
           }
-        }
-        console.log("error agaya" + err);
-      });
+        )
+        .then((res) => {
+          console.log("post hogayi" + res.data);
+          setNewReason("");
+          getReason();
+        })
+        .catch((err) => {
+          if (err.response) {
+            if (err.response.status === 401 || err.response.status === 403) {
+              handleLogoutAutomatically();
+            }
+          }
+          console.log("error agaya" + err);
+        });
+    }
   };
   const deleteReason = (item) => {
     console.log("iteemmmmmmmmmmmmm" + item);

@@ -103,7 +103,7 @@ export default function AddType(props) {
           }
         }
         if (err.response) {
-          if (err.response.status == 400) alert("The type is already added  ");
+          if (err.response.status == 406) alert("The type is already added  ");
 
           if (err.response.status == 400)
             alert("Please choose a valid image  ");
