@@ -89,8 +89,7 @@ function Menu(props) {
   });
 
   useEffect(() => {
-    setButtonActive("home");
-    setUserData(store.get("userData"));
+    setButtonActive(window.location.pathname.split("/").pop());
   }, []);
 
   const headers = {

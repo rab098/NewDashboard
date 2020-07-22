@@ -142,7 +142,6 @@ function Dashboard({ match }) {
     }
   });
 
-
   const classes = useStyles();
   // const [notifList, setNotifList] = useState(false);
   //
@@ -162,9 +161,9 @@ function Dashboard({ match }) {
 
   const [userData, setUserData] = useState(store.get("userData"));
 
-  // useEffect(() => {
-  //   setUserData(store.get("userData"));
-  // }, []);
+  useEffect(() => {
+    console.log(window.location.pathname.split("/").pop(), "loccccc");
+  }, []);
 
   const headers = {
     "Content-Type": "application/json",
@@ -177,7 +176,6 @@ function Dashboard({ match }) {
     setUserData({});
     window.location = "/";
   };
-
 
   const closeNotif = (
     event,
@@ -207,14 +205,11 @@ function Dashboard({ match }) {
         .then((res) => {
           console.log("notif wasnt opened", res.data);
 
-
-            window.location = `/dashboard/complaints?complainIdOpen=${complainId}`;
-
-
+          window.location = `/dashboard/complaints?complainIdOpen=${complainId}`;
         })
         .catch((err) => {
           if (err.response) {
-            if (err.response.status === 401  || err.response.status === 403) {
+            if (err.response.status === 401 || err.response.status === 403) {
               handleLogoutAutomatically();
             }
           }
@@ -240,18 +235,15 @@ function Dashboard({ match }) {
         }
       )
       .then((res) => {
-
-
         console.log(res);
       })
-        .catch((err) =>{
-          if (err.response) {
-            if (err.response.status === 401  || err.response.status === 403) {
-              handleLogoutAutomatically();
-            }
+      .catch((err) => {
+        if (err.response) {
+          if (err.response.status === 401 || err.response.status === 403) {
+            handleLogoutAutomatically();
           }
-    })
-
+        }
+      });
   }
 
   useEffect(() => {
@@ -300,7 +292,7 @@ function Dashboard({ match }) {
         })
         .catch(function (err) {
           if (err.response) {
-            if (err.response.status === 401  || err.response.status === 403) {
+            if (err.response.status === 401 || err.response.status === 403) {
               handleLogoutAutomatically();
             }
           }
@@ -324,24 +316,20 @@ function Dashboard({ match }) {
           headers: headers,
         })
         .then((res) => {
+          console.log("status??", res.status);
 
-          console.log("status??", res.status)
+          console.log("dropdown notifs??", res.data);
+          for (let i in res.data.notifications)
+            dropdownNotifications[i] = res.data.notifications[i];
 
-
-            console.log("dropdown notifs??", res.data);
-            for (let i in res.data.notifications)
-              dropdownNotifications[i] = res.data.notifications[i];
-
-            setDropDownNotifs(dropdownNotifications);
-            setNotifCount(res.data.count);
-
+          setDropDownNotifs(dropdownNotifications);
+          setNotifCount(res.data.count);
 
           // console.log("what the coming???????", dropdownNotifs);
         })
         .catch((err) => {
-
           if (err.response) {
-            if (err.response.status === 401  || err.response.status === 403) {
+            if (err.response.status === 401 || err.response.status === 403) {
               handleLogoutAutomatically();
             }
           }
@@ -426,7 +414,10 @@ function Dashboard({ match }) {
       )}
 
       <div className="menu-view">
-        <Menu role={userData.Role} />
+        <Menu
+          role={userData.Role}
+          // selected={window.location.pathname.split("/").pop()}
+        />
       </div>
       <div className="card-view-grid">
         <div className="top-bar">
