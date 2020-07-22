@@ -9,7 +9,16 @@ import ClearIcon from "@material-ui/icons/Clear";
 import PriorityHighIcon from "@material-ui/icons/PriorityHigh";
 
 export default function UserStatistics(props) {
+  let store = require("store");
+  const [userData, setUserData] = useState(store.get("userData"));
   const [statistics, setStatistics] = useState({});
+  const handleLogoutAutomatically = () => {
+    store.remove("userData");
+    store.clearAll();
+    setUserData({});
+    window.location = "/";
+  };
+
   const getStatistics = () => {
     axios
       .get("https://m2r31169.herokuapp.com/api/statstics", {
@@ -21,7 +30,14 @@ export default function UserStatistics(props) {
         console.log("statistics" + res.data);
         setStatistics(res.data.statistics);
       })
-      .catch((err) => console.log("Error in statistics" + err));
+      .catch((err) => {
+        if (err.response) {
+          if (err.response.status === 401 || err.response.status === 403) {
+            handleLogoutAutomatically();
+          }
+        }
+        console.log("Error in statistics" + err);
+      });
   };
 
   useEffect(() => {

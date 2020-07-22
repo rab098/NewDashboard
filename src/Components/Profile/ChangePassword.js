@@ -32,7 +32,10 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function ChangePassword(props) {
-  const { dialogClose, open, userData } = props;
+  const { dialogClose, open } = props;
+  let store = require("store");
+
+  const [userData, setUserData] = useState(store.get("userData"));
   const [Error, setError] = useState("");
   const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = React.useState("");
@@ -49,6 +52,12 @@ export default function ChangePassword(props) {
 
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
+  };
+  const handleLogoutAutomatically = () => {
+    store.remove("userData");
+    store.clearAll();
+    setUserData({});
+    window.location = "/";
   };
 
   const handleSaveClose = () => {
@@ -75,9 +84,15 @@ export default function ChangePassword(props) {
         console.log("password updated" + res.data);
         dialogClose();
       })
-      .catch((error) => {
-        setError("Incorrect existing password");
-        console.log("error" + error);
+      .catch((err) => {
+        if (err.response) {
+          if (err.response.status === 401 || err.response.status === 403) {
+            handleLogoutAutomatically();
+          } else {
+            setError("Incorrect existing password");
+            console.log("error" + err);
+          }
+        }
       });
   };
 

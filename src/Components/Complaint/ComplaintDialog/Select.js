@@ -31,12 +31,20 @@ export default function SelectStatus(props) {
     role,
   } = props;
   const classes = useStyles();
+  let store = require("store");
+  const [userData, setUserData] = useState(store.get("userData"));
 
   const [hasError, setErrors] = useState(false);
 
   const [status, setStatus] = useState([]);
   const [values, setValues] = useState(value);
 
+  const handleLogoutAutomatically = () => {
+    store.remove("userData");
+    store.clearAll();
+    setUserData({});
+    window.location = "/";
+  };
   const getStatus = () => {
     var finalObj = [];
     axios
@@ -53,7 +61,14 @@ export default function SelectStatus(props) {
         console.log("Status" + finalObj.toString());
         setStatus(finalObj);
       })
-      .catch((err) => setErrors(err));
+      .catch((err) => {
+        if (err.response) {
+          if (err.response.status === 401 || err.response.status === 403) {
+            handleLogoutAutomatically();
+          }
+        }
+        setErrors(err);
+      });
   };
 
   useEffect(() => {

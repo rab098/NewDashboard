@@ -22,6 +22,16 @@ const useStyles = makeStyles((theme) => ({
 export default function AssignmentDialog(props) {
   const { sel, dialogClose, save, open, token, role, data } = props;
   const [selected, setSelected] = React.useState([]);
+  let store = require("store");
+
+  const [userData, setUserData] = useState(store.get("userData"));
+
+  const handleLogoutAutomatically = () => {
+    store.remove("userData");
+    store.clearAll();
+    setUserData({});
+    window.location = "/";
+  };
 
   const handleClick = (event, name) => {
     const selectedIndex = selected.indexOf(name);
@@ -78,8 +88,14 @@ export default function AssignmentDialog(props) {
         dialogClose();
         save();
       })
-      .catch((error) => {
-        console.log("error agaya" + error);
+      .catch((err) => {
+        if (err.response) {
+          if (err.response.status === 401 || err.response.status === 403) {
+            handleLogoutAutomatically();
+          }
+        }
+
+        console.log("error agaya" + err);
       });
   };
 

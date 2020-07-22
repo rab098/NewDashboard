@@ -4,6 +4,8 @@ import { Checkbox, FormControlLabel } from "@material-ui/core";
 
 export default function FeedbackTags(props) {
   const { token, item, save } = props;
+  let store = require("store");
+  const [userData, setUserData] = useState(store.get("userData"));
 
   const handleChange = (event) => {
     if (event.target.checked)
@@ -11,6 +13,12 @@ export default function FeedbackTags(props) {
     else {
       deleteStarToTag(event.target.name, event.target.checked);
     }
+  };
+  const handleLogoutAutomatically = () => {
+    store.remove("userData");
+    store.clearAll();
+    setUserData({});
+    window.location = "/";
   };
 
   const addStarToTag = (id, yes) => {
@@ -29,8 +37,13 @@ export default function FeedbackTags(props) {
         console.log("post hogayi" + res.data);
         save();
       })
-      .catch((error) => {
-        console.log("error agaya" + error);
+      .catch((err) => {
+        if (err.response) {
+          if (err.response.status === 401 || err.response.status === 403) {
+            handleLogoutAutomatically();
+          }
+        }
+        console.log("error agaya" + err);
       });
   };
 
@@ -50,8 +63,13 @@ export default function FeedbackTags(props) {
         console.log("post hogayi" + res.data);
         save();
       })
-      .catch((error) => {
-        console.log("error agaya" + error);
+      .catch((err) => {
+        if (err.response) {
+          if (err.response.status === 401 || err.response.status === 403) {
+            handleLogoutAutomatically();
+          }
+        }
+        console.log("error agaya" + err);
       });
   };
   return (

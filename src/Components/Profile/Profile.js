@@ -59,6 +59,13 @@ function Profile(props) {
     setImage(file);
   };
 
+  const handleLogoutAutomatically = () => {
+    store.remove("userData");
+    store.clearAll();
+    setUserData({});
+    window.location = "/";
+  };
+
   const updateProfile = () => {
     // console.log(
     //   JSON.stringify({
@@ -116,9 +123,14 @@ function Profile(props) {
         });
         console.log("post hogayi" + res.data);
       })
-      .catch((error) => {
+      .catch((err) => {
+        if (err.response) {
+          if (err.response.status === 401 || err.response.status === 403) {
+            handleLogoutAutomatically();
+          }
+        }
         setLoading(false);
-        console.log("error agaya" + error);
+        console.log("error agaya" + err);
       });
   };
 
@@ -153,14 +165,18 @@ function Profile(props) {
           },
         });
       })
-      .catch((error) => {
+      .catch((err) => {
         setImageUpload(false);
         setLoading(false);
         if (error.response) {
+          if (err.response.status === 401 || err.response.status === 403) {
+            handleLogoutAutomatically();
+          }
+
           if (error.response.status == 400)
             alert("Please choose a valid image  ");
         } else {
-          console.log(error);
+          console.log(err);
         }
       });
   };
@@ -192,7 +208,12 @@ function Profile(props) {
         });
         setUserData(store.get("userData"));
       })
-      .catch((error) => {
+      .catch((err) => {
+        if (err.response) {
+          if (err.response.status === 401 || err.response.status === 403) {
+            handleLogoutAutomatically();
+          }
+        }
         setLoading(false);
         console.log("error " + error);
       });

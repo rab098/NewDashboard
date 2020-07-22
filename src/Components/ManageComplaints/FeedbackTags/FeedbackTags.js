@@ -37,9 +37,17 @@ export default function FeedbackTags(props) {
   const { token } = props;
 
   const classes = useStyles();
+  let store = require("store");
+  const [userData, setUserData] = useState(store.get("userData"));
 
   const [allTags, setAllTags] = useState([]);
   const [newTag, setNewTag] = useState("");
+  const handleLogoutAutomatically = () => {
+    store.remove("userData");
+    store.clearAll();
+    setUserData({});
+    window.location = "/";
+  };
 
   const deleteTag = (it) => {
     console.log("iteemmmmmmmmmmmmm" + it);
@@ -57,8 +65,13 @@ export default function FeedbackTags(props) {
         console.log("post hogayi" + res.data);
         getTags();
       })
-      .catch((error) => {
-        console.log("error agaya" + error);
+      .catch((err) => {
+        if (err.response) {
+          if (err.response.status === 401 || err.response.status === 403) {
+            handleLogoutAutomatically();
+          }
+        }
+        console.log("error agaya" + err);
       });
   };
   const AddTag = () => {
@@ -78,8 +91,13 @@ export default function FeedbackTags(props) {
         getTags();
         setNewTag("");
       })
-      .catch((error) => {
-        console.log("error agaya" + error);
+      .catch((err) => {
+        if (err.response) {
+          if (err.response.status === 401 || err.response.status === 403) {
+            handleLogoutAutomatically();
+          }
+        }
+        console.log("error agaya" + err);
       });
   };
   const getTags = () => {
@@ -97,6 +115,14 @@ export default function FeedbackTags(props) {
         }
         console.log("Reasonssssss" + finalObj.toString());
         setAllTags(finalObj);
+      })
+      .catch((err) => {
+        if (err.response) {
+          if (err.response.status === 401 || err.response.status === 403) {
+            handleLogoutAutomatically();
+          }
+        }
+        console.log("error agaya" + err);
       });
 
     //   .catch((err) => setErrors(err));

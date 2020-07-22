@@ -6,8 +6,17 @@ import Box from "@material-ui/core/Box";
 
 export default function ComplaintTypes(props) {
   const { token } = props;
+  let store = require("store");
+  const [userData, setUserData] = useState(store.get("userData"));
   const [types, setTypes] = useState([]);
   const [edit, setEdit] = useState(null);
+  const handleLogoutAutomatically = () => {
+    store.remove("userData");
+    store.clearAll();
+    setUserData({});
+    window.location = "/";
+  };
+
   const getTypes = () => {
     var finalObj = [];
     axios
@@ -29,6 +38,11 @@ export default function ComplaintTypes(props) {
         setTypes(finalObj[0]);
       })
       .catch((err) => {
+        if (err.response) {
+          if (err.response.status === 401 || err.response.status === 403) {
+            handleLogoutAutomatically();
+          }
+        }
         console.log(err);
       });
   };

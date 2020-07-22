@@ -14,9 +14,18 @@ import Rating from "@material-ui/lab/Rating";
 
 export default function UserTable(props) {
   const { id, status } = props;
+  let store = require("store");
+  const [userData, setUserData] = useState(store.get("userData"));
 
   const [users, setUsers] = useState([]);
   //const [feedback, setFeedback] = useState([]);
+
+  const handleLogoutAutomatically = () => {
+    store.remove("userData");
+    store.clearAll();
+    setUserData({});
+    window.location = "/";
+  };
 
   const useStyles = makeStyles({
     table: {
@@ -44,7 +53,14 @@ export default function UserTable(props) {
           //setFeedbacks(feedbackObj);
         }
       })
-      .catch((err) => console.log("error" + err));
+      .catch((err) => {
+        if (err.response) {
+          if (err.response.status === 401 || err.response.status === 403) {
+            handleLogoutAutomatically();
+          }
+        }
+        console.log("error" + err);
+      });
   };
 
   useEffect(() => {

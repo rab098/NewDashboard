@@ -15,6 +15,8 @@ import ErrorOutlineOutlinedIcon from "@material-ui/icons/ErrorOutlineOutlined";
 
 export default function ComplaintProgress(props) {
   const { sel, dialogClose, save, token, role, supervisors } = props;
+  let store = require("store");
+  const [userData, setUserData] = useState(store.get("userData"));
 
   const [Selstatus, setSelStatus] = React.useState("");
 
@@ -73,6 +75,12 @@ export default function ComplaintProgress(props) {
     console.log("Valueeee" + value);
   };
 
+  const handleLogoutAutomatically = () => {
+    store.remove("userData");
+    store.clearAll();
+    setUserData({});
+    window.location = "/";
+  };
   const callApi = (statusType, statusId, complainId, supervisorId) => {
     setLoading(true);
     var api = "";
@@ -140,9 +148,14 @@ export default function ComplaintProgress(props) {
         dialogClose();
         save();
       })
-      .catch((error) => {
-        console.log("error agaya" + error);
-        console.log("error agaya", error.response);
+      .catch((err) => {
+        if (err.response) {
+          if (err.response.status === 401 || err.response.status === 403) {
+            handleLogoutAutomatically();
+          }
+        }
+        console.log("error agaya" + err);
+        console.log("error agaya", err.response);
       });
   };
 

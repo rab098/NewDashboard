@@ -236,9 +236,15 @@ export default function Complaints(props) {
         },
       })
       .then((res) => {
-        console.log(
-          "supervisor yrrrr" + JSON.stringify(res.data.supervisors[0])
-        );
+        console
+          .log("supervisor yrrrr" + JSON.stringify(res.data.supervisors[0]))
+          .catch((err) => {
+            if (err.response) {
+              if (err.response.status === 401 || err.response.status === 403) {
+                handleLogoutAutomatically();
+              }
+            }
+          });
         for (var i in res.data.supervisors) {
           console.log("supervisor" + res.data.supervisors[i]);
           finalObj.push(res.data.supervisors[i]);
@@ -486,7 +492,7 @@ export default function Complaints(props) {
           if (err.response.status == 400) {
             setLoading(false);
           }
-          if (err.response.status == 403) {
+          if (err.response.status === 401 || err.response.status === 403) {
             handleLogoutAutomatically();
           }
         }

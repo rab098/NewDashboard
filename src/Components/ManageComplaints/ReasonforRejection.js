@@ -23,11 +23,19 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Rejection(props) {
   const { token } = props;
+  let store = require("store");
+  const [userData, setUserData] = useState(store.get("userData"));
 
   const classes = useStyles();
 
   const [reason, setReason] = useState([]);
   const [newReason, setNewReason] = useState("");
+  const handleLogoutAutomatically = () => {
+    store.remove("userData");
+    store.clearAll();
+    setUserData({});
+    window.location = "/";
+  };
 
   const AddReason = () => {
     console.log("iteemmmmmmmmmmmmm" + newReason);
@@ -46,8 +54,13 @@ export default function Rejection(props) {
         setNewReason("");
         getReason();
       })
-      .catch((error) => {
-        console.log("error agaya" + error);
+      .catch((err) => {
+        if (err.response) {
+          if (err.response.status === 401 || err.response.status === 403) {
+            handleLogoutAutomatically();
+          }
+        }
+        console.log("error agaya" + err);
       });
   };
   const deleteReason = (item) => {
@@ -66,8 +79,13 @@ export default function Rejection(props) {
         console.log("post hogayi" + res.data);
         getReason();
       })
-      .catch((error) => {
-        console.log("error agaya" + error);
+      .catch((err) => {
+        if (err.response) {
+          if (err.response.status === 401 || err.response.status === 403) {
+            handleLogoutAutomatically();
+          }
+        }
+        console.log("error agaya" + err);
       });
   };
   const getReason = () => {
@@ -81,6 +99,14 @@ export default function Rejection(props) {
         }
         console.log("Reasonssssss" + finalObj.toString());
         setReason(finalObj);
+      })
+      .catch((err) => {
+        if (err.response) {
+          if (err.response.status === 401 || err.response.status === 403) {
+            handleLogoutAutomatically();
+          }
+        }
+        console.log("error agaya" + err);
       });
     //   .catch((err) => setErrors(err));
   };

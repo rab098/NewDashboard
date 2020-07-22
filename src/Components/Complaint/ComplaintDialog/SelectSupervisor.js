@@ -22,10 +22,17 @@ export default function SelectSupervisor(props) {
   const classes = useStyles();
 
   const [hasError, setErrors] = useState(false);
+  let store = require("store");
+  const [userData, setUserData] = useState(store.get("userData"));
 
   const [supervisor, setSupervisor] = useState([]);
   const [values, setValues] = useState("");
-
+  const handleLogoutAutomatically = () => {
+    store.remove("userData");
+    store.clearAll();
+    setUserData({});
+    window.location = "/";
+  };
   const getStatus = () => {
     var finalObj = [];
     // var finalObj1 = [];
@@ -46,7 +53,14 @@ export default function SelectSupervisor(props) {
         setSupervisor(finalObj);
         // setTown(finalObj1);
       })
-      .catch((err) => setErrors(err));
+      .catch((err) => {
+        if (err.response) {
+          if (err.response.status === 401 || err.response.status === 403) {
+            handleLogoutAutomatically();
+          }
+        }
+        setErrors(err);
+      });
   };
 
   useEffect(() => {

@@ -17,6 +17,8 @@ const useStyles = makeStyles((theme) => ({
 export default function Reason(props) {
   const { name, changeValue, display, value } = props;
   const classes = useStyles();
+  let store = require("store");
+  const [userData, setUserData] = useState(store.get("userData"));
 
   const [hasError, setErrors] = useState(false);
 
@@ -35,9 +37,21 @@ export default function Reason(props) {
         console.log("Reject tags" + finalObj.toString());
         setReason(finalObj);
       })
-      .catch((err) => setErrors(err));
+      .catch((err) => {
+        if (err.response) {
+          if (err.response.status === 401 || err.response.status === 403) {
+            handleLogoutAutomatically();
+          }
+        }
+        setErrors(err);
+      });
   };
-
+  const handleLogoutAutomatically = () => {
+    store.remove("userData");
+    store.clearAll();
+    setUserData({});
+    window.location = "/";
+  };
   useEffect(() => {
     setValues(value);
     getReasons();

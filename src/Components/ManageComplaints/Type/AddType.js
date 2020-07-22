@@ -41,6 +41,8 @@ const useStyles = makeStyles({
 export default function AddType(props) {
   const { token, done } = props;
   const classes = useStyles();
+  let store = require("store");
+  const [userData, setUserData] = useState(store.get("userData"));
   const [image, setImage] = useState(null);
   const [newImage, setNewImage] = useState(null);
   const [typeName, setTypeName] = useState("");
@@ -51,6 +53,12 @@ export default function AddType(props) {
     setNewImage(e.target.files[0]);
 
     setImage(URL.createObjectURL(e.target.files[0]));
+  };
+  const handleLogoutAutomatically = () => {
+    store.remove("userData");
+    store.clearAll();
+    setUserData({});
+    window.location = "/";
   };
 
   const ValidateAndAddType = () => {
@@ -88,15 +96,19 @@ export default function AddType(props) {
 
         done();
       })
-      .catch((error) => {
-        if (error.response) {
-          if (error.response.status == 403)
-            alert("The type is already added  ");
+      .catch((err) => {
+        if (err.response) {
+          if (err.response.status === 401 || err.response.status === 403) {
+            handleLogoutAutomatically();
+          }
+        }
+        if (err.response) {
+          if (err.response.status == 400) alert("The type is already added  ");
 
-          if (error.response.status == 400)
+          if (err.response.status == 400)
             alert("Please choose a valid image  ");
         } else {
-          console.log(error);
+          console.log(err);
         }
       });
   };
