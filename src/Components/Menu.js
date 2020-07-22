@@ -77,7 +77,7 @@ function Menu(props) {
   const [showDrawerMenu, setShowDrawerMenu] = useState(false);
   const [userData, setUserData] = useState({});
 
-  const [buttonColor, setButtonColor] = useState(false);
+  const [buttonActive, setButtonActive] = useState("");
 
   const updateMedia = () => {
     setDesktop(window.innerWidth > 900);
@@ -89,6 +89,7 @@ function Menu(props) {
   });
 
   useEffect(() => {
+    setButtonActive("home");
     setUserData(store.get("userData"));
   }, []);
 
@@ -97,10 +98,10 @@ function Menu(props) {
     "x-access-token": userData.accessToken,
   };
 
-  const handleFocus = () => {
-    if (buttonColor === true) setButtonColor(false);
-    else if (buttonColor === false) setButtonColor(true);
-  };
+  // const handleFocus = () => {
+  //   if (buttonColor === true) setButtonColor(false);
+  //   else if (buttonColor === false) setButtonColor(true);
+  // };
 
   const handleDrawerToggle = () => {
     setShowDrawerMenu(!showDrawerMenu);
@@ -141,16 +142,23 @@ function Menu(props) {
     <MenuList className={classes.menuList}>
       <Link to={"/dashboard/home"}>
         <MenuItem
-          className={buttonColor ? classes.focusNew : classes.focus}
-          autoFocus
-          onClick={handleFocus}
+          key="home"
+          className={buttonActive == "home" ? classes.focusNew : classes.focus}
+          //autoFocus
+          onClick={() => setButtonActive("home")}
         >
           <HomeRoundedIcon className={classes.menuNames} fontSize="small" />
           <p>Home</p>
         </MenuItem>
       </Link>
       <Link to={"/dashboard/complaints"}>
-        <MenuItem className={classes.focus}>
+        <MenuItem
+          key="complaint"
+          className={
+            buttonActive == "complaints" ? classes.focusNew : classes.focus
+          }
+          onClick={() => setButtonActive("complaints")}
+        >
           <AssignmentRoundedIcon
             className={classes.menuNames}
             fontSize="small"
@@ -160,7 +168,12 @@ function Menu(props) {
       </Link>
       {props.role === "ADMIN" && (
         <Link to={"/dashboard/supervisors"}>
-          <MenuItem className={classes.focus}>
+          <MenuItem
+            className={
+              buttonActive == "supervisors" ? classes.focusNew : classes.focus
+            }
+            onClick={() => setButtonActive("supervisors")}
+          >
             <SupervisorAccountRoundedIcon
               className={classes.menuNames}
               fontSize="small"
@@ -171,7 +184,12 @@ function Menu(props) {
       )}
       {props.role == "SUPERVISOR" && (
         <Link to={"/dashboard/employees"}>
-          <MenuItem className={classes.focus}>
+          <MenuItem
+            className={
+              buttonActive == "employees" ? classes.focusNew : classes.focus
+            }
+            onClick={() => setButtonActive("employees")}
+          >
             <SupervisorAccountRoundedIcon
               className={classes.menuNames}
               fontSize="small"
@@ -181,26 +199,41 @@ function Menu(props) {
         </Link>
       )}
       <Link to={"/dashboard/reports"}>
-        <MenuItem className={classes.focus}>
+        <MenuItem
+          className={
+            buttonActive == "reports" ? classes.focusNew : classes.focus
+          }
+          onClick={() => setButtonActive("reports")}
+        >
           <LibraryBooksIcon className={classes.menuNames} fontSize="small" />
           <p>Reports</p>
         </MenuItem>
       </Link>
       <Link to={"/dashboard/profile"}>
-        <MenuItem className={classes.focus}>
+        <MenuItem
+          className={
+            buttonActive == "profile" ? classes.focusNew : classes.focus
+          }
+          onClick={() => setButtonActive("profile")}
+        >
           <PersonIcon className={classes.menuNames} fontSize="small" />
           <p>Profile</p>
         </MenuItem>
       </Link>
       {props.role === "ADMIN" && (
         <Link to={"/dashboard/manage"}>
-          <MenuItem className={classes.focus}>
+          <MenuItem
+            className={
+              buttonActive == "manage" ? classes.focusNew : classes.focus
+            }
+            onClick={() => setButtonActive("manage")}
+          >
             <SettingsIcon className={classes.menuNames} fontSize="small" />
             <p>Manage Complaints</p>
           </MenuItem>
         </Link>
       )}
-      <MenuItem onClick={handleLogout} className={classes.focus}>
+      <MenuItem className={classes.focus} onClick={handleLogout}>
         <ExitToAppRoundedIcon className={classes.menuNames} fontSize="small" />
         <p>Logout</p>
       </MenuItem>
