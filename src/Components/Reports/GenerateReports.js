@@ -4,6 +4,16 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 import '../../ComponentsCss/GenerateReports.css'
 import PdfMakeTable from "./PdfMakeTable";
+import TextField from '@material-ui/core/TextField';
+import 'date-fns';
+import DateFnsUtils from "@date-io/date-fns";
+// import MomentUtils from '@date-io/moment';
+
+import {
+    MuiPickersUtilsProvider,
+    KeyboardDatePicker,
+} from '@material-ui/pickers';
+
 // import jsPDF from 'jspdf';
 // import html2canvas from 'html2canvas';
 import {
@@ -20,6 +30,15 @@ import {
 
 function GenerateReports(props) {
 
+    const [selectedDate, setSelectedDate] = useState("31 Jul 2020");
+
+    const handleDateChange = (date) => {
+        setSelectedDate(date);
+    };
+
+    const TextFieldComponent = (props) => {
+        return <TextField {...props} disabled= {true} />
+    }
     const [reportType, setReportType] = React.useState('Total Complaints Yearly');
     const [pageSize, setPageSize] = React.useState('A4');
 
@@ -84,6 +103,42 @@ function GenerateReports(props) {
 
 
             </div>
+
+            <div>
+
+            <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                <KeyboardDatePicker
+                    margin="normal"
+                    id="date-picker-dialog"
+                    label="From"
+                    format="dd MMM yyyy"
+                    value={selectedDate}
+                    onChange={handleDateChange}
+                    KeyboardButtonProps={{
+                        'aria-label': 'change date',
+                    }}
+                    TextFieldComponent={TextFieldComponent}
+
+                />
+            </MuiPickersUtilsProvider>
+
+                <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                    <KeyboardDatePicker
+                        margin="normal"
+                        id="date-picker-dialog"
+                        label="To"
+                        format="dd MMM yyyy"
+                        value={selectedDate}
+                        onChange={handleDateChange}
+                        KeyboardButtonProps={{
+                            'aria-label': 'change date',
+                        }}
+                        TextFieldComponent={TextFieldComponent}
+
+                    />
+                </MuiPickersUtilsProvider>
+            </div>
+
 
             {/*<div className="report-filter-main-pdf">*/}
             {/*    <header >*/}
