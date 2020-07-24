@@ -7,6 +7,8 @@ import PdfMakeTable from "./PdfMakeTable";
 import TextField from '@material-ui/core/TextField';
 import 'date-fns';
 import DateFnsUtils from "@date-io/date-fns";
+import Moment from "moment";
+
 // import MomentUtils from '@date-io/moment';
 
 import {
@@ -25,53 +27,66 @@ import {
     PDFColumns,
     PDFColumn
 } from 'react-pdfmake';
+import axios from "axios";
 
 // const ref = React.createRef();
 
+let store = require("store");
+
 function GenerateReports(props) {
 
-    const [selectedDate, setSelectedDate] = useState("31 Jul 2020");
+    const [userData, setUserData] = useState(store.get("userData"));
 
-    const handleDateChange = (date) => {
-        setSelectedDate(date);
+    const [fromDate, setFromDate] = useState(Moment());
+    const [toDate, setToDate] = useState(Moment());
+
+    const [firstDate, setFirstDate] = useState([]);
+
+
+
+    const handleFromDateChange = (date) => {
+        setFromDate(date);
+    };
+
+
+    const handleToDateChange = (date) => {
+        setToDate(date);
     };
 
     const TextFieldComponent = (props) => {
-        return <TextField {...props} disabled= {true} />
+        return <TextField {...props} disabled={true}/>
     }
     const [reportType, setReportType] = React.useState('Total Complaints Yearly');
     const [pageSize, setPageSize] = React.useState('A4');
 
-    const [resume,setResume] = useState({})
+    const [resume, setResume] = useState({})
 
     const handleChange = (event) => {
         setReportType(event.target.value);
 
-        if(reportType === 'Total Complaints Yearly'){
+        if (reportType === 'Total Complaints Yearly') {
             console.log('display totals report')
         }
     };
 
-    const handlePageSize = (event) =>{
+    const handlePageSize = (event) => {
         setPageSize(event.target.value)
 
-        if(pageSize === 'A4'){
+        if (pageSize === 'A4') {
 
-        }
-
-        else if (pageSize === 'Letter'){
+        } else if (pageSize === 'Letter') {
 
         }
     }
 
-   const _exportPdfTable = () => {
+    const _exportPdfTable = () => {
         // change this number to generate more or less rows of data
         PdfMakeTable(20);
     }
 
-   // const exportPDF = () => {
-   //      resume.save();
-   //  }
+    // const exportPDF = () => {
+    //      resume.save();
+    //  }
 
 
     // const exportPDF = () => {
@@ -84,13 +99,92 @@ function GenerateReports(props) {
     //     });
     // }
 
+    const headers = {
+        "Content-Type": "application/json",
+        "x-access-token": userData.accessToken,
+    };
+
+
+    const getComplaints = () => {
+
+        let datesObj = [];
+
+        axios
+            .get(
+                `https://m2r31169.herokuapp.com/api/getComplaints`,
+
+                {
+                    headers: headers,
+                }
+            )
+            .then((res) => {
+                console.log("complaints coming!", res.data);
+                for (let i in res.data) {
+                    datesObj[i] = Moment(res.data[i].complain.createdAt)
+                }
+
+                console.log("dates", datesObj)
+                // setFirstDate(datesObj)
+
+                })
+            .catch((err) => {
+                if (err.response) {
+                    if (err.response.status === 401 || err.response.status === 403) {
+                        handleLogoutAutomatically();
+                    }
+                }
+
+                console.log("complaints not coming", err.response);
+
+
+            });
+    }
+
+    const getSupervisor = () => {
+
+        axios.get(`https://m2r31169.herokuapp.com/api/getSuperVisor_Town`,
+            {
+                headers: headers
+            })
+            .then((res) => {
+                console.log("supervisor and town coming!", res.data);
+
+            })
+            .catch((err) => {
+                if (err.response) {
+                    if (err.response.status === 401 || err.response.status === 403) {
+                        handleLogoutAutomatically();
+                    }
+                }
+
+                console.log("supervisor and towns not coming", err.response);
+
+
+            })
+    }
+
+
+    useEffect(() => {
+        // console.log("userData" + JSON.stringify(userData));
+        getComplaints()
+        getSupervisor()
+        // setComplaintFilter("active");
+    }, [userData]);
+
+    const handleLogoutAutomatically = () => {
+        store.remove("userData");
+        store.clearAll();
+        setUserData({});
+        window.location = "/";
+    };
+
+
     return (
         <div>
 
             <div className="report-filter-main">
 
                 <p className="report-heading">Generate Report</p>
-
 
 
                 {/*<div className="report-filter">*/}
@@ -106,21 +200,21 @@ function GenerateReports(props) {
 
             <div>
 
-            <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                <KeyboardDatePicker
-                    margin="normal"
-                    id="date-picker-dialog"
-                    label="From"
-                    format="dd MMM yyyy"
-                    value={selectedDate}
-                    onChange={handleDateChange}
-                    KeyboardButtonProps={{
-                        'aria-label': 'change date',
-                    }}
-                    TextFieldComponent={TextFieldComponent}
+                <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                    <KeyboardDatePicker
+                        margin="normal"
+                        id="date-picker-dialog"
+                        label="From"
+                        format="dd MMM yyyy"
+                        value={fromDate}
+                        onChange={handleFromDateChange}
+                        KeyboardButtonProps={{
+                            'aria-label': 'change date',
+                        }}
+                        TextFieldComponent={TextFieldComponent}
 
-                />
-            </MuiPickersUtilsProvider>
+                    />
+                </MuiPickersUtilsProvider>
 
                 <MuiPickersUtilsProvider utils={DateFnsUtils}>
                     <KeyboardDatePicker
@@ -128,8 +222,8 @@ function GenerateReports(props) {
                         id="date-picker-dialog"
                         label="To"
                         format="dd MMM yyyy"
-                        value={selectedDate}
-                        onChange={handleDateChange}
+                        value={toDate}
+                        onChange={handleToDateChange}
                         KeyboardButtonProps={{
                             'aria-label': 'change date',
                         }}
