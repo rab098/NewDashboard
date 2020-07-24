@@ -36,7 +36,7 @@ export default function ComplaintProgress(props) {
     setStatusId(sel.statusId);
     setSelStatus(sel.statusType);
     setSupervisor(sel.supervisorId);
-    console.log("sellll", Selstatus, sel.supervisorId);
+    console.log("sellll", Selstatus, sel.supervisorId, supervisor);
   }, []);
 
   const uploadImage = (file) => {
