@@ -360,7 +360,7 @@ function Home() {
       <Charts value={chartType} />
       <Zone />
       <div className="table-and-piechart">
-        {userData.Role == "ADMIN" && <FeedbackStats role={userData.Role} />}
+        {userData.Role === "ADMIN" && <FeedbackStats role={userData.Role} />}
         <ResolveTimeAnalysisStats />
       </div>
     </div>
