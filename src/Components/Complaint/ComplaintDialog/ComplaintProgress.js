@@ -49,7 +49,7 @@ export default function ComplaintProgress(props) {
       setError("Choose an image");
     } else if (statusOfId == "Assigned" && supervisor == null) {
       setError("Choose a supervisor");
-    } else if (statusOfId == "Rejected" && reason == null) {
+    } else if (statusOfId == "Rejected" && reason == "") {
       setError("Choose a reason please");
     } else {
       setError("");
