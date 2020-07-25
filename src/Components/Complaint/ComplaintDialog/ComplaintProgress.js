@@ -49,6 +49,8 @@ export default function ComplaintProgress(props) {
       setError("Choose an image");
     } else if (statusOfId == "Assigned" && supervisor == null) {
       setError("Choose a supervisor");
+    } else if (statusOfId == "Rejected" && reason == null) {
+      setError("Choose a reason please");
     } else {
       setError("");
       if (sel.statusId != StatusId || sel.supervisorId != supervisorId) {
@@ -343,7 +345,8 @@ export default function ComplaintProgress(props) {
             </Paper>
           </Grid>
         )}
-        {Selstatus == "Resolved" &&
+        {role == "Supervisor" &&
+          Selstatus == "Resolved" &&
           sel.statusType != "Resolved" &&
           sel.afterImage == null && (
             <Grid
