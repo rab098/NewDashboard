@@ -236,15 +236,9 @@ export default function Complaints(props) {
         },
       })
       .then((res) => {
-        console
-          .log("supervisor yrrrr" + JSON.stringify(res.data.supervisors[0]))
-          .catch((err) => {
-            if (err.response) {
-              if (err.response.status === 401 || err.response.status === 403) {
-                handleLogoutAutomatically();
-              }
-            }
-          });
+        console.log(
+          "supervisor yrrrr" + JSON.stringify(res.data.supervisors[0])
+        );
         for (var i in res.data.supervisors) {
           console.log("supervisor" + res.data.supervisors[i]);
           finalObj.push(res.data.supervisors[i]);

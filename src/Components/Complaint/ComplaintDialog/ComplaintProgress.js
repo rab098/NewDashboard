@@ -36,7 +36,7 @@ export default function ComplaintProgress(props) {
     setStatusId(sel.statusId);
     setSelStatus(sel.statusType);
     setSupervisor(sel.supervisorId);
-    console.log("sellll", Selstatus, sel.supervisorId);
+    console.log("sellll", Selstatus, sel.supervisorId, supervisor);
   }, []);
 
   const uploadImage = (file) => {
@@ -49,6 +49,8 @@ export default function ComplaintProgress(props) {
       setError("Choose an image");
     } else if (statusOfId == "Assigned" && supervisor == null) {
       setError("Choose a supervisor");
+    } else if (statusOfId == "Rejected" && reason == "") {
+      setError("Choose a reason please");
     } else {
       setError("");
       if (sel.statusId != StatusId || sel.supervisorId != supervisorId) {
@@ -343,7 +345,8 @@ export default function ComplaintProgress(props) {
             </Paper>
           </Grid>
         )}
-        {Selstatus == "Resolved" &&
+        {role == "SUPERVISOR" &&
+          Selstatus == "Resolved" &&
           sel.statusType != "Resolved" &&
           sel.afterImage == null && (
             <Grid

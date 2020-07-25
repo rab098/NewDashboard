@@ -75,7 +75,7 @@ const useStyles = makeStyles(styles);
 function Menu(props) {
   const [isDesktop, setDesktop] = useState(window.innerWidth > 900);
   const [showDrawerMenu, setShowDrawerMenu] = useState(false);
-  const [userData, setUserData] = useState({});
+  const [userData, setUserData] = useState(store.get("userData"));
 
   const [buttonActive, setButtonActive] = useState("");
 
@@ -154,7 +154,7 @@ function Menu(props) {
         <MenuItem
           key="complaint"
           className={
-            buttonActive == "complaints" ? classes.focusNew : classes.focus
+            buttonActive === "complaints" ? classes.focusNew : classes.focus
           }
           onClick={() => setButtonActive("complaints")}
         >
@@ -169,7 +169,7 @@ function Menu(props) {
         <Link to={"/dashboard/supervisors"}>
           <MenuItem
             className={
-              buttonActive == "supervisors" ? classes.focusNew : classes.focus
+              buttonActive === "supervisors" ? classes.focusNew : classes.focus
             }
             onClick={() => setButtonActive("supervisors")}
           >
@@ -185,7 +185,7 @@ function Menu(props) {
         <Link to={"/dashboard/employees"}>
           <MenuItem
             className={
-              buttonActive == "employees" ? classes.focusNew : classes.focus
+              buttonActive === "employees" ? classes.focusNew : classes.focus
             }
             onClick={() => setButtonActive("employees")}
           >
@@ -200,7 +200,7 @@ function Menu(props) {
       <Link to={"/dashboard/reports"}>
         <MenuItem
           className={
-            buttonActive == "reports" ? classes.focusNew : classes.focus
+            buttonActive === "reports" ? classes.focusNew : classes.focus
           }
           onClick={() => setButtonActive("reports")}
         >
@@ -211,7 +211,7 @@ function Menu(props) {
       <Link to={"/dashboard/profile"}>
         <MenuItem
           className={
-            buttonActive == "profile" ? classes.focusNew : classes.focus
+            buttonActive === "profile" ? classes.focusNew : classes.focus
           }
           onClick={() => setButtonActive("profile")}
         >
@@ -223,7 +223,7 @@ function Menu(props) {
         <Link to={"/dashboard/manage"}>
           <MenuItem
             className={
-              buttonActive == "manage" ? classes.focusNew : classes.focus
+              buttonActive === "manage" ? classes.focusNew : classes.focus
             }
             onClick={() => setButtonActive("manage")}
           >

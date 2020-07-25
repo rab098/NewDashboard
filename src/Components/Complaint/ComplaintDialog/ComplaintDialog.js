@@ -83,7 +83,7 @@ export default function ComplaintDialog(props) {
   };
 
   useEffect(() => {
-    console.log(supervisors, "lalalalala");
+    console.log("lalalalal", supervisors, sel.supervisorId);
   }, []);
 
   return (
