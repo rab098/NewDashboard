@@ -345,7 +345,7 @@ export default function ComplaintProgress(props) {
             </Paper>
           </Grid>
         )}
-        {role == "Supervisor" &&
+        {role == "SUPERVISOR" &&
           Selstatus == "Resolved" &&
           sel.statusType != "Resolved" &&
           sel.afterImage == null && (
