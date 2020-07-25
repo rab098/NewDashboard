@@ -75,6 +75,7 @@ function Login() {
     const userObject = {
       username: form.username,
       password: form.password,
+      //mac: _macAddress,
     };
 
     let letters = /^[A-Za-z0-9]+$/;
@@ -118,7 +119,7 @@ function Login() {
     } else {
       axios
         .post("https://m2r31169.herokuapp.com/api/signin", userObject)
-        .then((res) => {
+        .then(async (res) => {
           if (res.status === 200) {
             // localStorage.setItem('accessToken',res.data.accessToken)
             setLoading(false);
