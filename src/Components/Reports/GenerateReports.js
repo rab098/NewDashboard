@@ -37,11 +37,13 @@ function GenerateReports(props) {
 
     const [userData, setUserData] = useState(store.get("userData"));
 
-    const [fromDate, setFromDate] = useState(Moment());
-    const [toDate, setToDate] = useState(Moment());
 
-    const [firstDate, setFirstDate] = useState([]);
 
+    const [firstDate, setFirstDate] = useState();
+    const [lastDate, setLastDate] = useState();
+
+    const [fromDate, setFromDate] = useState();
+    const [toDate, setToDate] = useState();
 
 
     const handleFromDateChange = (date) => {
@@ -120,11 +122,21 @@ function GenerateReports(props) {
             .then((res) => {
                 console.log("complaints coming!", res.data);
                 for (let i in res.data) {
-                    datesObj[i] = Moment(res.data[i].complain.createdAt)
+                    datesObj[i] = res.data[i].complain.createdAt
+
+
+
+
+
+
+                    // Moment(res.data[i].complain.createdAt).format("DD MMM yyyy")
                 }
 
                 console.log("dates", datesObj)
-                // setFirstDate(datesObj)
+                setFirstDate(datesObj[0])
+                setFromDate(firstDate)
+                setLastDate(datesObj[datesObj.length - 1])
+                setToDate(lastDate)
 
                 })
             .catch((err) => {
@@ -206,6 +218,9 @@ function GenerateReports(props) {
                         id="date-picker-dialog"
                         label="From"
                         format="dd MMM yyyy"
+                        error={false}
+                        minDate={firstDate}
+                        maxDate={lastDate}
                         value={fromDate}
                         onChange={handleFromDateChange}
                         KeyboardButtonProps={{
@@ -221,7 +236,10 @@ function GenerateReports(props) {
                         margin="normal"
                         id="date-picker-dialog"
                         label="To"
+                        error={false}
                         format="dd MMM yyyy"
+                        minDate={fromDate + 1}
+                        maxDate={lastDate}
                         value={toDate}
                         onChange={handleToDateChange}
                         KeyboardButtonProps={{
