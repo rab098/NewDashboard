@@ -90,7 +90,7 @@ export default function ComplaintDetails(props) {
             className="complainImage"
             height="250px"
             alt="Error Loading Image"
-            width="auto"
+            style={{ width: "100%", height: "100%", objectFit: "cover" }}
             src={sel.image}
           />
         </Paper>
