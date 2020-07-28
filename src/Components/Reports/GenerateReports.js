@@ -45,15 +45,25 @@ function GenerateReports(props) {
     const [fromDate, setFromDate] = useState();
     const [toDate, setToDate] = useState();
 
+    const [enableToDatePicker,setEnableToDatePicker] = useState(true)
+
 
     const handleFromDateChange = (date) => {
         setFromDate(date);
+        setEnableToDatePicker(false)
     };
 
 
     const handleToDateChange = (date) => {
         setToDate(date);
     };
+
+
+    // const handleDateClick = () => {
+    //     if(fromDate === ""){
+    //
+    //     }
+    // }
 
     const TextFieldComponent = (props) => {
         return <TextField {...props} disabled={true}/>
@@ -134,7 +144,6 @@ function GenerateReports(props) {
 
                 console.log("dates", datesObj)
                 setFirstDate(datesObj[0])
-                setFromDate(firstDate)
                 setLastDate(datesObj[datesObj.length - 1])
                 setToDate(lastDate)
 
@@ -215,6 +224,7 @@ function GenerateReports(props) {
                 <MuiPickersUtilsProvider utils={DateFnsUtils}>
                     <KeyboardDatePicker
                         margin="normal"
+                        defaultValue="20 Jul 2020"
                         id="date-picker-dialog"
                         label="From"
                         format="dd MMM yyyy"
@@ -238,10 +248,11 @@ function GenerateReports(props) {
                         label="To"
                         error={false}
                         format="dd MMM yyyy"
-                        minDate={fromDate + 1}
+                        minDate={fromDate + (24*60*60)}
                         maxDate={lastDate}
                         value={toDate}
                         onChange={handleToDateChange}
+                        disabled = {enableToDatePicker}
                         KeyboardButtonProps={{
                             'aria-label': 'change date',
                         }}
