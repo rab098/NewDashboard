@@ -90,6 +90,17 @@ function Home() {
         Supervisors: "00:00",
     });
 
+    const [counts, setCounts] = useState({
+        Active: 0,
+        Assigned: 0,
+        Rejected: 0,
+        Resolved: 0,
+        Supervisors: 0,
+        TotalComplaints: 0,
+        Unresolved: 0,
+        Pending: 0
+    });
+
     const handleChange = (event) => {
         event.preventDefault();
 
@@ -144,15 +155,17 @@ function Home() {
                 .then((res) => {
                     console.log(res.data);
 
-                    setCount({
-                        totalComplaints: res.data[0].Count,
-                        resolvedComplaints: res.data[1].Count,
-                        unresolvedComplaints: res.data[2].Count,
-                        assignedComplaints: res.data[3].Count,
-                        rejectedComplaints: res.data[4].Count,
-                        activeComplaints: res.data[5].Count,
-                        supervisors: res.data[6].Count,
-                    });
+                    setCounts(res.data)
+
+                    // setCount({
+                    //     totalComplaints: res.data[0].Count,
+                    //     resolvedComplaints: res.data[1].Count,
+                    //     unresolvedComplaints: res.data[2].Count,
+                    //     assignedComplaints: res.data[3].Count,
+                    //     rejectedComplaints: res.data[4].Count,
+                    //     activeComplaints: res.data[5].Count,
+                    //     supervisors: res.data[6].Count,
+                    // });
                 })
                 .catch((err) => {
                     if (err.response) {
@@ -194,7 +207,7 @@ function Home() {
                         }}
                     />
                     <p className="count-title">Complaints</p>
-                    <p className="count-value">{count.totalComplaints}</p>
+                    <p className="count-value">{counts.TotalComplaints}</p>
                     <div className={classes.stats}>
                         <UpdateIcon fontSize="small"/> Last updated{" "}
                         {lastUpdatedState.Complaints}
@@ -219,7 +232,7 @@ function Home() {
                         }}
                     />
                     <p className="count-title">Resolved</p>
-                    <p className="count-value">{count.resolvedComplaints}</p>
+                    <p className="count-value">{counts.Resolved}</p>
                     <div className={classes.stats}>
                         <UpdateIcon fontSize="small"/> Last updated{" "}
                         {lastUpdatedState.Resolved}
@@ -243,8 +256,13 @@ function Home() {
                                 "0 4px 20px 0 rgba(0, 0, 0,.14), 0 7px 10px -5px rgba(156, 39, 176,.4)",
                         }}
                     />
-                    <p className="count-title">Assigned</p>
-                    <p className="count-value">{count.assignedComplaints}</p>
+                    <p className="count-title">
+                        {userData.Role === "ADMIN" ? "Assigned" : "Active"}
+
+                    </p>
+                    <p className="count-value">
+                        {userData.Role === "ADMIN" ? counts.Assigned : counts.Active}
+                    </p>
                     <div className={classes.stats}>
                         <UpdateIcon fontSize="small"/> Last updated{" "}
                         {lastUpdatedState.Assigned}
@@ -269,7 +287,7 @@ function Home() {
                         }}
                     />
                     <p className="count-title">Unresolved</p>
-                    <p className="count-value">{count.unresolvedComplaints}</p>
+                    <p className="count-value">{counts.Unresolved}</p>
                     <div className={classes.stats}>
                         <UpdateIcon fontSize="small"/> Last updated{" "}
                         {lastUpdatedState.Unresolved}
@@ -294,7 +312,7 @@ function Home() {
                         }}
                     />
                     <p className="count-title">Rejected </p>
-                    <p className="count-value">{count.rejectedComplaints}</p>
+                    <p className="count-value">{counts.Rejected}</p>
                     <div className={classes.stats}>
                         <UpdateIcon fontSize="small"/> Last updated{" "}
                         {lastUpdatedState.Rejected}
@@ -340,7 +358,7 @@ function Home() {
                         {userData.Role === "ADMIN" ? "Supervisors" : "Pending"}
                     </p>
                     <p className="count-value">
-                        {userData.Role === "ADMIN" ? count.supervisors : count.pending}
+                        {userData.Role === "ADMIN" ? counts.Supervisors : counts.Pending}
                     </p>
                     <div className={classes.stats}>
                         <UpdateIcon fontSize="small"/> Last updated{" "}
