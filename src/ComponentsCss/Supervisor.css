@@ -1,0 +1,32 @@
+.gridd {
+  margin-left: 10px;
+}
+
+.addbutton {
+  margin-right: 5px;
+}
+
+.box1 {
+  margin-left: 5px;
+}
+
+.boxhelper {
+  margin-left: 25px;
+}
+.detail {
+  padding: 7px;
+}
+.pos {
+  position: fixed;
+}
+
+.Mui-focused {
+  background-color: white;
+}
+
+.MuiInputBase-input {
+  background-color: white;
+}
+.MuiInput-input {
+  background-color: white;
+}

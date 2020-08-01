@@ -9,7 +9,7 @@ import avatarImage from "../assets/images/admin.png";
 import { Grid, styled } from "@material-ui/core";
 import Home from "../Components/Home/Home";
 import Complaints from "../Components/Complaint/Complaints";
-import Supervisors from "../Components/Supervisors";
+import Supervisors from "../Components/Supervisor/Supervisors";
 import Employees from "../Components/Employees/Employees";
 import Profile from "../Components/Profile/Profile";
 import ManageComplaints from "../Components/ManageComplaints/ManageComplaints";
