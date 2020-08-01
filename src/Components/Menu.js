@@ -142,7 +142,7 @@ function Menu(props) {
       <Link to={"/dashboard/home"}>
         <MenuItem
           key="home"
-          className={buttonActive == "home" ? classes.focusNew : classes.focus}
+          className={buttonActive === "home" ? classes.focusNew : classes.focus}
           //autoFocus
           onClick={() => setButtonActive("home")}
         >
@@ -181,7 +181,7 @@ function Menu(props) {
           </MenuItem>
         </Link>
       )}
-      {props.role == "SUPERVISOR" && (
+      {props.role === "SUPERVISOR" && (
         <Link to={"/dashboard/employees"}>
           <MenuItem
             className={
