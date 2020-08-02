@@ -66,6 +66,11 @@ function Profile(props) {
     window.location = "/";
   };
 
+  const validateEmail = (email) => {
+    var re = /\S+@\S+\.\S+/;
+    return re.test(email);
+  };
+
   const updateProfile = () => {
     // console.log(
     //   JSON.stringify({
@@ -333,7 +338,7 @@ function Profile(props) {
                 id="input-with-icon-textfield"
                 label="Phone Number"
                 inputProps={{ maxLength: 10 }}
-                value={phoneNumber}
+                value={phoneNumber.slice(-10)}
                 onChange={(event) => {
                   const re = /^[0-9\b]+$/;
 
@@ -439,10 +444,23 @@ function Profile(props) {
             md={12}
             lg={12}
             item={true}
-            style={{ margin: "1rem", paddingTop: "1rem" }}
+            style={{ paddingTop: "1rem" }}
             justify="center"
           >
-            <Box style={{ color: "red" }}>{error}</Box>
+            <Box component="div" style={{ color: "red", fontWeight: "500" }}>
+              {error}
+            </Box>
+          </Grid>
+
+          <Grid
+            container
+            item={true}
+            justify="center"
+            xs={12}
+            sm={12}
+            md={12}
+            lg={12}
+          >
             <Button
               variant="contained"
               style={{
@@ -457,6 +475,8 @@ function Profile(props) {
               onClick={() => {
                 if (phoneNumber.length < 10) {
                   setError("Phone number is not valid");
+                } else if (!validateEmail(email)) {
+                  setError("Email is not valid");
                 } else {
                   updateProfile();
                   setError("");
