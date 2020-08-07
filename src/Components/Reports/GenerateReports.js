@@ -55,11 +55,11 @@ const styles = {
 
     },
 
-    stepperBg:{
+    stepperBg: {
         backgroundColor: "transparent",
     },
 
-    step:{
+    step: {
         color: "#008080"
     },
 };
@@ -74,137 +74,22 @@ function GenerateReports(props) {
     const [userData, setUserData] = useState(store.get("userData"));
 
 
+    const [firstDate, setFirstDate] = useState(null);
+    const [lastDate, setLastDate] = useState(null);
 
-    const [firstDate, setFirstDate] = useState();
-    const [lastDate, setLastDate] = useState();
+    const [fromDate, setFromDate] = useState(null);
+    const [toDate, setToDate] = useState(null);
 
-    const [fromDate, setFromDate] = useState();
-    const [toDate, setToDate] = useState();
-
-    const [enableToDatePicker,setEnableToDatePicker] = useState(true)
+    const [enableToDatePicker, setEnableToDatePicker] = useState(true)
 
     const [activeStep, setActiveStep] = useState(0)
-    const steps = getSteps()
 
-    function getSteps() {
-        return ['Select the dates', 'Choose the type of complaint', 'Select the supervisor'];
-    }
+    const [nextButton, setNextButton] = useState(true)
 
-    function getStepContent(stepIndex) {
-        switch (stepIndex) {
-            case 0:
-                return (<div>
-                    <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                        <KeyboardDatePicker
-                            margin="normal"
-                            defaultValue="20 Jul 2020"
-                            id="date-picker-dialog"
-                            label="From"
-                            format="dd MMM yyyy"
-                            error={false}
-                            minDate={firstDate}
-                            maxDate={lastDate}
-                            value={fromDate}
-                            onChange={handleFromDateChange}
-                            KeyboardButtonProps={{
-                                'aria-label': 'change date',
-                            }}
-                            TextFieldComponent={TextFieldComponent}
+    const [mainData, setMainData] = useState([])
 
-                        />
-                    </MuiPickersUtilsProvider>
+    const [reportData, setReportData] = useState([])
 
-                    <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                        <KeyboardDatePicker
-                            margin="normal"
-                            id="date-picker-dialog"
-                            label="To"
-                            error={false}
-                            format="dd MMM yyyy"
-                            minDate={fromDate + (24*60*60)}
-                            maxDate={lastDate}
-                            value={toDate}
-                            onChange={handleToDateChange}
-                            disabled = {enableToDatePicker}
-                            KeyboardButtonProps={{
-                                'aria-label': 'change date',
-                            }}
-                            TextFieldComponent={TextFieldComponent}
-
-                        />
-                    </MuiPickersUtilsProvider>
-                </div>)
-            case 1:
-                return (<div>
-
-                </div>)
-            case 2:
-                return 'This is the bit I really care about!';
-            default:
-                return 'Unknown stepIndex';
-        }
-    }
-
-
-    const handleNext = () => {
-        setActiveStep((prevActiveStep) => prevActiveStep + 1);
-    };
-
-    const handleBack = () => {
-        setActiveStep((prevActiveStep) => prevActiveStep - 1);
-    };
-
-    const handleReset = () => {
-        setActiveStep(0);
-    };
-
-    const handleFromDateChange = (date) => {
-        setFromDate(date);
-        setEnableToDatePicker(false)
-    };
-
-
-    const handleToDateChange = (date) => {
-        setToDate(date);
-    };
-
-
-    // const handleDateClick = () => {
-    //     if(fromDate === ""){
-    //
-    //     }
-    // }
-
-    const TextFieldComponent = (props) => {
-        return <TextField {...props} disabled={true}/>
-    }
-    const [reportType, setReportType] = React.useState('Total Complaints Yearly');
-    const [pageSize, setPageSize] = React.useState('A4');
-
-    const [resume, setResume] = useState({})
-
-    const handleChange = (event) => {
-        setReportType(event.target.value);
-
-        if (reportType === 'Total Complaints Yearly') {
-            console.log('display totals report')
-        }
-    };
-
-    const handlePageSize = (event) => {
-        setPageSize(event.target.value)
-
-        if (pageSize === 'A4') {
-
-        } else if (pageSize === 'Letter') {
-
-        }
-    }
-
-    const _exportPdfTable = () => {
-        // change this number to generate more or less rows of data
-        PdfMakeTable(20);
-    }
 
     // const exportPDF = () => {
     //      resume.save();
@@ -230,6 +115,7 @@ function GenerateReports(props) {
     const getComplaints = () => {
 
         let datesObj = [];
+        let mainObj = []
 
         axios
             .get(
@@ -244,20 +130,54 @@ function GenerateReports(props) {
                 for (let i in res.data) {
                     datesObj[i] = res.data[i].complain.createdAt
 
+                    let tmpObj = {};
+                    tmpObj["id"] = res.data[i].complain.id;
+                    tmpObj["description"] = res.data[i].complain.description;
+                    tmpObj["longitude"] = res.data[i].complain.Location.longitude;
+                    tmpObj["latitude"] = res.data[i].complain.Location.latitude;
+                    tmpObj["image"] = res.data[i].complain.image;
+                    tmpObj["afterImage"] = res.data[i].complain.resolvedComplaintImage;
+                    tmpObj["statusType"] = res.data[i].complain.Status.statusType;
+                    tmpObj["statusId"] = res.data[i].complain.Status.id;
+                    tmpObj["date"] = res.data[i].complain.createdAt;
+                    tmpObj["town"] = res.data[i].complain.Location.town.name;
+                    tmpObj["priority"] =
+                        res.data[i].complain.noOfRequests > 5
+                            ? "high"
+                            : res.data[i].complain.noOfRequests > 1
+                            ? "medium"
+                            : "low";
 
+                    tmpObj["reason"] =
+                        res.data[i].complain.Status.statusType === "Rejected"
+                            ? res.data[i].complain.reasonForRejection
+                            : "";
+                    tmpObj["requests"] = res.data[i].complain.noOfRequests;
 
+                    tmpObj["type"] = res.data[i].complain.ComplaintType.typeName;
+                    tmpObj["supervisorId"] = res.data[i].complain.assignedTo;
 
+                    tmpObj["supervisorName"] =
+                        res.data[i].complain.User && res.data[i].complain.User.name;
+                    tmpObj["otherStatus"] = res.data[i].supervisorStatus
+                        ? res.data[i].supervisorStatus
+                        : res.data[i].adminStatus;
+                    mainObj.push(tmpObj);
 
-
+                    // mainObj[i] = res.data[i]
                     // Moment(res.data[i].complain.createdAt).format("DD MMM yyyy")
                 }
 
+
+                console.log("what data is coming of complaints?", mainObj)
                 console.log("dates", datesObj)
                 setFirstDate(datesObj[0])
                 setLastDate(datesObj[datesObj.length - 1])
                 setToDate(lastDate)
+                setReportData(mainObj)
+                setMainData(mainObj)
 
-                })
+            })
             .catch((err) => {
                 if (err.response) {
                     if (err.response.status === 401 || err.response.status === 403) {
@@ -310,6 +230,150 @@ function GenerateReports(props) {
     };
 
 
+    const steps = getSteps()
+
+    function getSteps() {
+        return ['Select the dates', 'Choose the type of complaint', 'Select the supervisor'];
+    }
+
+    function getStepContent(stepIndex) {
+        switch (stepIndex) {
+            case 0:
+                return (<div>
+                    <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                        <KeyboardDatePicker
+                            margin="normal"
+                            defaultValue="20 Jul 2020"
+                            id="date-picker-dialog-from"
+                            label="From"
+                            format="dd MMM yyyy"
+                            error={false}
+                            minDate={firstDate}
+                            maxDate={Moment(lastDate).add(-1, "days")}
+                            value={fromDate}
+                            onChange={handleFromDateChange}
+                            KeyboardButtonProps={{
+                                'aria-label': 'change date',
+                            }}
+                            TextFieldComponent={TextFieldComponent}
+
+                        />
+                    </MuiPickersUtilsProvider>
+
+                    <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                        <KeyboardDatePicker
+                            margin="normal"
+                            id="date-picker-dialog-to"
+                            label="To"
+                            error={false}
+                            format="dd MMM yyyy"
+                            minDate={Moment(fromDate).add(1, "days")}
+                            maxDate={lastDate}
+                            value={toDate}
+                            onChange={handleToDateChange}
+                            disabled={enableToDatePicker}
+                            KeyboardButtonProps={{
+                                'aria-label': 'change date',
+                            }}
+                            TextFieldComponent={TextFieldComponent}
+
+                        />
+                    </MuiPickersUtilsProvider>
+                </div>)
+            case 1:
+                return (<div>
+                    <p>something!!</p>
+                </div>)
+            case 2:
+                return 'This is the bit I really care about!';
+            default:
+                return 'Unknown stepIndex';
+        }
+    }
+
+
+    const handleNext = () => {
+        if (fromDate !== null && toDate !== null) {
+
+            console.log("from????data", Moment(fromDate).format("DD MMM yyyy"))
+            setReportData(
+                mainData.filter(
+                    (obj) =>
+                        // console.log("obj date?", Moment(obj.date).format("DD MMM yyyy"))
+                        Moment(obj.date).format("DD MMM yyyy") === Moment(fromDate).format("DD MMM yyyy") ||
+                        Moment(obj.date).format("DD MMM yyyy") === Moment(toDate).format("DD MMM yyyy")
+                        // obj.statusType === "Resolved" || obj.statusType === "Rejected"
+                )
+            )
+            setActiveStep((prevActiveStep) => prevActiveStep + 1);
+
+
+        }
+
+
+
+    };
+
+    console.log("reportData?", reportData)
+
+
+    const handleBack = () => {
+        setActiveStep((prevActiveStep) => prevActiveStep - 1);
+    };
+
+    const handleReset = () => {
+        setActiveStep(0);
+    };
+
+    const handleFromDateChange = (date) => {
+        setFromDate(date);
+        setEnableToDatePicker(false)
+    };
+
+
+    const handleToDateChange = (date) => {
+        setToDate(date);
+        setNextButton(false)
+    };
+
+
+    // const handleDateClick = () => {
+    //     if(fromDate === ""){
+    //
+    //     }
+    // }
+
+    const TextFieldComponent = (props) => {
+        return <TextField {...props} disabled={true}/>
+    }
+    const [reportType, setReportType] = React.useState('Total Complaints Yearly');
+    const [pageSize, setPageSize] = React.useState('A4');
+
+    const [resume, setResume] = useState({})
+
+    const handleChange = (event) => {
+        setReportType(event.target.value);
+
+        if (reportType === 'Total Complaints Yearly') {
+            console.log('display totals report')
+        }
+    };
+
+    const handlePageSize = (event) => {
+        setPageSize(event.target.value)
+
+        if (pageSize === 'A4') {
+
+        } else if (pageSize === 'Letter') {
+
+        }
+    }
+
+    const _exportPdfTable = () => {
+        // change this number to generate more or less rows of data
+        PdfMakeTable(20);
+    }
+
     return (
         <div>
 
@@ -330,47 +394,46 @@ function GenerateReports(props) {
             </div>
 
 
-
             <div>
 
-                    <Stepper className={classes.stepperBg} activeStep={activeStep} orientation="vertical">
-                        {steps.map((label, index) => (
-                            <Step  key={label}>
-                                <StepLabel>{label}</StepLabel>
-                                <StepContent>
-                                    <Typography>{getStepContent(index)}</Typography>
-                                    <div className={classes.actionsContainer}>
-                                        <div>
-                                            <Button
-                                                disabled={activeStep === 0}
-                                                onClick={handleBack}
-                                                className={classes.button}
-                                            >
-                                                Back
-                                            </Button>
-                                            <Button
-                                                variant="contained"
-                                                color="primary"
-                                                onClick={handleNext}
-                                                className={classes.button}
-                                            >
-                                                {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
-                                            </Button>
-                                        </div>
+                <Stepper className={classes.stepperBg} activeStep={activeStep} orientation="vertical">
+                    {steps.map((label, index) => (
+                        <Step key={label}>
+                            <StepLabel>{label}</StepLabel>
+                            <StepContent>
+                                <Typography>{getStepContent(index)}</Typography>
+                                <div className={classes.actionsContainer}>
+                                    <div>
+                                        <Button
+                                            disabled={activeStep === 0}
+                                            onClick={handleBack}
+                                            className={classes.button}
+                                        >
+                                            Back
+                                        </Button>
+                                        <Button
+                                            variant="contained"
+                                            color="primary"
+                                            onClick={handleNext}
+                                            className={classes.button}
+                                            disabled={nextButton}
+                                        >
+                                            {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
+                                        </Button>
                                     </div>
-                                </StepContent>
-                            </Step>
-                        ))}
-                    </Stepper>
-                    {activeStep === steps.length && (
-                        <Paper square elevation={0} className={classes.resetContainer}>
-                            <Typography>All steps completed - you&apos;re finished</Typography>
-                            <Button onClick={handleReset} className={classes.button}>
-                                Reset
-                            </Button>
-                        </Paper>
-                    )}
-
+                                </div>
+                            </StepContent>
+                        </Step>
+                    ))}
+                </Stepper>
+                {activeStep === steps.length && (
+                    <Paper square elevation={0} className={classes.resetContainer}>
+                        <Typography>All steps completed - you&apos;re finished</Typography>
+                        <Button onClick={handleReset} className={classes.button}>
+                            Reset
+                        </Button>
+                    </Paper>
+                )}
 
 
             </div>
