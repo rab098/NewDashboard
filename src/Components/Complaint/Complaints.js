@@ -363,6 +363,7 @@ export default function Complaints(props) {
       setOrignalData(
         mainData.filter(
           (obj) =>
+            obj.statusType === "Active" ||
             obj.statusType === "Unresolved" ||
             obj.statusType === "Assigned" ||
             (obj.statusType == "Resolved" && obj.otherStatus != "Resolved")
