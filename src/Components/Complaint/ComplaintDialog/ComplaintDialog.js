@@ -1,5 +1,6 @@
 import PropTypes from "prop-types";
 import ComplaintDetails from "./ComplaintDetails";
+import { Scrollbars } from "react-custom-scrollbars";
 
 import React, { useState, useEffect } from "react";
 import { Dialog, Paper, TextField } from "@material-ui/core";
@@ -95,56 +96,60 @@ export default function ComplaintDialog(props) {
       maxWidth="sm"
       aria-labelledby="form-dialog-title"
     >
-      <AppBar position="static" color="default">
-        {" "}
-        <Tabs
-          value={value}
-          onChange={handleChange}
-          indicatorColor="primary"
-          textColor="primary"
-          variant="fullWidth"
-          aria-label="full width tabs example"
-        >
-          <Tab label="Complaint Details" {...a11yProps(0)} />
-          <Tab label="Progress" {...a11yProps(1)} />
-          <Tab
-            label={sel.statusType == "Resolved" ? "Users & Feedbacks" : "Users"}
-            {...a11yProps(2)}
-          />
-
-          <IconButton
-            style={{ top: 0 }}
-            edge="start"
-            color="inherit"
-            onClick={dialogClose}
-            aria-label="close"
+      <Scrollbars style={{ minWidth: 100, minHeight: "80vh" }}>
+        <AppBar position="static" color="default">
+          {" "}
+          <Tabs
+            value={value}
+            onChange={handleChange}
+            indicatorColor="primary"
+            textColor="primary"
+            variant="fullWidth"
+            aria-label="full width tabs example"
           >
-            <CancelIcon style={{ color: "teal" }} />
-          </IconButton>
-        </Tabs>
-      </AppBar>
-      <SwipeableViews
-        axis={theme.direction === "rtl" ? "x-reverse" : "x"}
-        index={value}
-        onChangeIndex={handleChangeIndex}
-      >
-        <TabPanel value={value} index={0} dir={theme.direction}>
-          <ComplaintDetails sel={sel} role={role} />
-        </TabPanel>
-        <TabPanel value={value} index={1} dir={theme.direction}>
-          <ComplaintProgress
-            sel={sel}
-            role={role}
-            token={token}
-            dialogClose={dialogClose}
-            save={save}
-            supervisors={supervisors}
-          />
-        </TabPanel>
-        <TabPanel value={value} index={2} dir={theme.direction}>
-          <UserTable id={sel.id} status={sel.statusType} />
-        </TabPanel>
-      </SwipeableViews>
+            <Tab label="Complaint Details" {...a11yProps(0)} />
+            <Tab label="Progress" {...a11yProps(1)} />
+            <Tab
+              label={
+                sel.statusType == "Resolved" ? "Users & Feedbacks" : "Users"
+              }
+              {...a11yProps(2)}
+            />
+
+            <IconButton
+              style={{ top: 0 }}
+              edge="start"
+              color="inherit"
+              onClick={dialogClose}
+              aria-label="close"
+            >
+              <CancelIcon style={{ color: "teal" }} />
+            </IconButton>
+          </Tabs>
+        </AppBar>
+        <SwipeableViews
+          axis={theme.direction === "rtl" ? "x-reverse" : "x"}
+          index={value}
+          onChangeIndex={handleChangeIndex}
+        >
+          <TabPanel value={value} index={0} dir={theme.direction}>
+            <ComplaintDetails sel={sel} role={role} />
+          </TabPanel>
+          <TabPanel value={value} index={1} dir={theme.direction}>
+            <ComplaintProgress
+              sel={sel}
+              role={role}
+              token={token}
+              dialogClose={dialogClose}
+              save={save}
+              supervisors={supervisors}
+            />
+          </TabPanel>
+          <TabPanel value={value} index={2} dir={theme.direction}>
+            <UserTable id={sel.id} status={sel.statusType} />
+          </TabPanel>
+        </SwipeableViews>
+      </Scrollbars>
     </Dialog>
   );
 }

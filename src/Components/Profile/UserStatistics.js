@@ -61,8 +61,8 @@ export default function UserStatistics(props) {
               background: "linear-gradient(60deg, #66bb6a, #43a047)",
               borderRadius: "5px",
               color: "white",
-              width: "30px",
-              height: "30px",
+              width: window.innerWidth < 1400 ? "20px" : "30px",
+              height: window.innerWidth < 1400 ? "20px" : "30px",
               padding: "10px",
               boxShadow:
                 "0 4px 20px 0 rgba(0, 0, 0,.14), 0 7px 10px -5px rgba(156, 39, 176,.4)",
@@ -78,8 +78,8 @@ export default function UserStatistics(props) {
               background: "linear-gradient(60deg, #ab47bc, #8e24aa)",
               borderRadius: "5px",
               color: "white",
-              width: "30px",
-              height: "30px",
+              width: window.innerWidth < 1400 ? "20px" : "30px",
+              height: window.innerWidth < 1400 ? "20px" : "30px",
               padding: "10px",
 
               boxShadow:
@@ -101,8 +101,8 @@ export default function UserStatistics(props) {
                 background: "linear-gradient(60deg, #ffa726, #fb8c00)",
                 borderRadius: "5px",
                 color: "white",
-                width: "30px",
-                height: "30px",
+                width: window.innerWidth < 1400 ? "20px" : "30px",
+                height: window.innerWidth < 1400 ? "20px" : "30px",
                 padding: "10px",
 
                 boxShadow:
@@ -120,7 +120,11 @@ export default function UserStatistics(props) {
 function Details(props) {
   return (
     <Box style={{ marginLeft: "1rem" }}>
-      <Box fontWeight="500" fontSize="2rem" color="grey">
+      <Box
+        fontWeight="500"
+        fontSize={window.innerWidth > 1400 ? "2rem" : "1.5rem"}
+        color="grey"
+      >
         {props.name}
       </Box>
       <Box fontSize="0.7rem" color="black">
