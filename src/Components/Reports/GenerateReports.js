@@ -41,6 +41,8 @@ import axios from "axios";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import {makeStyles} from "@material-ui/core/styles";
+import Checkbox from "@material-ui/core/Checkbox";
+import FormGroup from "@material-ui/core/FormGroup";
 
 // const ref = React.createRef();
 
@@ -101,7 +103,9 @@ function GenerateReports(props) {
 
     const [hideOne, setHideOne] = useState(false);
 
-    const [hideMultiple, setHideMultiple] = useState(true);
+    const [sortedTypes, setSortedTypes] = useState([]);
+
+
 
 
     // const exportPDF = () => {
@@ -349,7 +353,23 @@ function GenerateReports(props) {
                 </div>)
             case 1:
                 return (<div>
-                    <p>something!!</p>
+                    <FormControl component="fieldset">
+                        <FormGroup aria-label="position" row>
+                            {
+                                sortedTypes.map((obj) => {
+                                    return (
+                                    <FormControlLabel
+                                        value="type"
+                                        control={<Checkbox color="primary" />}
+                                        label={obj}
+                                        labelPlacement="end"
+                                    />
+
+                                )})
+                            }
+
+                        </FormGroup>
+                    </FormControl>
                 </div>)
             case 2:
                 return 'This is the bit I really care about!';
@@ -362,6 +382,16 @@ function GenerateReports(props) {
     const handleRadioChange = (event) => {
         setRadioValue(event.target.value);
         setHideOne((prev) => !prev);
+
+        // if(radioValue === 'one'){
+        //     oneDate === null ? setNextButton(true) : setNextButton(false)
+        //
+        // }
+        // else if(radioValue === 'multiple'){
+        //      (fromDate === null && toDate === null) ? setNextButton(true) : setNextButton(false)
+        //
+        // }
+
 
 
         // if (radioValue === 'multiple') {
@@ -377,6 +407,8 @@ function GenerateReports(props) {
 
     const handleOneDateChange = (date) => {
         setOneDate(date);
+        setNextButton(false)
+
     };
 
     const handleFromDateChange = (date) => {
@@ -423,6 +455,9 @@ function GenerateReports(props) {
             }
         }
 
+        setSortedTypes(reportData.map((obj) => {
+            new Set(obj.types)
+        }))
 
     };
 
