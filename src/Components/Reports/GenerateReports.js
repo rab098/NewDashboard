@@ -13,6 +13,11 @@ import StepLabel from '@material-ui/core/StepLabel';
 import StepContent from '@material-ui/core/StepContent';
 import Paper from '@material-ui/core/Paper';
 import Moment from "moment";
+import Radio from '@material-ui/core/Radio';
+import RadioGroup from '@material-ui/core/RadioGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import FormControl from '@material-ui/core/FormControl';
+import FormLabel from '@material-ui/core/FormLabel';
 
 // import MomentUtils from '@date-io/moment';
 
@@ -79,6 +84,8 @@ function GenerateReports(props) {
 
     const [fromDate, setFromDate] = useState(null);
     const [toDate, setToDate] = useState(null);
+    const [oneDate, setOneDate] = useState(null);
+
 
     const [enableToDatePicker, setEnableToDatePicker] = useState(true)
 
@@ -89,6 +96,12 @@ function GenerateReports(props) {
     const [mainData, setMainData] = useState([])
 
     const [reportData, setReportData] = useState([])
+
+    const [radioValue, setRadioValue] = useState('one');
+
+    const [hideOne, setHideOne] = useState(false);
+
+    const [hideMultiple, setHideMultiple] = useState(true);
 
 
     // const exportPDF = () => {
@@ -240,45 +253,99 @@ function GenerateReports(props) {
         switch (stepIndex) {
             case 0:
                 return (<div>
-                    <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                        <KeyboardDatePicker
-                            margin="normal"
-                            defaultValue="20 Jul 2020"
-                            id="date-picker-dialog-from"
-                            label="From"
-                            format="dd MMM yyyy"
-                            error={false}
-                            minDate={firstDate}
-                            maxDate={Moment(lastDate).add(-1, "days")}
-                            value={fromDate}
-                            onChange={handleFromDateChange}
-                            KeyboardButtonProps={{
-                                'aria-label': 'change date',
-                            }}
-                            TextFieldComponent={TextFieldComponent}
 
-                        />
-                    </MuiPickersUtilsProvider>
+                    <FormControl component="fieldset">
+                        <FormLabel component="legend">You can choose to generate a one day or a multiple days
+                            report.</FormLabel>
+                        <RadioGroup
+                            row
+                            aria-label="position"
+                            name="position"
+                            defaultValue="one"
+                            onChange={handleRadioChange}>
 
-                    <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                        <KeyboardDatePicker
-                            margin="normal"
-                            id="date-picker-dialog-to"
-                            label="To"
-                            error={false}
-                            format="dd MMM yyyy"
-                            minDate={Moment(fromDate).add(1, "days")}
-                            maxDate={lastDate}
-                            value={toDate}
-                            onChange={handleToDateChange}
-                            disabled={enableToDatePicker}
-                            KeyboardButtonProps={{
-                                'aria-label': 'change date',
-                            }}
-                            TextFieldComponent={TextFieldComponent}
+                            <FormControlLabel
+                                value="one"
+                                control={<Radio color="primary"/>}
+                                label="One day"
+                                labelPlacement="end"/>
+                            <FormControlLabel
+                                value="multiple"
+                                control={<Radio color="primary"/>}
+                                label="Multiple Days"
+                                labelPlacement="end"/>
 
-                        />
-                    </MuiPickersUtilsProvider>
+                        </RadioGroup>
+                    </FormControl>
+
+                    {hideOne ?
+                        <div>
+                            <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                                <KeyboardDatePicker
+                                    margin="normal"
+                                    defaultValue="20 Jul 2020"
+                                    id="date-picker-dialog-from"
+                                    label="From"
+                                    format="dd MMM yyyy"
+                                    error={false}
+                                    minDate={firstDate}
+                                    maxDate={Moment(lastDate).add(-1, "days")}
+                                    value={fromDate}
+                                    onChange={handleFromDateChange}
+                                    KeyboardButtonProps={{
+                                        'aria-label': 'change date',
+                                    }}
+                                    TextFieldComponent={TextFieldComponent}
+
+                                />
+                            </MuiPickersUtilsProvider>
+
+                            <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                                <KeyboardDatePicker
+                                    margin="normal"
+                                    id="date-picker-dialog-to"
+                                    label="To"
+                                    error={false}
+                                    format="dd MMM yyyy"
+                                    minDate={Moment(fromDate).add(1, "days")}
+                                    maxDate={lastDate}
+                                    value={toDate}
+                                    onChange={handleToDateChange}
+                                    disabled={enableToDatePicker}
+                                    KeyboardButtonProps={{
+                                        'aria-label': 'change date',
+                                    }}
+                                    TextFieldComponent={TextFieldComponent}
+
+                                />
+                            </MuiPickersUtilsProvider>
+                        </div>
+                        :
+
+                        <div>
+                            <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                                <KeyboardDatePicker
+                                    margin="normal"
+                                    defaultValue="20 Jul 2020"
+                                    id="date-picker-dialog-one"
+                                    label="Select Date"
+                                    format="dd MMM yyyy"
+                                    error={false}
+                                    minDate={firstDate}
+                                    maxDate={lastDate}
+                                    value={oneDate}
+                                    onChange={handleOneDateChange}
+                                    KeyboardButtonProps={{
+                                        'aria-label': 'change date',
+                                    }}
+                                    TextFieldComponent={TextFieldComponent}
+
+                                />
+                            </MuiPickersUtilsProvider>
+                        </div>
+                    }
+
+
                 </div>)
             case 1:
                 return (<div>
@@ -292,24 +359,69 @@ function GenerateReports(props) {
     }
 
 
+    const handleRadioChange = (event) => {
+        setRadioValue(event.target.value);
+        setHideOne((prev) => !prev);
+
+
+        // if (radioValue === 'multiple') {
+        //     setHideOne(true)
+        // } else {
+        //     setHideOne(false)
+        //
+        // }
+
+
+    };
+
+
+    const handleOneDateChange = (date) => {
+        setOneDate(date);
+    };
+
+    const handleFromDateChange = (date) => {
+        setFromDate(date);
+        setEnableToDatePicker(false)
+    };
+
+
+    const handleToDateChange = (date) => {
+        setToDate(date);
+        setNextButton(false)
+    };
+
     const handleNext = () => {
-        if (fromDate !== null && toDate !== null) {
 
-            console.log("from????data", Moment(fromDate).format("DD MMM yyyy"))
-            setReportData(
-                mainData.filter(
-                    (obj) =>
-                        // console.log("obj date?", Moment(obj.date).format("DD MMM yyyy"))
-                        Moment(obj.date).format("DD MMM yyyy") === Moment(fromDate).format("DD MMM yyyy") ||
-                        Moment(obj.date).format("DD MMM yyyy") === Moment(toDate).format("DD MMM yyyy")
-                        // obj.statusType === "Resolved" || obj.statusType === "Rejected"
+        if (radioValue === 'one') {
+            if (oneDate !== null) {
+                setReportData(
+                    mainData.filter(
+                        (obj) =>
+                            Moment(obj.date).format("DD MMM yyyy") === Moment(oneDate).format("DD MMM yyyy")
+                    )
                 )
-            )
-            setActiveStep((prevActiveStep) => prevActiveStep + 1);
+
+                setActiveStep((prevActiveStep) => prevActiveStep + 1);
+
+            }
+        } else {
+            if (fromDate !== null && toDate !== null) {
+
+                console.log("from????data", Moment(fromDate).format("DD MMM yyyy"))
+                setReportData(
+                    mainData.filter(
+                        (obj) =>
+                            // console.log("obj date?", Moment(obj.date).format("DD MMM yyyy"))
+                            Moment(obj.date).format("DD MMM yyyy") >= Moment(fromDate).format("DD MMM yyyy") &&
+                            Moment(obj.date).format("DD MMM yyyy") <= Moment(toDate).format("DD MMM yyyy")
+                        // obj.statusType === "Resolved" || obj.statusType === "Rejected"
+                    )
+                )
+                setActiveStep((prevActiveStep) => prevActiveStep + 1);
 
 
+            }
         }
-
 
 
     };
@@ -324,18 +436,6 @@ function GenerateReports(props) {
     const handleReset = () => {
         setActiveStep(0);
     };
-
-    const handleFromDateChange = (date) => {
-        setFromDate(date);
-        setEnableToDatePicker(false)
-    };
-
-
-    const handleToDateChange = (date) => {
-        setToDate(date);
-        setNextButton(false)
-    };
-
 
     // const handleDateClick = () => {
     //     if(fromDate === ""){
