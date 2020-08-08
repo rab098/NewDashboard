@@ -213,7 +213,12 @@ export default function FeedbackTags(props) {
               </Button>
             ) : (
               <AddCircleOutlineRoundedIcon
-                color="primary"
+                style={{
+                  color: "#008080",
+                  fontSize: "40px",
+                  padding: 0,
+                  border: 0,
+                }}
                 onClick={() => {
                   AddTag();
                 }}

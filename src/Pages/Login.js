@@ -188,7 +188,7 @@ function Login() {
               className={classes.myButton}
               onClick={handleClick}
             >
-              Submit
+              Login
             </Button>
             <Backdrop className={classes.backdrop} open={open}>
               <ImpulseSpinner size={90} color="#008081" loading={loading} />
