@@ -171,7 +171,12 @@ export default function Rejection(props) {
               </Button>
             ) : (
               <AddCircleOutlineRoundedIcon
-                color="primary"
+                style={{
+                  color: "#008080",
+                  fontSize: "40px",
+                  padding: 0,
+                  border: 0,
+                }}
                 onClick={() => {
                   AddReason();
                 }}

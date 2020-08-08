@@ -84,6 +84,7 @@ function Profile(props) {
     //     },
     //   })
     // );
+    setphoneNumber("+92" + phoneNumber);
     setLoading(true);
     console.log(phoneNumber, fullName, email);
     if (imageRemove) {
@@ -98,8 +99,8 @@ function Profile(props) {
     if (email != userData.userData.email) {
       update(email, "email", "Email");
     }
-    if (phoneNumber != userData.userData.phoneNumber) {
-      update(phoneNumber, "phoneNumber", "phoneNumber");
+    if ("+92" + phoneNumber != userData.userData.phoneNumber) {
+      update("+92" + phoneNumber, "phoneNumber", "phoneNumber");
     }
   };
 
