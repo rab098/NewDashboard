@@ -104,8 +104,7 @@ function GenerateReports(props) {
     const [hideOne, setHideOne] = useState(false);
 
     const [sortedTypes, setSortedTypes] = useState([]);
-
-
+    const [stepIndexNew, setStepIndexNew] = useState()
 
 
     // const exportPDF = () => {
@@ -254,6 +253,8 @@ function GenerateReports(props) {
     }
 
     function getStepContent(stepIndex) {
+
+        // setStepIndexNew(stepIndex)
         switch (stepIndex) {
             case 0:
                 return (<div>
@@ -314,8 +315,8 @@ function GenerateReports(props) {
                                     minDate={Moment(fromDate).add(1, "days")}
                                     maxDate={lastDate}
                                     value={toDate}
-                                    onChange={handleToDateChange}
                                     disabled={enableToDatePicker}
+                                    onChange={handleToDateChange}
                                     KeyboardButtonProps={{
                                         'aria-label': 'change date',
                                     }}
@@ -356,16 +357,18 @@ function GenerateReports(props) {
                     <FormControl component="fieldset">
                         <FormGroup aria-label="position" row>
                             {
+
                                 sortedTypes.map((obj) => {
                                     return (
-                                    <FormControlLabel
-                                        value="type"
-                                        control={<Checkbox color="primary" />}
-                                        label={obj}
-                                        labelPlacement="end"
-                                    />
+                                        <FormControlLabel
+                                            value="type"
+                                            control={<Checkbox color="primary"/>}
+                                            label={obj}
+                                            labelPlacement="end"
+                                        />
 
-                                )})
+                                    )
+                                })
                             }
 
                         </FormGroup>
@@ -383,23 +386,14 @@ function GenerateReports(props) {
         setRadioValue(event.target.value);
         setHideOne((prev) => !prev);
 
-        // if(radioValue === 'one'){
-        //     oneDate === null ? setNextButton(true) : setNextButton(false)
-        //
-        // }
-        // else if(radioValue === 'multiple'){
-        //      (fromDate === null && toDate === null) ? setNextButton(true) : setNextButton(false)
-        //
-        // }
+        if(radioValue === 'one'){
+            oneDate === null ? setNextButton(true) : setNextButton(false)
 
+        }
+        else if(radioValue === 'multiple'){
+             (fromDate === null && toDate === null) ? setNextButton(true) : setNextButton(false)
 
-
-        // if (radioValue === 'multiple') {
-        //     setHideOne(true)
-        // } else {
-        //     setHideOne(false)
-        //
-        // }
+        }
 
 
     };
@@ -422,46 +416,76 @@ function GenerateReports(props) {
         setNextButton(false)
     };
 
-    const handleNext = () => {
+    function handleNext(index) {
+        switch(index) {
+            case 0:
+                if (radioValue === 'one' && oneDate !== null) {
+                        setReportData(
+                            mainData.filter(
+                                (obj) =>
+                                    Moment(obj.date).format("DD MMM yyyy") === Moment(oneDate).format("DD MMM yyyy")
+                            )
+                        )
 
-        if (radioValue === 'one') {
-            if (oneDate !== null) {
-                setReportData(
-                    mainData.filter(
-                        (obj) =>
-                            Moment(obj.date).format("DD MMM yyyy") === Moment(oneDate).format("DD MMM yyyy")
-                    )
-                )
+                        setActiveStep((prevActiveStep) => prevActiveStep + 1);
 
+
+                } else {
+                    if (fromDate !== null && toDate !== null) {
+
+                        setReportData(
+                            mainData.filter(
+                                (obj) =>
+                                    Moment(obj.date).format("DD MMM yyyy") >= Moment(fromDate).format("DD MMM yyyy") &&
+                                    Moment(obj.date).format("DD MMM yyyy") <= Moment(toDate).format("DD MMM yyyy")
+                            )
+                        )
+                        setActiveStep((prevActiveStep) => prevActiveStep + 1);
+
+
+                    }
+                }
+
+                break
+            case 1:
+                console.log("mhm?")
                 setActiveStep((prevActiveStep) => prevActiveStep + 1);
-
-            }
-        } else {
-            if (fromDate !== null && toDate !== null) {
-
-                console.log("from????data", Moment(fromDate).format("DD MMM yyyy"))
-                setReportData(
-                    mainData.filter(
-                        (obj) =>
-                            // console.log("obj date?", Moment(obj.date).format("DD MMM yyyy"))
-                            Moment(obj.date).format("DD MMM yyyy") >= Moment(fromDate).format("DD MMM yyyy") &&
-                            Moment(obj.date).format("DD MMM yyyy") <= Moment(toDate).format("DD MMM yyyy")
-                        // obj.statusType === "Resolved" || obj.statusType === "Rejected"
-                    )
-                )
-                setActiveStep((prevActiveStep) => prevActiveStep + 1);
-
-
-            }
+                break
+            case 2:
+                return 'supervisor selected'
+            default:
+                return null;
         }
+    }
 
-        setSortedTypes(reportData.map((obj) => {
-            new Set(obj.types)
-        }))
+    // const handleNext = () => {
+    //
+    //     if (stepIndexNew === 0) {
+    //
+    //     } else if (stepIndexNew === 1) {
+    //
+    //         console.log("HAHAHAHAHA")
+    //
+    //         // setReportData(
+    //         //     reportData.filter(
+    //         //         (obj) =>
+    //         //             obj.type ===
+    //         //     )
+    //         // )
+    //     } else if (stepIndexNew === 2) {
+    //     }
+    //
+    //
+    // };
 
-    };
+    useEffect(() => {
+        setSortedTypes(reportData.map((obj, index) => obj.type).filter((type, index) =>
+            reportData.map((obj, index) => obj.type).indexOf(type) === index))
 
-    console.log("reportData?", reportData)
+    }, [reportData])
+
+    // console.log("reportData?", reportData)
+    // console.log("removed duplicates", sortedTypes)
 
 
     const handleBack = () => {
@@ -549,7 +573,7 @@ function GenerateReports(props) {
                                         <Button
                                             variant="contained"
                                             color="primary"
-                                            onClick={handleNext}
+                                            onClick={() => handleNext(index)}
                                             className={classes.button}
                                             disabled={nextButton}
                                         >
