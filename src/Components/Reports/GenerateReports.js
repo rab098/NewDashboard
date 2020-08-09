@@ -419,7 +419,7 @@ function GenerateReports(props) {
     function handleNext(index) {
         switch(index) {
             case 0:
-                if (radioValue === 'one' && oneDate !== null) {
+                if (oneDate !== null) {
                         setReportData(
                             mainData.filter(
                                 (obj) =>
@@ -484,7 +484,7 @@ function GenerateReports(props) {
 
     }, [reportData])
 
-    // console.log("reportData?", reportData)
+    console.log("reportData?", reportData)
     // console.log("removed duplicates", sortedTypes)
 
 
