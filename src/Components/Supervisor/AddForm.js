@@ -25,7 +25,7 @@ import InputAdornment from "@material-ui/core/InputAdornment";
 import FormHelperText from "@material-ui/core/FormHelperText";
 import FormControl from "@material-ui/core/FormControl";
 import Box from "@material-ui/core/Box";
-
+import AddBoxIcon from "@material-ui/icons/AddBox";
 import MenuItem from "@material-ui/core/MenuItem";
 import Select from "@material-ui/core/Select";
 import Backdrop from "@material-ui/core/Backdrop";
@@ -65,7 +65,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function AddForm() {
+export default function AddForm(props) {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
   const [towns, setTowns] = React.useState([]);
@@ -96,27 +96,6 @@ export default function AddForm() {
     town: "",
     helperTextMain: "",
   });
-
-  async function fetchData() {
-    const townObj = [];
-    axios.get("https://m2r31169.herokuapp.com/api/getTowns").then((res) => {
-      console.log("Towns" + JSON.stringify(res.data.Towns));
-
-      for (var i in res.data.Towns) {
-        if (res.data.Towns[i] !== "Select Town...") {
-          console.log("Towns" + res.data.Towns[i]);
-          townObj.push(res.data.Towns[i]);
-        }
-        // finalObj1.push(res.data.supervisors[i].town);
-      }
-      setTowns(townObj);
-      // setTown(finalObj1);
-    });
-  }
-
-  useEffect(() => {
-    fetchData();
-  }, []);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -212,6 +191,13 @@ export default function AddForm() {
     }
   };
 
+  const handleLogoutAutomatically = () => {
+    store.remove("userData");
+    store.clearAll();
+    setUserData({});
+    window.location = "/";
+  };
+
   // const handleOnFocus = (text, err) => {
   //   setForm({
   //     ...form,
@@ -237,7 +223,7 @@ export default function AddForm() {
   //   }
   // };
 
-  const list = towns.map((r) => {
+  const list = props.town.map((r) => {
     return <MenuItem value={r}>{r}</MenuItem>;
   });
 
@@ -332,6 +318,11 @@ export default function AddForm() {
                 });
               }
               // setOpen(false);
+            } else if (
+              err.response.status === 401 ||
+              err.response.status === 403
+            ) {
+              handleLogoutAutomatically();
             }
             // if (err.response.status === 401 || err.response.status === 403) {
             //   handleLogoutAutomatically();
@@ -347,16 +338,15 @@ export default function AddForm() {
   return (
     <div>
       {" "}
-      <AddBoxTwoToneIcon
+      <AddBoxIcon
         className="addbutton"
         onClick={handleClickOpen}
-        variant="outlined"
         style={{
           fontSize: "1.7rem",
           color: "#008080",
           border: 0,
         }}
-      ></AddBoxTwoToneIcon>
+      ></AddBoxIcon>
       <Dialog
         classes={{ paper: classes.dialogPaper }}
         fullWidth={true}
