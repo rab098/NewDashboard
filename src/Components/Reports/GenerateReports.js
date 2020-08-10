@@ -416,36 +416,94 @@ function GenerateReports(props) {
         setNextButton(false)
     };
 
+    useEffect( () => {
+        if (oneDate !== null) {
+
+            setReportData(
+                mainData.filter(
+                    (obj) =>{
+                        // console.log("db date : ",Moment(obj.date).format("DD MMM yyyy"))
+
+                        // const format = 'llll'
+                        //
+                        // return Moment(obj.date, format).unix() >= Moment(oneDate, format).unix()
+                        console.log("db date :",Moment(obj.date).format().substr(0,10))
+                        console.log("selected onDate :", Moment(oneDate).format().substr(0,10))
+                        // return new Date(obj.date.substring(0, 14)).getTime() === oneDate.getTime()
+                        return Moment(obj.date).format().substr(0,10) === Moment(oneDate).format().substr(0,10)
+                    }
+
+
+                )
+            )
+
+            // console.log("selected oneDate use effect : ",Moment(oneDate).format("DD MMM yyyy") )
+
+
+
+        }
+
+    },[oneDate])
+
+    useEffect( () => {
+        if (fromDate !== null && toDate !== null) {
+            setReportData(
+                mainData.filter(
+                    (obj) =>{
+                        // console.log("db date : ",Moment(obj.date).format("DD MMM yyyy"))
+
+                        // return Moment(obj.date).format("DD MMM yyyy") >= Moment(fromDate).format("DD MMM yyyy") && Moment(obj.date).format("DD MMM yyyy") <= Moment(toDate).format("DD MMM yyyy")
+                        return new Date(obj.date.substring(0, 19)).getTime() >= fromDate.getTime() && new Date(obj.date.substring(0, 19)).getTime() <= toDate.getTime()
+                    }
+
+
+                )
+            )
+
+            console.log("from and to date: ", fromDate + toDate)
+
+        }
+
+    },[toDate])
+
     function handleNext(index) {
         switch(index) {
             case 0:
-                if (oneDate !== null) {
-                        setReportData(
-                            mainData.filter(
-                                (obj) =>
-                                    Moment(obj.date).format("DD MMM yyyy") === Moment(oneDate).format("DD MMM yyyy")
-                            )
-                        )
-
-                        setActiveStep((prevActiveStep) => prevActiveStep + 1);
-
-
-                } else {
-                    if (fromDate !== null && toDate !== null) {
-
-                        setReportData(
-                            mainData.filter(
-                                (obj) =>
-                                    Moment(obj.date).format("DD MMM yyyy") >= Moment(fromDate).format("DD MMM yyyy") &&
-                                    Moment(obj.date).format("DD MMM yyyy") <= Moment(toDate).format("DD MMM yyyy")
-                            )
-                        )
-                        setActiveStep((prevActiveStep) => prevActiveStep + 1);
-
-
-                    }
-                }
-
+                // if (oneDate !== null) {
+                //         setReportData(
+                //             mainData.filter(
+                //                 (obj) =>
+                //                     // console.log("db date : ",Moment(obj.date).format("DD MMM yyyy"))
+                //
+                //                     Moment(obj.date).format("DD MMM yyyy") === Moment(oneDate).format("DD MMM yyyy")
+                //
+                //
+                //
+                //             )
+                //         )
+                //
+                //         console.log("selected oneDate : ",Moment(oneDate).format("DD MMM yyyy") )
+                //
+                //         setActiveStep((prevActiveStep) => prevActiveStep + 1);
+                //
+                //
+                // } else {
+                //     if (fromDate !== null && toDate !== null) {
+                //
+                //         setReportData(
+                //             mainData.filter(
+                //                 (obj) =>
+                //                     Moment(obj.date).format("DD MMM yyyy") >= Moment(fromDate).format("DD MMM yyyy") &&
+                //                     Moment(obj.date).format("DD MMM yyyy") <= Moment(toDate).format("DD MMM yyyy")
+                //             )
+                //         )
+                //         setActiveStep((prevActiveStep) => prevActiveStep + 1);
+                //
+                //
+                //     }
+                // }
+                console.log("its done yo!")
+                setActiveStep((prevActiveStep) => prevActiveStep + 1);
                 break
             case 1:
                 console.log("mhm?")
