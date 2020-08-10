@@ -101,9 +101,17 @@ function GenerateReports(props) {
 
     const [radioValue, setRadioValue] = useState('one');
 
+    const [radioValueStepTwo, setRadioValueStepTwo] = useState('complaintType');
+
     const [hideOne, setHideOne] = useState(false);
 
-    const [sortedTypes, setSortedTypes] = useState([]);
+    const [sortedData, setSortedData] = useState([]);
+
+    const [hideType, setHideType] = useState(false);
+    const [hideTown, setHideTown] = useState(false);
+    const [hideSupervisor, setHideSupervisor] = useState(false);
+
+
     const [stepIndexNew, setStepIndexNew] = useState()
 
 
@@ -249,7 +257,7 @@ function GenerateReports(props) {
     const steps = getSteps()
 
     function getSteps() {
-        return ['Select the dates', 'Choose the type of complaint', 'Select the supervisor'];
+        return ['Select the dates', 'Choose how you want to sort the complaints', 'Generate your report'];
     }
 
     function getStepContent(stepIndex) {
@@ -259,29 +267,26 @@ function GenerateReports(props) {
             case 0:
                 return (<div>
 
-                    <FormControl component="fieldset">
-                        <FormLabel component="legend">You can choose to generate a one day or a multiple days
-                            report.</FormLabel>
-                        <RadioGroup
-                            row
-                            aria-label="position"
-                            name="position"
-                            defaultValue="one"
-                            onChange={handleRadioChange}>
+                    <p>You can choose to generate a one day report or a multiple days report.</p>
+                    <RadioGroup
+                        row
+                        aria-label="position"
+                        name="position"
+                        defaultValue="one"
+                        onChange={handleRadioChange}>
 
-                            <FormControlLabel
-                                value="one"
-                                control={<Radio color="primary"/>}
-                                label="One day"
-                                labelPlacement="end"/>
-                            <FormControlLabel
-                                value="multiple"
-                                control={<Radio color="primary"/>}
-                                label="Multiple Days"
-                                labelPlacement="end"/>
+                        <FormControlLabel
+                            value="one"
+                            control={<Radio color="primary"/>}
+                            label="One day"
+                            labelPlacement="end"/>
+                        <FormControlLabel
+                            value="multiple"
+                            control={<Radio color="primary"/>}
+                            label="Multiple Days"
+                            labelPlacement="end"/>
 
-                        </RadioGroup>
-                    </FormControl>
+                    </RadioGroup>
 
                     {hideOne ?
                         <div>
@@ -354,11 +359,39 @@ function GenerateReports(props) {
                 </div>)
             case 1:
                 return (<div>
-                    <FormControl component="fieldset">
-                        <FormGroup aria-label="position" row>
+
+                    <RadioGroup
+                        row
+                        aria-label="position"
+                        name="position"
+                        defaultValue="complaintType"
+                        onChange={handleRadioChangeStepTwo}>
+
+                        <FormControlLabel
+                            value="complaintType"
+                            control={<Radio color="primary"/>}
+                            label="Complaint Type"
+                            labelPlacement="end"/>
+                        <FormControlLabel
+                            value="towns"
+                            control={<Radio color="primary"/>}
+                            label="Town Wise"
+                            labelPlacement="end"/>
+
+                        <FormControlLabel
+                            value="supervisors"
+                            control={<Radio color="primary"/>}
+                            label="Supervisor Wise"
+                            labelPlacement="end"/>
+
+                    </RadioGroup>
+
+
+                   { hideType === true && <FormControl component="fieldset">
+                        <FormGroup aria-label="position" column>
                             {
 
-                                sortedTypes.map((obj) => {
+                                sortedData.map((obj) => {
                                     return (
                                         <FormControlLabel
                                             value="type"
@@ -372,7 +405,52 @@ function GenerateReports(props) {
                             }
 
                         </FormGroup>
+                    </FormControl>}
+
+
+                    { hideTown === true && <FormControl component="fieldset">
+                        <FormGroup aria-label="position" column>
+                            {
+
+                                sortedData.map((obj) => {
+                                    return (
+                                        <FormControlLabel
+                                            value="town"
+                                            control={<Checkbox color="primary"/>}
+                                            label={obj}
+                                            labelPlacement="end"
+                                        />
+
+                                    )
+                                })
+                            }
+
+                        </FormGroup>
+                    </FormControl>}
+
+
+                    { hideSupervisor === true && <FormControl component="fieldset">
+                        <FormGroup aria-label="position" column>
+                            {
+
+                                sortedData.map((obj) => {
+                                    return (
+                                        <FormControlLabel
+                                            value="supervisor"
+                                            control={<Checkbox color="primary"/>}
+                                            label={obj}
+                                            labelPlacement="end"
+                                        />
+
+                                    )
+                                })
+                            }
+
+                        </FormGroup>
                     </FormControl>
+                    }
+
+
                 </div>)
             case 2:
                 return 'This is the bit I really care about!';
@@ -386,17 +464,50 @@ function GenerateReports(props) {
         setRadioValue(event.target.value);
         setHideOne((prev) => !prev);
 
-        if(radioValue === 'one'){
+        if (radioValue === 'one') {
             oneDate === null ? setNextButton(true) : setNextButton(false)
 
-        }
-        else if(radioValue === 'multiple'){
-             (fromDate === null && toDate === null) ? setNextButton(true) : setNextButton(false)
+        } else if (radioValue === 'multiple') {
+            (fromDate === null && toDate === null) ? setNextButton(true) : setNextButton(false)
 
         }
 
 
     };
+
+    const handleRadioChangeStepTwo = (event) => {
+        setRadioValueStepTwo(event.target.value);
+
+        // if (radioValue === 'one') {
+        //     oneDate === null ? setNextButton(true) : setNextButton(false)
+        //
+        // } else if (radioValue === 'multiple') {
+        //     (fromDate === null && toDate === null) ? setNextButton(true) : setNextButton(false)
+        //
+        // }
+
+
+    };
+
+    useEffect( () => {
+        if (radioValueStepTwo === 'complaintType'){
+            setHideType(true)
+            setHideTown(false)
+            setHideSupervisor(false)
+        }
+        else if (radioValueStepTwo === 'towns'){
+            setHideType(false)
+            setHideTown(true)
+            setHideSupervisor(false)
+        }
+
+        else if (radioValueStepTwo === 'supervisors'){
+            setHideType(false)
+            setHideTown(false)
+            setHideSupervisor(true)
+        }
+
+    },[radioValueStepTwo])
 
 
     const handleOneDateChange = (date) => {
@@ -416,47 +527,51 @@ function GenerateReports(props) {
         setNextButton(false)
     };
 
-    useEffect( () => {
+    useEffect(() => {
         if (oneDate !== null) {
 
             setReportData(
                 mainData.filter(
-                    (obj) =>{
+                    (obj) => {
                         // console.log("db date : ",Moment(obj.date).format("DD MMM yyyy"))
 
                         // const format = 'llll'
                         //
                         // return Moment(obj.date, format).unix() >= Moment(oneDate, format).unix()
-                        console.log("db date :",Moment(obj.date).format().substr(0,10))
-                        console.log("selected onDate :", Moment(oneDate).format().substr(0,10))
+                        // console.log("db date :", Moment(obj.date).format().substr(0, 10))
+                        // console.log("selected onDate :", Moment(oneDate).format().substr(0, 10))
                         // return new Date(obj.date.substring(0, 14)).getTime() === oneDate.getTime()
-                        return Moment(obj.date).format().substr(0,10) === Moment(oneDate).format().substr(0,10)
+                        return Moment(obj.date).format().substr(0, 10) === Moment(oneDate).format().substr(0, 10)
                     }
-
-
                 )
             )
 
             // console.log("selected oneDate use effect : ",Moment(oneDate).format("DD MMM yyyy") )
 
 
-
         }
 
-    },[oneDate])
+    }, [oneDate])
 
-    useEffect( () => {
+    useEffect(() => {
         if (fromDate !== null && toDate !== null) {
             setReportData(
                 mainData.filter(
-                    (obj) =>{
-                        // console.log("db date : ",Moment(obj.date).format("DD MMM yyyy"))
+                    (obj) => {
 
+                        console.log("db date new :", new Date(obj.date.substring(0, 19)))
+                        console.log("selected fromDate :",fromDate)
+                        console.log("selected toDate :", toDate)
+
+                        // console.log("db date : ",Moment(obj.date).format("DD MMM yyyy"))
+                        // const format = 'llll'
+                        // return Moment(obj.date, format).unix() >= Moment(fromDate, format).unix() && Moment(obj.date, format).unix() <= Moment(toDate, format).unix()
                         // return Moment(obj.date).format("DD MMM yyyy") >= Moment(fromDate).format("DD MMM yyyy") && Moment(obj.date).format("DD MMM yyyy") <= Moment(toDate).format("DD MMM yyyy")
                         return new Date(obj.date.substring(0, 19)).getTime() >= fromDate.getTime() && new Date(obj.date.substring(0, 19)).getTime() <= toDate.getTime()
+
+                        // return Moment(obj.date).format().substr(0, 10) >= Moment(fromDate).format().substr(0, 10) &&
+                        //     Moment(obj.date).format().substr(0, 10) >= Moment(toDate).format().substr(0, 10)
                     }
-
-
                 )
             )
 
@@ -464,10 +579,10 @@ function GenerateReports(props) {
 
         }
 
-    },[toDate])
+    }, [toDate])
 
     function handleNext(index) {
-        switch(index) {
+        switch (index) {
             case 0:
                 // if (oneDate !== null) {
                 //         setReportData(
@@ -537,16 +652,37 @@ function GenerateReports(props) {
     // };
 
     useEffect(() => {
-        setSortedTypes(reportData.map((obj, index) => obj.type).filter((type, index) =>
-            reportData.map((obj, index) => obj.type).indexOf(type) === index))
 
-    }, [reportData])
+        if (radioValueStepTwo === 'complaintType'){
+            setSortedData(reportData.map((obj, index) => obj.type).filter((type, index) =>
+                reportData.map((obj, index) => obj.type).indexOf(type) === index))
+        }
+        else if (radioValueStepTwo === 'towns'){
+            setSortedData(reportData.map((obj, index) => obj.town).filter((town, index) =>
+                reportData.map((obj, index) => obj.town).indexOf(town) === index))
+        }
+
+        else if (radioValueStepTwo === 'supervisors'){
+            setSortedData(reportData.map((obj, index) => obj.supervisorName).filter((supervisorName, index) =>
+                reportData.map((obj, index) => obj.supervisorName).indexOf(supervisorName) === index))
+        }
+
+
+    }, [reportData,radioValueStepTwo])
 
     console.log("reportData?", reportData)
     // console.log("removed duplicates", sortedTypes)
 
 
-    const handleBack = () => {
+    const handleBack = (index) => {
+        switch (index) {
+            case 1:
+                setHideOne(false)
+                break
+            default:
+                return null;
+
+        }
         setActiveStep((prevActiveStep) => prevActiveStep - 1);
     };
 
@@ -594,21 +730,21 @@ function GenerateReports(props) {
     return (
         <div>
 
-            <div className="report-filter-main">
+            {/*<div className="report-filter-main">*/}
 
-                <p className="report-heading">Generate Report</p>
-
-
-                {/*<div className="report-filter">*/}
-                {/*    <button className='report-pdf-button' onClick={_exportPdfTable}>*/}
-                {/*        Download Report*/}
-                {/*    </button>*/}
-                {/*</div>*/}
-
-                {/*<button className='report-pdf-button' onClick={exportPDF}>Download PDF</button>*/}
+            {/*    <p className="report-heading">Generate Report</p>*/}
 
 
-            </div>
+            {/*    /!*<div className="report-filter">*!/*/}
+            {/*    /!*    <button className='report-pdf-button' onClick={_exportPdfTable}>*!/*/}
+            {/*    /!*        Download Report*!/*/}
+            {/*    /!*    </button>*!/*/}
+            {/*    /!*</div>*!/*/}
+
+            {/*    /!*<button className='report-pdf-button' onClick={exportPDF}>Download PDF</button>*!/*/}
+
+
+            {/*</div>*/}
 
 
             <div>
@@ -623,7 +759,7 @@ function GenerateReports(props) {
                                     <div>
                                         <Button
                                             disabled={activeStep === 0}
-                                            onClick={handleBack}
+                                            onClick={() => handleBack(index)}
                                             className={classes.button}
                                         >
                                             Back
