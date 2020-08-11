@@ -34,6 +34,11 @@ export default function UserStatistics(props) {
         if (err.response) {
           if (err.response.status === 401 || err.response.status === 403) {
             handleLogoutAutomatically();
+          } else if (
+            err.response.status === 503 ||
+            err.response.status === 500
+          ) {
+            console.log(err.response.status);
           }
         }
         console.log("Error in statistics" + err);

@@ -88,7 +88,12 @@ export default function ChangePassword(props) {
         if (err.response) {
           if (err.response.status === 401 || err.response.status === 403) {
             handleLogoutAutomatically();
-          } else {
+          } else if (
+            err.response.status === 503 ||
+            err.response.status === 500
+          ) {
+            console.log(err.response.status);
+          } else if (err.response.status === 400) {
             setError("Incorrect existing password");
             console.log("error" + err);
           }

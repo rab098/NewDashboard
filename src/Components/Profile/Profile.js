@@ -134,6 +134,9 @@ function Profile(props) {
           if (err.response.status === 401 || err.response.status === 403) {
             handleLogoutAutomatically();
           }
+          if (err.response.status === 503 || err.response.status === 500) {
+            console.log(err.response.status);
+          }
         }
         setLoading(false);
         console.log("error agaya" + err);
@@ -219,6 +222,9 @@ function Profile(props) {
           if (err.response.status === 401 || err.response.status === 403) {
             handleLogoutAutomatically();
           }
+          if (err.response.status === 503 || err.response.status === 500) {
+            console.log(err.response.status);
+          }
         }
         setLoading(false);
         console.log("error " + error);
@@ -227,7 +233,9 @@ function Profile(props) {
 
   //USE EFFECT
   useEffect(() => {
-    console.log("imageee notif", loading, notification);
+    // props.history.push("/error");
+
+    console.log("imageee notif", loading, notification, props.history);
     if (Object.keys(userData).length > 0) {
       setFullName(userData.userData.name);
       setEmail(userData.userData.email);
