@@ -168,7 +168,7 @@ function Dashboard({ match }) {
   const [userData, setUserData] = useState(store.get("userData"));
 
   useEffect(() => {
-    setServerError("503");
+    setServerError(false);
     console.log(window.location.pathname.split("/").pop(), "loccccc");
   }, []);
 
@@ -223,6 +223,7 @@ function Dashboard({ match }) {
               err.response.status === 500
             ) {
               console.log(err.response.status);
+              handleServerError(err.response.status);
             }
           }
 
@@ -258,6 +259,7 @@ function Dashboard({ match }) {
             err.response.status === 500
           ) {
             console.log(err.response.status);
+            handleServerError(err.response.status);
           }
         }
       });
@@ -322,6 +324,7 @@ function Dashboard({ match }) {
               err.response.status === 500
             ) {
               console.log(err.response.status);
+              handleServerError(err.response.status);
             }
           }
           console.log("Unable to retrieve refreshed token ", err);
@@ -364,6 +367,7 @@ function Dashboard({ match }) {
               err.response.status === 500
             ) {
               console.log(err.response.status);
+              handleServerError(err.response.status);
             }
           }
           console.error(err);
@@ -585,7 +589,7 @@ function Dashboard({ match }) {
                   <Route
                     path={`${match.path}/home`}
                     exact
-                    render={() => <Home />}
+                    render={() => <Home handleError={handleServerError} />}
                   />
 
                   <Route

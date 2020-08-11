@@ -36,7 +36,7 @@ const styles = {
 
 const useStyles = makeStyles(styles);
 
-function Home() {
+function Home(props) {
   // window.addEventListener('storage', function (e) {
   //     if (e.key === 'logoutEvent') {
   //         window.location = "/"
@@ -47,10 +47,6 @@ function Home() {
   const [userData, setUserData] = useState(store.get("userData"));
 
   const [grid, setGrid] = useState(5);
-
-  // useEffect(() => {
-  //     setUserData(store.get("userData"));
-  // }, []);
 
   console.log("store?????", userData);
 
@@ -143,6 +139,7 @@ function Home() {
               err.response.status === 500
             ) {
               console.log(err.response.status);
+              props.handleError(err.response.status);
             }
           }
           console.error(err);
