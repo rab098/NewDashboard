@@ -11,8 +11,7 @@ import {
   Input,
   InputLabel,
 } from "@material-ui/core";
-import { ImpulseSpinner } from "react-spinners-kit";
-import Backdrop from "@material-ui/core/Backdrop";
+
 import ImageComponent from "../Profile/ImageComponent";
 import UserStatistics from "../Profile/UserStatistics";
 import Alerts from "../Profile/Alerts";
@@ -22,6 +21,7 @@ import AccountCircle from "@material-ui/icons/AccountCircle";
 import EmailIcon from "@material-ui/icons/Email";
 import PhoneIcon from "@material-ui/icons/Phone";
 import LockIcon from "@material-ui/icons/Lock";
+import CircularProgress from "@material-ui/core/CircularProgress";
 import axios from "axios";
 let store = require("store");
 
@@ -134,6 +134,9 @@ function Profile(props) {
           if (err.response.status === 401 || err.response.status === 403) {
             handleLogoutAutomatically();
           }
+          if (err.response.status === 503 || err.response.status === 500) {
+            console.log(err.response.status);
+          }
         }
         setLoading(false);
         console.log("error agaya" + err);
@@ -219,6 +222,9 @@ function Profile(props) {
           if (err.response.status === 401 || err.response.status === 403) {
             handleLogoutAutomatically();
           }
+          if (err.response.status === 503 || err.response.status === 500) {
+            console.log(err.response.status);
+          }
         }
         setLoading(false);
         console.log("error " + error);
@@ -227,7 +233,9 @@ function Profile(props) {
 
   //USE EFFECT
   useEffect(() => {
-    console.log("imageee notif", loading, notification);
+    // props.history.push("/error");
+
+    console.log("imageee notif", loading, notification, props.history);
     if (Object.keys(userData).length > 0) {
       setFullName(userData.userData.name);
       setEmail(userData.userData.email);
@@ -424,15 +432,7 @@ function Profile(props) {
             {/* </Grid> */}
             {/* <Button>Change Password</Button> */}
           </Grid>
-          <Backdrop
-            open={loading}
-            style={{
-              zIndex: 1,
-              color: "#fff",
-            }}
-          >
-            <ImpulseSpinner size={90} color="#008081" loading={loading} />
-          </Backdrop>
+
           <ChangePassword
             open={open}
             dialogClose={handleClose}
@@ -472,6 +472,7 @@ function Profile(props) {
                 padding: 10,
                 justifyContent: "center",
                 textDecoration: "none",
+                display: loading ? "none" : "block",
               }}
               onClick={() => {
                 if (phoneNumber.length < 10) {
@@ -486,6 +487,9 @@ function Profile(props) {
             >
               Save
             </Button>
+            <CircularProgress
+              style={{ display: loading ? "block" : "none", color: "teal" }}
+            />
           </Grid>
         </Grid>
         {window.innerWidth > 500 && (

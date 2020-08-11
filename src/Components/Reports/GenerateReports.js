@@ -1,30 +1,30 @@
-import React, {useState, useEffect} from 'react';
-import '../../assets/css/reportsCss.css';
-import MenuItem from '@material-ui/core/MenuItem';
-import Select from '@material-ui/core/Select';
-import '../../ComponentsCss/GenerateReports.css'
+import React, {useState, useEffect} from "react";
+import "../../assets/css/reportsCss.css";
+import MenuItem from "@material-ui/core/MenuItem";
+import Select from "@material-ui/core/Select";
+import "../../ComponentsCss/GenerateReports.css";
 import PdfMakeTable from "./PdfMakeTable";
-import TextField from '@material-ui/core/TextField';
-import 'date-fns';
+import TextField from "@material-ui/core/TextField";
+import "date-fns";
 import DateFnsUtils from "@date-io/date-fns";
-import Stepper from '@material-ui/core/Stepper';
-import Step from '@material-ui/core/Step';
-import StepLabel from '@material-ui/core/StepLabel';
-import StepContent from '@material-ui/core/StepContent';
-import Paper from '@material-ui/core/Paper';
+import Stepper from "@material-ui/core/Stepper";
+import Step from "@material-ui/core/Step";
+import StepLabel from "@material-ui/core/StepLabel";
+import StepContent from "@material-ui/core/StepContent";
+import Paper from "@material-ui/core/Paper";
 import Moment from "moment";
-import Radio from '@material-ui/core/Radio';
-import RadioGroup from '@material-ui/core/RadioGroup';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import FormControl from '@material-ui/core/FormControl';
-import FormLabel from '@material-ui/core/FormLabel';
+import Radio from "@material-ui/core/Radio";
+import RadioGroup from "@material-ui/core/RadioGroup";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import FormControl from "@material-ui/core/FormControl";
+import FormLabel from "@material-ui/core/FormLabel";
 
 // import MomentUtils from '@date-io/moment';
 
 import {
     MuiPickersUtilsProvider,
     KeyboardDatePicker,
-} from '@material-ui/pickers';
+} from "@material-ui/pickers";
 
 // import jsPDF from 'jspdf';
 // import html2canvas from 'html2canvas';
@@ -35,19 +35,19 @@ import {
     PDFTableRow,
     PDFTableColumn,
     PDFColumns,
-    PDFColumn
-} from 'react-pdfmake';
+    PDFColumn,
+} from "react-pdfmake";
 import axios from "axios";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import {makeStyles} from "@material-ui/core/styles";
 import Checkbox from "@material-ui/core/Checkbox";
 import FormGroup from "@material-ui/core/FormGroup";
+import html2canvas from "html2canvas";
 
 // const ref = React.createRef();
 
 let store = require("store");
-
 
 const styles = {
     button: {
@@ -59,7 +59,6 @@ const styles = {
     },
     resetContainer: {
         padding: 20,
-
     },
 
     stepperBg: {
@@ -67,19 +66,16 @@ const styles = {
     },
 
     step: {
-        color: "#008080"
+        color: "#008080",
     },
 };
 
 const useStyles = makeStyles(styles);
 
 function GenerateReports(props) {
-
     const classes = useStyles();
 
-
     const [userData, setUserData] = useState(store.get("userData"));
-
 
     const [firstDate, setFirstDate] = useState(null);
     const [lastDate, setLastDate] = useState(null);
@@ -88,30 +84,43 @@ function GenerateReports(props) {
     const [toDate, setToDate] = useState(null);
     const [oneDate, setOneDate] = useState(null);
 
+    const [enableToDatePicker, setEnableToDatePicker] = useState(true);
 
-    const [enableToDatePicker, setEnableToDatePicker] = useState(true)
+    const [activeStep, setActiveStep] = useState(0);
 
-    const [activeStep, setActiveStep] = useState(0)
+    const [nextButton, setNextButton] = useState(true);
 
-    const [nextButton, setNextButton] = useState(true)
+    const [typeCheckboxCount, setTypeCheckboxCount] = useState(0)
 
-    const [mainData, setMainData] = useState([])
+    const [townsCheckboxCount, setTownsCheckboxCount] = useState(0)
 
-    const [reportData, setReportData] = useState([])
+    const [supervisorCheckboxCount, setSupervisorCheckboxCount] = useState(0)
 
-    const [radioValue, setRadioValue] = useState('one');
+
+    const [mainData, setMainData] = useState([]);
+
+    const [reportData, setReportData] = useState([]);
+
+    const [radioValue, setRadioValue] = useState("one");
 
     const [hideOne, setHideOne] = useState(false);
 
-    const [sortedTypes, setSortedTypes] = useState([]);
+    const [radioValueStepTwo, setRadioValueStepTwo] = useState("complaintType");
+
+    const [sortedData, setSortedData] = useState([]);
+
+    const [hideType, setHideType] = useState(false);
+    const [hideTown, setHideTown] = useState(false);
+    const [hideSupervisor, setHideSupervisor] = useState(false);
+
+    const [isChecked, setIsChecked] = useState(false)
 
 
-
+    const [stepIndexNew, setStepIndexNew] = useState();
 
     // const exportPDF = () => {
     //      resume.save();
     //  }
-
 
     // const exportPDF = () => {
     //     html2canvas(document.querySelector("#capture")).then(canvas => {
@@ -128,11 +137,9 @@ function GenerateReports(props) {
         "x-access-token": userData.accessToken,
     };
 
-
     const getComplaints = () => {
-
         let datesObj = [];
-        let mainObj = []
+        let mainObj = [];
 
         axios
             .get(
@@ -145,7 +152,7 @@ function GenerateReports(props) {
             .then((res) => {
                 console.log("complaints coming!", res.data);
                 for (let i in res.data) {
-                    datesObj[i] = res.data[i].complain.createdAt
+                    datesObj[i] = res.data[i].complain.createdAt;
 
                     let tmpObj = {};
                     tmpObj["id"] = res.data[i].complain.id;
@@ -185,57 +192,58 @@ function GenerateReports(props) {
                     // Moment(res.data[i].complain.createdAt).format("DD MMM yyyy")
                 }
 
-
-                console.log("what data is coming of complaints?", mainObj)
-                console.log("dates", datesObj)
-                setFirstDate(datesObj[0])
-                setLastDate(datesObj[datesObj.length - 1])
-                setToDate(lastDate)
-                setReportData(mainObj)
-                setMainData(mainObj)
-
+                console.log("what data is coming of complaints?", mainObj);
+                console.log("dates", datesObj);
+                setFirstDate(datesObj[0]);
+                setLastDate(datesObj[datesObj.length - 1]);
+                setToDate(lastDate);
+                setReportData(mainObj);
+                setMainData(mainObj);
             })
             .catch((err) => {
                 if (err.response) {
                     if (err.response.status === 401 || err.response.status === 403) {
                         handleLogoutAutomatically();
+                    } else if (
+                        err.response.status === 503 ||
+                        err.response.status === 500
+                    ) {
+                        console.log(err.response.status);
                     }
                 }
 
                 console.log("complaints not coming", err.response);
-
-
             });
-    }
+    };
 
     const getSupervisor = () => {
-
-        axios.get(`https://m2r31169.herokuapp.com/api/getSuperVisor_Town`,
-            {
-                headers: headers
+        axios
+            .get(`https://m2r31169.herokuapp.com/api/getSuperVisor_Town`, {
+                headers: headers,
             })
             .then((res) => {
                 console.log("supervisor and town coming!", res.data);
-
             })
             .catch((err) => {
                 if (err.response) {
                     if (err.response.status === 401 || err.response.status === 403) {
                         handleLogoutAutomatically();
+                    } else if (
+                        err.response.status === 503 ||
+                        err.response.status === 500
+                    ) {
+                        console.log(err.response.status);
                     }
                 }
 
                 console.log("supervisor and towns not coming", err.response);
-
-
-            })
-    }
-
+            });
+    };
 
     useEffect(() => {
         // console.log("userData" + JSON.stringify(userData));
-        getComplaints()
-        getSupervisor()
+        getComplaints();
+        getSupervisor();
         // setComplaintFilter("active");
     }, [userData]);
 
@@ -246,225 +254,469 @@ function GenerateReports(props) {
         window.location = "/";
     };
 
-
-    const steps = getSteps()
+    const steps = getSteps();
 
     function getSteps() {
-        return ['Select the dates', 'Choose the type of complaint', 'Select the supervisor'];
+        return [
+            "Select the dates",
+            "Choose how you want to sort the complaints",
+            "Generate your report",
+        ];
     }
 
     function getStepContent(stepIndex) {
+        // setStepIndexNew(stepIndex)
         switch (stepIndex) {
             case 0:
-                return (<div>
-
-                    <FormControl component="fieldset">
-                        <FormLabel component="legend">You can choose to generate a one day or a multiple days
-                            report.</FormLabel>
+                return (
+                    <div>
+                        <p>
+                            You can choose to generate a one day report or a multiple days
+                            report.
+                        </p>
                         <RadioGroup
                             row
                             aria-label="position"
                             name="position"
-                            defaultValue="one"
-                            onChange={handleRadioChange}>
-
+                            defaultValue={radioValue}
+                            onChange={handleRadioChange}
+                        >
                             <FormControlLabel
                                 value="one"
                                 control={<Radio color="primary"/>}
                                 label="One day"
-                                labelPlacement="end"/>
+                                labelPlacement="end"
+                            />
                             <FormControlLabel
                                 value="multiple"
                                 control={<Radio color="primary"/>}
                                 label="Multiple Days"
-                                labelPlacement="end"/>
-
+                                labelPlacement="end"
+                            />
                         </RadioGroup>
-                    </FormControl>
 
-                    {hideOne ?
-                        <div>
-                            <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                                <KeyboardDatePicker
-                                    margin="normal"
-                                    defaultValue="20 Jul 2020"
-                                    id="date-picker-dialog-from"
-                                    label="From"
-                                    format="dd MMM yyyy"
-                                    error={false}
-                                    minDate={firstDate}
-                                    maxDate={Moment(lastDate).add(-1, "days")}
-                                    value={fromDate}
-                                    onChange={handleFromDateChange}
-                                    KeyboardButtonProps={{
-                                        'aria-label': 'change date',
-                                    }}
-                                    TextFieldComponent={TextFieldComponent}
-
-                                />
-                            </MuiPickersUtilsProvider>
-
-                            <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                                <KeyboardDatePicker
-                                    margin="normal"
-                                    id="date-picker-dialog-to"
-                                    label="To"
-                                    error={false}
-                                    format="dd MMM yyyy"
-                                    minDate={Moment(fromDate).add(1, "days")}
-                                    maxDate={lastDate}
-                                    value={toDate}
-                                    onChange={handleToDateChange}
-                                    disabled={enableToDatePicker}
-                                    KeyboardButtonProps={{
-                                        'aria-label': 'change date',
-                                    }}
-                                    TextFieldComponent={TextFieldComponent}
-
-                                />
-                            </MuiPickersUtilsProvider>
-                        </div>
-                        :
-
-                        <div>
-                            <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                                <KeyboardDatePicker
-                                    margin="normal"
-                                    defaultValue="20 Jul 2020"
-                                    id="date-picker-dialog-one"
-                                    label="Select Date"
-                                    format="dd MMM yyyy"
-                                    error={false}
-                                    minDate={firstDate}
-                                    maxDate={lastDate}
-                                    value={oneDate}
-                                    onChange={handleOneDateChange}
-                                    KeyboardButtonProps={{
-                                        'aria-label': 'change date',
-                                    }}
-                                    TextFieldComponent={TextFieldComponent}
-
-                                />
-                            </MuiPickersUtilsProvider>
-                        </div>
-                    }
-
-
-                </div>)
-            case 1:
-                return (<div>
-                    <FormControl component="fieldset">
-                        <FormGroup aria-label="position" row>
-                            {
-                                sortedTypes.map((obj) => {
-                                    return (
-                                    <FormControlLabel
-                                        value="type"
-                                        control={<Checkbox color="primary" />}
-                                        label={obj}
-                                        labelPlacement="end"
+                        {hideOne ? (
+                            <div>
+                                <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                                    <KeyboardDatePicker
+                                        margin="normal"
+                                        defaultValue="20 Jul 2020"
+                                        id="date-picker-dialog-from"
+                                        label="From"
+                                        format="dd MMM yyyy"
+                                        error={false}
+                                        minDate={firstDate}
+                                        maxDate={Moment(lastDate).add(-1, "days")}
+                                        value={fromDate}
+                                        onChange={handleFromDateChange}
+                                        KeyboardButtonProps={{
+                                            "aria-label": "change date",
+                                        }}
+                                        TextFieldComponent={TextFieldComponent}
                                     />
+                                </MuiPickersUtilsProvider>
 
-                                )})
-                            }
+                                <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                                    <KeyboardDatePicker
+                                        margin="normal"
+                                        id="date-picker-dialog-to"
+                                        label="To"
+                                        error={false}
+                                        format="dd MMM yyyy"
+                                        minDate={Moment(fromDate).add(1, "days")}
+                                        maxDate={lastDate}
+                                        value={toDate}
+                                        disabled={enableToDatePicker}
+                                        onChange={handleToDateChange}
+                                        KeyboardButtonProps={{
+                                            "aria-label": "change date",
+                                        }}
+                                        TextFieldComponent={TextFieldComponent}
+                                    />
+                                </MuiPickersUtilsProvider>
+                            </div>
+                        ) : (
+                            <div>
+                                <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                                    <KeyboardDatePicker
+                                        margin="normal"
+                                        defaultValue="20 Jul 2020"
+                                        id="date-picker-dialog-one"
+                                        label="Select Date"
+                                        format="dd MMM yyyy"
+                                        error={false}
+                                        minDate={firstDate}
+                                        maxDate={lastDate}
+                                        value={oneDate}
+                                        onChange={handleOneDateChange}
+                                        KeyboardButtonProps={{
+                                            "aria-label": "change date",
+                                        }}
+                                        TextFieldComponent={TextFieldComponent}
+                                    />
+                                </MuiPickersUtilsProvider>
+                            </div>
+                        )}
+                    </div>
+                );
+            case 1:
+                return (
+                    <div>
+                        <RadioGroup
+                            row
+                            aria-label="position"
+                            name="position"
+                            defaultValue={radioValueStepTwo}
+                            onChange={handleRadioChangeStepTwo}
+                        >
+                            <FormControlLabel
+                                value="complaintType"
+                                control={<Radio color="primary"/>}
+                                label="Complaint Type"
+                                labelPlacement="end"
+                            />
+                            <FormControlLabel
+                                value="towns"
+                                control={<Radio color="primary"/>}
+                                label="Town Wise"
+                                labelPlacement="end"
+                            />
 
-                        </FormGroup>
-                    </FormControl>
-                </div>)
+                            <FormControlLabel
+                                value="supervisors"
+                                control={<Radio color="primary"/>}
+                                label="Supervisor Wise"
+                                labelPlacement="end"
+                            />
+                        </RadioGroup>
+
+                        {hideType === true && (
+                            <FormControl component="fieldset">
+                                <FormGroup aria-label="position" column>
+                                    {sortedData.map((obj) => {
+                                        return (
+                                            <FormControlLabel
+                                                value="type"
+                                                control={<Checkbox color="primary"/>}
+                                                label={obj}
+                                                onChange={handleTypeCheckboxChange}
+                                                labelPlacement="end"
+                                            />
+                                        );
+                                    })}
+                                </FormGroup>
+                            </FormControl>
+                        )}
+
+                        {hideTown === true && (
+                            <FormControl component="fieldset">
+                                <FormGroup aria-label="position" column>
+                                    {sortedData.map((obj) => {
+                                        return (
+                                            <FormControlLabel
+                                                value="town"
+                                                control={<Checkbox color="primary"/>}
+                                                onChange={handleTownsCheckboxChange}
+                                                label={obj}
+                                                labelPlacement="end"
+                                            />
+                                        );
+                                    })}
+                                </FormGroup>
+                            </FormControl>
+                        )}
+
+                        {hideSupervisor === true && (
+                            <FormControl component="fieldset">
+                                <FormGroup aria-label="position" column>
+                                    {sortedData.map((obj) => {
+                                        return (
+                                            <FormControlLabel
+                                                value="supervisor"
+                                                control={<Checkbox color="primary"/>}
+                                                onChange={handleSupervisorsCheckboxChange}
+                                                label={obj}
+                                                labelPlacement="end"
+                                            />
+                                        );
+                                    })}
+                                </FormGroup>
+                            </FormControl>
+                        )}
+                    </div>
+                );
             case 2:
-                return 'This is the bit I really care about!';
+                return (
+
+                    <div>
+                        <p>Click on the button to generate your report.</p>
+                        {/*<div className="report-filter">*/}
+                        {/*    <button className='report-pdf-button' onClick={_exportPdfTable}>*/}
+                        {/*        Download Report*/}
+                        {/*    </button>*/}
+                        {/*</div>*/}
+                        {/*<button className='report-pdf-button' onClick={exportPDF}>Download PDF</button>*/}
+                    </div>
+                );
             default:
-                return 'Unknown stepIndex';
+                return "Unknown stepIndex";
         }
     }
 
 
     const handleRadioChange = (event) => {
+        // setNextButton(true);
         setRadioValue(event.target.value);
         setHideOne((prev) => !prev);
 
-        // if(radioValue === 'one'){
-        //     oneDate === null ? setNextButton(true) : setNextButton(false)
-        //
-        // }
-        // else if(radioValue === 'multiple'){
-        //      (fromDate === null && toDate === null) ? setNextButton(true) : setNextButton(false)
-        //
-        // }
+        if (event.target.value === "one") {
+            oneDate === null ? setNextButton(true) : setNextButton(false);
+        } else if (event.target.value === "multiple") {
+            fromDate === null || toDate === null
+                ? setNextButton(true)
+                : setNextButton(false);
+        }
+    };
 
+    const handleRadioChangeStepTwo = (event) => {
+        setRadioValueStepTwo(event.target.value);
+        setTypeCheckboxCount(0)
+        setTownsCheckboxCount(0)
+        setSupervisorCheckboxCount(0)
 
-
-        // if (radioValue === 'multiple') {
-        //     setHideOne(true)
-        // } else {
-        //     setHideOne(false)
-        //
-        // }
-
+        if (event.target.value === "complaintType") {
+            typeCheckboxCount === 0 ? setNextButton(true) : setNextButton(false);
+        } else if (event.target.value === "towns") {
+            townsCheckboxCount === 0 ? setNextButton(true) : setNextButton(false);
+        } else if (event.target.value === "supervisors")
+            supervisorCheckboxCount === 0 ? setNextButton(true) : setNextButton(false);
 
     };
+
+    useEffect(() => {
+        if (radioValueStepTwo === "complaintType") {
+            setHideType(true);
+            setHideTown(false);
+            setHideSupervisor(false);
+        } else if (radioValueStepTwo === "towns") {
+            setHideType(false);
+            setHideTown(true);
+            setHideSupervisor(false);
+        } else if (radioValueStepTwo === "supervisors") {
+            setHideType(false);
+            setHideTown(false);
+            setHideSupervisor(true);
+        }
+    }, [radioValueStepTwo]);
+
+
+    const handleTypeCheckboxChange = (event) => {
+
+
+        if (event.target.checked) {
+            setTypeCheckboxCount(prevState => prevState + 1)
+        } else {
+            setTypeCheckboxCount(prevState => prevState - 1)
+
+
+        }
+    }
+
+    const handleTownsCheckboxChange = (event) => {
+
+
+        if (event.target.checked) {
+            setTownsCheckboxCount(prevState => prevState + 1)
+        } else {
+            setTownsCheckboxCount(prevState => prevState - 1)
+
+
+        }
+    }
+
+    const handleSupervisorsCheckboxChange = (event) => {
+
+
+        if (event.target.checked) {
+            setSupervisorCheckboxCount(prevState => prevState + 1)
+        } else {
+            setSupervisorCheckboxCount(prevState => prevState - 1)
+
+
+        }
+    }
+
+
+    useEffect(() => {
+
+        if (typeCheckboxCount === 0 && activeStep === 1) {
+            setNextButton(true)
+        } else if (typeCheckboxCount !== 0 && activeStep === 1)
+            setNextButton(false)
+
+
+    }, [typeCheckboxCount, activeStep])
+
+    useEffect(() => {
+
+        if (townsCheckboxCount === 0 && activeStep === 1) {
+            setNextButton(true)
+        } else if (townsCheckboxCount !== 0 && activeStep === 1)
+            setNextButton(false)
+
+
+    }, [townsCheckboxCount, activeStep])
+
+
+    useEffect(() => {
+
+        if (supervisorCheckboxCount === 0 && activeStep === 1) {
+            setNextButton(true)
+        } else if (supervisorCheckboxCount !== 0 && activeStep === 1)
+            setNextButton(false)
+
+
+    }, [supervisorCheckboxCount, activeStep])
 
 
     const handleOneDateChange = (date) => {
         setOneDate(date);
-        setNextButton(false)
-
+        setNextButton(false);
     };
 
     const handleFromDateChange = (date) => {
         setFromDate(date);
-        setEnableToDatePicker(false)
+        setEnableToDatePicker(false);
     };
-
 
     const handleToDateChange = (date) => {
         setToDate(date);
-        setNextButton(false)
+        setNextButton(false);
     };
 
-    const handleNext = () => {
+    useEffect(() => {
+        if (oneDate !== null) {
+            setReportData(
+                mainData.filter((obj) => {
+                    // console.log("db date : ",Moment(obj.date).format("DD MMM yyyy"))
 
-        if (radioValue === 'one') {
-            if (oneDate !== null) {
-                setReportData(
-                    mainData.filter(
-                        (obj) =>
-                            Moment(obj.date).format("DD MMM yyyy") === Moment(oneDate).format("DD MMM yyyy")
-                    )
-                )
+                    // const format = 'llll'
+                    //
+                    // return Moment(obj.date, format).unix() >= Moment(oneDate, format).unix()
+                    console.log("db date :", Moment(obj.date).format().substr(0, 10));
+                    console.log(
+                        "selected onDate :",
+                        Moment(oneDate).format().substr(0, 10)
+                    );
+                    // return new Date(obj.date.substring(0, 14)).getTime() === oneDate.getTime()
+                    return (
+                        Moment(obj.date).format().substr(0, 10) ===
+                        Moment(oneDate).format().substr(0, 10)
+                    );
+                })
+            );
 
-                setActiveStep((prevActiveStep) => prevActiveStep + 1);
-
-            }
-        } else {
-            if (fromDate !== null && toDate !== null) {
-
-                console.log("from????data", Moment(fromDate).format("DD MMM yyyy"))
-                setReportData(
-                    mainData.filter(
-                        (obj) =>
-                            // console.log("obj date?", Moment(obj.date).format("DD MMM yyyy"))
-                            Moment(obj.date).format("DD MMM yyyy") >= Moment(fromDate).format("DD MMM yyyy") &&
-                            Moment(obj.date).format("DD MMM yyyy") <= Moment(toDate).format("DD MMM yyyy")
-                        // obj.statusType === "Resolved" || obj.statusType === "Rejected"
-                    )
-                )
-                setActiveStep((prevActiveStep) => prevActiveStep + 1);
-
-
-            }
+            // console.log("selected oneDate use effect : ",Moment(oneDate).format("DD MMM yyyy") )
         }
+    }, [oneDate]);
 
-        setSortedTypes(reportData.map((obj) => {
-            new Set(obj.types)
-        }))
+    useEffect(() => {
+        if (fromDate !== null && toDate !== null) {
+            setReportData(
+                mainData.filter((obj) => {
+                    // console.log("db date : ",Moment(obj.date).format("DD MMM yyyy"))
 
-    };
+                    // return Moment(obj.date).format("DD MMM yyyy") >= Moment(fromDate).format("DD MMM yyyy") && Moment(obj.date).format("DD MMM yyyy") <= Moment(toDate).format("DD MMM yyyy")
+                    return (
+                        new Date(obj.date.substring(0, 19)).getTime() >=
+                        fromDate.getTime() &&
+                        new Date(obj.date.substring(0, 19)).getTime() <= toDate.getTime()
+                    );
+                })
+            );
 
-    console.log("reportData?", reportData)
+            console.log("from and to date: ", fromDate + toDate);
+        }
+    }, [toDate]);
+
+    function handleNext(index) {
+        switch (index) {
+            case 0:
+                console.log("its done yo!");
+                setActiveStep((prevActiveStep) => prevActiveStep + 1);
 
 
-    const handleBack = () => {
+                // setNextButton(true)
+                setTypeCheckboxCount(0)
+                setTownsCheckboxCount(0)
+                setSupervisorCheckboxCount(0)
+
+                break;
+            case 1:
+
+                console.log("mhm?");
+                setActiveStep((prevActiveStep) => prevActiveStep + 1);
+                break;
+            case 2:
+                _exportPdfTable()
+                break
+            default:
+                return null;
+        }
+    }
+
+    console.log("typeCheckboxCount", typeCheckboxCount)
+    console.log("activeStep", activeStep)
+
+    useEffect(() => {
+        if (radioValueStepTwo === "complaintType") {
+            setSortedData(
+                reportData
+                    .map((obj, index) => obj.type)
+                    .filter(
+                        (type, index) =>
+                            reportData.map((obj, index) => obj.type).indexOf(type) === index
+                    )
+            );
+        } else if (radioValueStepTwo === "towns") {
+            setSortedData(
+                reportData
+                    .map((obj, index) => obj.town)
+                    .filter(
+                        (town, index) =>
+                            reportData.map((obj, index) => obj.town).indexOf(town) === index
+                    )
+            );
+        } else if (radioValueStepTwo === "supervisors") {
+            setSortedData(
+                reportData
+                    .map((obj, index) => obj.supervisorName)
+                    .filter(
+                        (supervisorName, index) =>
+                            reportData
+                                .map((obj, index) => obj.supervisorName)
+                                .indexOf(supervisorName) === index
+                    )
+            );
+        }
+    }, [reportData, radioValueStepTwo]);
+
+    console.log("reportData?", reportData);
+
+    const handleBack = (index) => {
+
+        switch (index) {
+            case 1:
+                // setHideOne(false)
+                setNextButton(false)
+                break
+            case 2:
+                setNextButton(false)
+                break
+            default:
+                return null;
+
+        }
         setActiveStep((prevActiveStep) => prevActiveStep - 1);
     };
 
@@ -472,66 +724,46 @@ function GenerateReports(props) {
         setActiveStep(0);
     };
 
-    // const handleDateClick = () => {
-    //     if(fromDate === ""){
-    //
-    //     }
-    // }
 
     const TextFieldComponent = (props) => {
-        return <TextField {...props} disabled={true}/>
-    }
-    const [reportType, setReportType] = React.useState('Total Complaints Yearly');
-    const [pageSize, setPageSize] = React.useState('A4');
+        return <TextField {...props} disabled={true}/>;
+    };
+    const [reportType, setReportType] = React.useState("Total Complaints Yearly");
+    const [pageSize, setPageSize] = React.useState("A4");
 
-    const [resume, setResume] = useState({})
+    const [resume, setResume] = useState({});
 
     const handleChange = (event) => {
         setReportType(event.target.value);
 
-        if (reportType === 'Total Complaints Yearly') {
-            console.log('display totals report')
+        if (reportType === "Total Complaints Yearly") {
+            console.log("display totals report");
         }
     };
 
     const handlePageSize = (event) => {
-        setPageSize(event.target.value)
+        setPageSize(event.target.value);
 
-        if (pageSize === 'A4') {
-
-        } else if (pageSize === 'Letter') {
-
+        if (pageSize === "A4") {
+        } else if (pageSize === "Letter") {
         }
-    }
+    };
 
     const _exportPdfTable = () => {
         // change this number to generate more or less rows of data
         PdfMakeTable(20);
-    }
+    };
 
     return (
         <div>
 
-            <div className="report-filter-main">
-
-                <p className="report-heading">Generate Report</p>
-
-
-                {/*<div className="report-filter">*/}
-                {/*    <button className='report-pdf-button' onClick={_exportPdfTable}>*/}
-                {/*        Download Report*/}
-                {/*    </button>*/}
-                {/*</div>*/}
-
-                {/*<button className='report-pdf-button' onClick={exportPDF}>Download PDF</button>*/}
-
-
-            </div>
-
 
             <div>
-
-                <Stepper className={classes.stepperBg} activeStep={activeStep} orientation="vertical">
+                <Stepper
+                    className={classes.stepperBg}
+                    activeStep={activeStep}
+                    orientation="vertical"
+                >
                     {steps.map((label, index) => (
                         <Step key={label}>
                             <StepLabel>{label}</StepLabel>
@@ -541,19 +773,19 @@ function GenerateReports(props) {
                                     <div>
                                         <Button
                                             disabled={activeStep === 0}
-                                            onClick={handleBack}
+                                            onClick={() => handleBack(index)}
                                             className={classes.button}
                                         >
                                             Back
                                         </Button>
                                         <Button
                                             variant="contained"
-                                            color="primary"
-                                            onClick={handleNext}
+                                            color="secondary"
+                                            onClick={() => handleNext(index)}
                                             className={classes.button}
                                             disabled={nextButton}
                                         >
-                                            {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
+                                            {activeStep === steps.length - 1 ? "Download Report" : "Next"}
                                         </Button>
                                     </div>
                                 </div>
@@ -569,8 +801,6 @@ function GenerateReports(props) {
                         </Button>
                     </Paper>
                 )}
-
-
             </div>
 
             {/*<div>*/}
@@ -599,7 +829,7 @@ function GenerateReports(props) {
 
             {/*</div>*/}
         </div>
-    )
+    );
 }
 
 export default GenerateReports;

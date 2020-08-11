@@ -6,6 +6,7 @@ import IconButton from "@material-ui/core/IconButton";
 
 import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 import React, { useState, useEffect } from "react";
 
@@ -37,6 +38,7 @@ export default function ChangePassword(props) {
 
   const [userData, setUserData] = useState(store.get("userData"));
   const [Error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
   const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = React.useState("");
   const [Selstatus, setSelStatus] = React.useState({});
@@ -67,6 +69,8 @@ export default function ChangePassword(props) {
   };
 
   const changePasswordApi = () => {
+    setError("");
+    setLoading(true);
     axios
       .post(
         "https://m2r31169.herokuapp.com/api/changePassword",
@@ -85,10 +89,16 @@ export default function ChangePassword(props) {
         dialogClose();
       })
       .catch((err) => {
+        setLoading(false);
         if (err.response) {
           if (err.response.status === 401 || err.response.status === 403) {
             handleLogoutAutomatically();
-          } else {
+          } else if (
+            err.response.status === 503 ||
+            err.response.status === 500
+          ) {
+            console.log(err.response.status);
+          } else if (err.response.status === 400) {
             setError("Incorrect existing password");
             console.log("error" + err);
           }
@@ -181,12 +191,16 @@ export default function ChangePassword(props) {
           Cancel
         </Button>
         <Button
+          style={{ display: loading ? "none" : "block" }}
           onClick={() => {
             handleSaveClose();
           }}
         >
           Done
         </Button>
+        <CircularProgress
+          style={{ display: loading ? "block" : "none", color: "teal" }}
+        />
       </DialogActions>
     </Dialog>
   );

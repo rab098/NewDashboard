@@ -375,6 +375,9 @@ export default function Supervisors() {
           if (err.response.status === 401 || err.response.status === 403) {
             handleLogoutAutomatically();
           }
+          if (err.response.status === 503 || err.response.status === 500) {
+            console.log(err.response.status);
+          }
         }
       });
   }

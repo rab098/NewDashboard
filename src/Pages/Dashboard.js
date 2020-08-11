@@ -14,6 +14,7 @@ import Employees from "../Components/Employees/Employees";
 import Profile from "../Components/Profile/Profile";
 import ManageComplaints from "../Components/ManageComplaints/ManageComplaints";
 import Notification from "../Components/Notification";
+import ErrorPage from "../Pages/Error";
 import {
   BrowserRouter as Router,
   Switch,
@@ -130,6 +131,7 @@ function Dashboard({ match }) {
   const [notifications, setNotifications] = useState({});
 
   const [dropdownNotifs, setDropDownNotifs] = useState([]);
+  const [serverError, setServerError] = useState(false);
 
   const [notifCount, setNotifCount] = useState(0);
 
@@ -141,6 +143,10 @@ function Dashboard({ match }) {
       console.log("logout hogya ballay ballay");
     }
   });
+
+  const handleServerError = (error) => {
+    setServerError(error);
+  };
 
   const classes = useStyles();
   // const [notifList, setNotifList] = useState(false);
@@ -162,6 +168,7 @@ function Dashboard({ match }) {
   const [userData, setUserData] = useState(store.get("userData"));
 
   useEffect(() => {
+    setServerError(false);
     console.log(window.location.pathname.split("/").pop(), "loccccc");
   }, []);
 
@@ -211,6 +218,12 @@ function Dashboard({ match }) {
           if (err.response) {
             if (err.response.status === 401 || err.response.status === 403) {
               handleLogoutAutomatically();
+            } else if (
+              err.response.status === 503 ||
+              err.response.status === 500
+            ) {
+              console.log(err.response.status);
+              handleServerError(err.response.status);
             }
           }
 
@@ -241,6 +254,12 @@ function Dashboard({ match }) {
         if (err.response) {
           if (err.response.status === 401 || err.response.status === 403) {
             handleLogoutAutomatically();
+          } else if (
+            err.response.status === 503 ||
+            err.response.status === 500
+          ) {
+            console.log(err.response.status);
+            handleServerError(err.response.status);
           }
         }
       });
@@ -270,6 +289,12 @@ function Dashboard({ match }) {
         if (err.response) {
           if (err.response.status === 401) {
             handleLogoutAutomatically();
+          } else if (
+            err.response.status === 503 ||
+            err.response.status === 500
+          ) {
+            console.log(err.response.status);
+            handleServerError(err.response.status);
           }
         }
         console.log("Unable to get permission to notify.", err);
@@ -294,6 +319,12 @@ function Dashboard({ match }) {
           if (err.response) {
             if (err.response.status === 401 || err.response.status === 403) {
               handleLogoutAutomatically();
+            } else if (
+              err.response.status === 503 ||
+              err.response.status === 500
+            ) {
+              console.log(err.response.status);
+              handleServerError(err.response.status);
             }
           }
           console.log("Unable to retrieve refreshed token ", err);
@@ -331,6 +362,12 @@ function Dashboard({ match }) {
           if (err.response) {
             if (err.response.status === 401 || err.response.status === 403) {
               handleLogoutAutomatically();
+            } else if (
+              err.response.status === 503 ||
+              err.response.status === 500
+            ) {
+              console.log(err.response.status);
+              handleServerError(err.response.status);
             }
           }
           console.error(err);
@@ -405,198 +442,203 @@ function Dashboard({ match }) {
       );
   };
 
-  return (
-    //new grid
+  //new grid
+  {
+    if (!serverError) {
+      return (
+        <div className="dashboard-grid">
+          {Object.keys(notifications).length > 0 && (
+            <Notification key={notifications.length} value={notifications} />
+          )}
 
-    <div className="dashboard-grid">
-      {Object.keys(notifications).length > 0 && (
-        <Notification key={notifications.length} value={notifications} />
-      )}
+          <div className="menu-view">
+            <Menu
+              role={userData.Role}
+              // selected={window.location.pathname.split("/").pop()}
+            />
+          </div>
+          <div className="card-view-grid">
+            <div className="top-bar">
+              <ClickAwayListener onClickAway={handleClickAway}>
+                <div>
+                  <IconButton
+                    aria-label="show 17 new notifications"
+                    color="inherit"
+                    onClick={handleClick}
+                  >
+                    <Badge badgeContent={notifCount} color="secondary">
+                      <NotificationsIcon />
+                    </Badge>
+                  </IconButton>
+                  <Paper elevation={4} className={classes.paper} hidden={!open}>
+                    {/*<div*/}
+                    {/*  className={*/}
+                    {/*    notifCount === 0*/}
+                    {/*      ? classes.noNotifDropdown*/}
+                    {/*      : classes.hideNoNotif*/}
+                    {/*  }*/}
+                    {/*>*/}
+                    {/*  <p>No new notifications</p>*/}
+                    {/*</div>*/}
 
-      <div className="menu-view">
-        <Menu
-          role={userData.Role}
-          // selected={window.location.pathname.split("/").pop()}
-        />
-      </div>
-      <div className="card-view-grid">
-        <div className="top-bar">
-          <ClickAwayListener onClickAway={handleClickAway}>
-            <div>
-              <IconButton
-                aria-label="show 17 new notifications"
-                color="inherit"
-                onClick={handleClick}
-              >
-                <Badge badgeContent={notifCount} color="secondary">
-                  <NotificationsIcon />
-                </Badge>
-              </IconButton>
-              <Paper elevation={4} className={classes.paper} hidden={!open}>
-                {/*<div*/}
-                {/*  className={*/}
-                {/*    notifCount === 0*/}
-                {/*      ? classes.noNotifDropdown*/}
-                {/*      : classes.hideNoNotif*/}
-                {/*  }*/}
-                {/*>*/}
-                {/*  <p>No new notifications</p>*/}
-                {/*</div>*/}
-
-                {dropdownNotifs.map((obj) => {
-                  return (
-                    <div
-                      className={
-                        obj.notificationStatus
-                          ? classes.notifDropdownWithoutColor
-                          : classes.notifDropdown
-                      }
-                    >
-                      {/*<Link*/}
-                      {/*  to={{*/}
-                      {/*    pathname: "/dashboard/complaints",*/}
-                      {/*    complainIdOpen: obj.ComplainId,*/}
-                      {/*  }}*/}
-                      {/*  */}
-                      {/*>*/}
-
-                      <ListItem
-                        style={{ padding: "0.5em" }}
-                        button={true}
-                        // onClick={(e) => closeNotif(e, obj.notificationId, obj.notificationStatus)}
-                        onClick={(e) =>
-                          closeNotif(
-                            e,
-                            obj.notificationId,
-                            obj.notificationStatus,
-                            obj.ComplainId
-                          )
-                        }
-                      >
-                        <ListItemAvatar>
-                          <Avatar alt="C" src={obj.complainImage} />
-                        </ListItemAvatar>
-
-                        <ListItemText
-                          style={{ maxWidth: "212px" }}
-                          primary={"Complaint" + " " + obj.statusType}
-                          secondary={
-                            userData.Role === "ADMIN"
-                              ? "Complaint #" +
-                                obj.ComplainId +
-                                " " +
-                                "is" +
-                                " " +
-                                obj.statusType.toLowerCase() +
-                                " " +
-                                "by" +
-                                " " +
-                                obj.supervisor
-                              : obj.statusType === "Verified"
-                              ? "Complaint #" +
-                                obj.ComplainId +
-                                " " +
-                                "has been" +
-                                " " +
-                                "marked as" +
-                                " " +
-                                obj.statusType.toLowerCase()
-                              : "Complaint #" +
-                                obj.ComplainId +
-                                " " +
-                                "has been" +
-                                " " +
-                                obj.statusType.toLowerCase() +
-                                " " +
-                                "to you"
+                    {dropdownNotifs.map((obj) => {
+                      return (
+                        <div
+                          className={
+                            obj.notificationStatus
+                              ? classes.notifDropdownWithoutColor
+                              : classes.notifDropdown
                           }
-                        />
+                        >
+                          {/*<Link*/}
+                          {/*  to={{*/}
+                          {/*    pathname: "/dashboard/complaints",*/}
+                          {/*    complainIdOpen: obj.ComplainId,*/}
+                          {/*  }}*/}
+                          {/*  */}
+                          {/*>*/}
 
-                        {timeBox(Moment().diff(Moment(obj.timeAndDate)))}
-                      </ListItem>
-                      {/*</Link>*/}
-                    </div>
-                  );
-                })}
-              </Paper>
+                          <ListItem
+                            style={{ padding: "0.5em" }}
+                            button={true}
+                            // onClick={(e) => closeNotif(e, obj.notificationId, obj.notificationStatus)}
+                            onClick={(e) =>
+                              closeNotif(
+                                e,
+                                obj.notificationId,
+                                obj.notificationStatus,
+                                obj.ComplainId
+                              )
+                            }
+                          >
+                            <ListItemAvatar>
+                              <Avatar alt="C" src={obj.complainImage} />
+                            </ListItemAvatar>
+
+                            <ListItemText
+                              style={{ maxWidth: "212px" }}
+                              primary={"Complaint" + " " + obj.statusType}
+                              secondary={
+                                userData.Role === "ADMIN"
+                                  ? "Complaint #" +
+                                    obj.ComplainId +
+                                    " " +
+                                    "is" +
+                                    " " +
+                                    obj.statusType.toLowerCase() +
+                                    " " +
+                                    "by" +
+                                    " " +
+                                    obj.supervisor
+                                  : obj.statusType === "Verified"
+                                  ? "Complaint #" +
+                                    obj.ComplainId +
+                                    " " +
+                                    "has been" +
+                                    " " +
+                                    "marked as" +
+                                    " " +
+                                    obj.statusType.toLowerCase()
+                                  : "Complaint #" +
+                                    obj.ComplainId +
+                                    " " +
+                                    "has been" +
+                                    " " +
+                                    obj.statusType.toLowerCase() +
+                                    " " +
+                                    "to you"
+                              }
+                            />
+
+                            {timeBox(Moment().diff(Moment(obj.timeAndDate)))}
+                          </ListItem>
+                          {/*</Link>*/}
+                        </div>
+                      );
+                    })}
+                  </Paper>
+                </div>
+              </ClickAwayListener>
+
+              <Avatar
+                className={classes.myAvatar}
+                src={
+                  Object.keys(userData) > 0 && userData.userData.image !== null
+                    ? "https://m2r31169.herokuapp.com" + userData.userData.image
+                    : avatarImage
+                }
+              />
+              <p key={userData.length} className="username-padding">
+                {" "}
+                {Object.keys(userData).length > 0 &&
+                userData.userData.username.length > 0
+                  ? userData.userData.username
+                  : "dummy123"}
+              </p>
             </div>
-          </ClickAwayListener>
-
-          <Avatar
-            className={classes.myAvatar}
-            src={
-              Object.keys(userData) > 0 && userData.userData.image !== null
-                ? "https://m2r31169.herokuapp.com" + userData.userData.image
-                : avatarImage
-            }
-          />
-          <p key={userData.length} className="username-padding">
-            {" "}
-            {Object.keys(userData).length > 0 &&
-            userData.userData.username.length > 0
-              ? userData.userData.username
-              : "dummy123"}
-          </p>
-        </div>
-        <div className="content">
-          <Scrollbars style={{ minWidth: 100, minHeight: 370 }}>
-            <Switch>
-              <Route
-                path={`${match.path}/`}
-                exact
-                render={() => <Redirect to="/dashboard/home" />}
-              />
-              {/* {/<Route path={"/"} exact component={Dashboard} />/}
-                            {/<Route path={`${match.path}/home`} exact component={Home} />/} */}
-              <Route
-                path={`${match.path}/home`}
-                exact
-                render={() => <Home />}
-              />
-
-              <Route
-                path={`${match.path}/complaints`}
-                exact
-                component={Complaints}
-              />
-              <AdminRoute
-                path={`${match.path}/supervisors`}
-                exact
-                component={Supervisors}
-                role={userData.Role}
-              />
-              <Route
-                path={`${match.path}/reports`}
-                exact
-                component={GenerateReports}
-              />
-              <Route
-                path={`${match.path}/profile`}
-                exact
-                render={() => (
-                  <Profile
-                    key={dropdownNotifs.length}
-                    notification={dropdownNotifs}
+            <div className="content">
+              <Scrollbars style={{ minWidth: 100, minHeight: 370 }}>
+                <Switch>
+                  <Route
+                    path={`${match.path}/`}
+                    exact
+                    render={() => <Redirect to="/dashboard/home" />}
                   />
-                )}
-              />
-              <Route
-                path={`${match.path}/employees`}
-                exact
-                component={Employees}
-              />
-              <AdminRoute
-                path={`${match.path}/manage`}
-                exact
-                component={ManageComplaints}
-                role={userData.Role}
-              />
-            </Switch>
-          </Scrollbars>
+                  {/* {/<Route path={"/"} exact component={Dashboard} />/}
+                        {/<Route path={`${match.path}/home`} exact component={Home} />/} */}
+                  <Route
+                    path={`${match.path}/home`}
+                    exact
+                    render={() => <Home handleError={handleServerError} />}
+                  />
+
+                  <Route
+                    path={`${match.path}/complaints`}
+                    exact
+                    component={Complaints}
+                  />
+                  <AdminRoute
+                    path={`${match.path}/supervisors`}
+                    exact
+                    component={Supervisors}
+                    role={userData.Role}
+                  />
+                  <Route
+                    path={`${match.path}/reports`}
+                    exact
+                    component={GenerateReports}
+                  />
+                  <Route
+                    path={`${match.path}/profile`}
+                    exact
+                    render={() => (
+                      <Profile
+                        key={dropdownNotifs.length}
+                        notification={dropdownNotifs}
+                      />
+                    )}
+                  />
+                  <Route
+                    path={`${match.path}/employees`}
+                    exact
+                    component={Employees}
+                  />
+                  <AdminRoute
+                    path={`${match.path}/manage`}
+                    exact
+                    component={ManageComplaints}
+                    role={userData.Role}
+                  />
+                </Switch>
+              </Scrollbars>
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
-  );
+      );
+    } else {
+      return <ErrorPage code={serverError} />;
+    }
+  }
 }
 
 export default Dashboard;

@@ -310,6 +310,9 @@ export default function AddForm(props) {
             ) {
               handleLogoutAutomatically();
             }
+            if (err.response.status === 503 || err.response.status === 500) {
+              console.log(err.response.status);
+            }
             // if (err.response.status === 401 || err.response.status === 403) {
             //   handleLogoutAutomatically();
             // }

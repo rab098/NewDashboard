@@ -12,6 +12,7 @@ import UploadAfterImage from "./UplaodAfterImage";
 import { ImpulseSpinner } from "react-spinners-kit";
 import Backdrop from "@material-ui/core/Backdrop";
 import ErrorOutlineOutlinedIcon from "@material-ui/icons/ErrorOutlineOutlined";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 export default function ComplaintProgress(props) {
   const { sel, dialogClose, save, token, role, supervisors } = props;
@@ -146,14 +147,20 @@ export default function ComplaintProgress(props) {
         console.log("post hogayi" + res.data);
         console.log("wwwwww", JSON.stringify(data));
         setSelStatus("");
-        setLoading(false);
+
         dialogClose();
+        setLoading(false);
         save();
       })
       .catch((err) => {
         if (err.response) {
           if (err.response.status === 401 || err.response.status === 403) {
             handleLogoutAutomatically();
+          } else if (
+            err.response.status === 503 ||
+            err.response.status === 500
+          ) {
+            console.log(err.response.status);
           }
         }
         console.log("error agaya" + err);
@@ -374,18 +381,24 @@ export default function ComplaintProgress(props) {
           sel.statusType == "Rejected" ||
           sel.otherStatus == "Active"
         ) && (
-          <Button
-            style={{
-              float: "right",
-              color: "white",
-              backgroundColor: "teal",
-            }}
-            onClick={() => {
-              handleSaveClose(Selstatus, StatusId, sel.id, supervisor);
-            }}
-          >
-            Save
-          </Button>
+          <div>
+            <Button
+              style={{
+                float: "right",
+                color: "white",
+                backgroundColor: "teal",
+                display: loading ? "none" : "block",
+              }}
+              onClick={() => {
+                handleSaveClose(Selstatus, StatusId, sel.id, supervisor);
+              }}
+            >
+              Save
+            </Button>
+            <CircularProgress
+              style={{ display: loading ? "block" : "none", color: "teal" }}
+            />
+          </div>
         )}
       </DialogActions>
     </div>

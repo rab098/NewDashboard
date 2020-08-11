@@ -273,6 +273,8 @@ export default function Complaints(props) {
           complaint: unresolved.filter((item) => item.town === supervisor.town),
         };
       }
+      console.log("lalala", Assign);
+
       // return obj;
     });
 
@@ -489,6 +491,11 @@ export default function Complaints(props) {
           }
           if (err.response.status === 401 || err.response.status === 403) {
             handleLogoutAutomatically();
+          } else if (
+            err.response.status === 503 ||
+            err.response.status === 500
+          ) {
+            console.log(err.response.status);
           }
         }
 
