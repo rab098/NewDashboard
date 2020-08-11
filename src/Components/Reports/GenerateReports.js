@@ -359,17 +359,18 @@ function GenerateReports(props) {
   }
 
   const handleRadioChange = (event) => {
-    setNextButton(true);
+    //setNextButton(true);
+    console.log(radioValue, "radio value");
     setRadioValue(event.target.value);
     setHideOne((prev) => !prev);
 
-    // if (radioValue === "one") {
-    //   oneDate === null ? setNextButton(true) : setNextButton(false);
-    // } else if (radioValue === "multiple") {
-    //   fromDate === null && toDate === null
-    //     ? setNextButton(true)
-    //     : setNextButton(false);
-    // }
+    if (event.target.value === "one") {
+      oneDate === null ? setNextButton(true) : setNextButton(false);
+    } else if (event.target.value === "multiple") {
+      fromDate === null || toDate === null
+        ? setNextButton(true)
+        : setNextButton(false);
+    }
   };
 
   const handleOneDateChange = (date) => {
