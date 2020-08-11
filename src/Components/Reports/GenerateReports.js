@@ -248,27 +248,27 @@ function GenerateReports(props) {
             case 0:
                 return (
                     <div>
-                          <p>You can choose to generate a one day report or a multiple days report.</p>
-                            <RadioGroup
-                                row
-                                aria-label="position"
-                                name="position"
-                                defaultValue="one"
-                                onChange={handleRadioChange}
-                            >
-                                <FormControlLabel
-                                    value="one"
-                                    control={<Radio color="primary"/>}
-                                    label="One day"
-                                    labelPlacement="end"
-                                />
-                                <FormControlLabel
-                                    value="multiple"
-                                    control={<Radio color="primary"/>}
-                                    label="Multiple Days"
-                                    labelPlacement="end"
-                                />
-                            </RadioGroup>
+                        <p>You can choose to generate a one day report or a multiple days report.</p>
+                        <RadioGroup
+                            row
+                            aria-label="position"
+                            name="position"
+                            defaultValue="one"
+                            onChange={handleRadioChange}
+                        >
+                            <FormControlLabel
+                                value="one"
+                                control={<Radio color="primary"/>}
+                                label="One day"
+                                labelPlacement="end"
+                            />
+                            <FormControlLabel
+                                value="multiple"
+                                control={<Radio color="primary"/>}
+                                label="Multiple Days"
+                                labelPlacement="end"
+                            />
+                        </RadioGroup>
 
                         {hideOne ? (
                             <div>
@@ -337,95 +337,95 @@ function GenerateReports(props) {
             case 1:
                 return (
                     <div>
-                      <RadioGroup
-                          row
-                          aria-label="position"
-                          name="position"
-                          defaultValue="complaintType"
-                          onChange={handleRadioChangeStepTwo}>
+                        <RadioGroup
+                            row
+                            aria-label="position"
+                            name="position"
+                            defaultValue="complaintType"
+                            onChange={handleRadioChangeStepTwo}>
 
-                        <FormControlLabel
-                            value="complaintType"
-                            control={<Radio color="primary"/>}
-                            label="Complaint Type"
-                            labelPlacement="end"/>
-                        <FormControlLabel
-                            value="towns"
-                            control={<Radio color="primary"/>}
-                            label="Town Wise"
-                            labelPlacement="end"/>
+                            <FormControlLabel
+                                value="complaintType"
+                                control={<Radio color="primary"/>}
+                                label="Complaint Type"
+                                labelPlacement="end"/>
+                            <FormControlLabel
+                                value="towns"
+                                control={<Radio color="primary"/>}
+                                label="Town Wise"
+                                labelPlacement="end"/>
 
-                        <FormControlLabel
-                            value="supervisors"
-                            control={<Radio color="primary"/>}
-                            label="Supervisor Wise"
-                            labelPlacement="end"/>
+                            <FormControlLabel
+                                value="supervisors"
+                                control={<Radio color="primary"/>}
+                                label="Supervisor Wise"
+                                labelPlacement="end"/>
 
-                      </RadioGroup>
-
-
-                      { hideType === true && <FormControl component="fieldset">
-                        <FormGroup aria-label="position" column>
-                          {
-
-                            sortedData.map((obj) => {
-                              return (
-                                  <FormControlLabel
-                                      value="type"
-                                      control={<Checkbox color="primary"/>}
-                                      label={obj}
-                                      labelPlacement="end"
-                                  />
-
-                              )
-                            })
-                          }
-
-                        </FormGroup>
-                      </FormControl>}
+                        </RadioGroup>
 
 
-                      { hideTown === true && <FormControl component="fieldset">
-                        <FormGroup aria-label="position" column>
-                          {
+                        { hideType === true && <FormControl component="fieldset">
+                            <FormGroup aria-label="position" column>
+                                {
 
-                            sortedData.map((obj) => {
-                              return (
-                                  <FormControlLabel
-                                      value="town"
-                                      control={<Checkbox color="primary"/>}
-                                      label={obj}
-                                      labelPlacement="end"
-                                  />
+                                    sortedData.map((obj) => {
+                                        return (
+                                            <FormControlLabel
+                                                value="type"
+                                                control={<Checkbox color="primary"/>}
+                                                label={obj}
+                                                labelPlacement="end"
+                                            />
 
-                              )
-                            })
-                          }
+                                        )
+                                    })
+                                }
 
-                        </FormGroup>
-                      </FormControl>}
+                            </FormGroup>
+                        </FormControl>}
 
 
-                      { hideSupervisor === true && <FormControl component="fieldset">
-                        <FormGroup aria-label="position" column>
-                          {
+                        { hideTown === true && <FormControl component="fieldset">
+                            <FormGroup aria-label="position" column>
+                                {
 
-                            sortedData.map((obj) => {
-                              return (
-                                  <FormControlLabel
-                                      value="supervisor"
-                                      control={<Checkbox color="primary"/>}
-                                      label={obj}
-                                      labelPlacement="end"
-                                  />
+                                    sortedData.map((obj) => {
+                                        return (
+                                            <FormControlLabel
+                                                value="town"
+                                                control={<Checkbox color="primary"/>}
+                                                label={obj}
+                                                labelPlacement="end"
+                                            />
 
-                              )
-                            })
-                          }
+                                        )
+                                    })
+                                }
 
-                        </FormGroup>
-                      </FormControl>
-                      }
+                            </FormGroup>
+                        </FormControl>}
+
+
+                        { hideSupervisor === true && <FormControl component="fieldset">
+                            <FormGroup aria-label="position" column>
+                                {
+
+                                    sortedData.map((obj) => {
+                                        return (
+                                            <FormControlLabel
+                                                value="supervisor"
+                                                control={<Checkbox color="primary"/>}
+                                                label={obj}
+                                                labelPlacement="end"
+                                            />
+
+                                        )
+                                    })
+                                }
+
+                            </FormGroup>
+                        </FormControl>
+                        }
 
 
                     </div>
@@ -443,35 +443,35 @@ function GenerateReports(props) {
         setHideOne((prev) => !prev);
 
         if (event.target.value === "one") {
-          oneDate === null ? setNextButton(true) : setNextButton(false);
+            oneDate === null ? setNextButton(true) : setNextButton(false);
         } else if (event.target.value === "multiple") {
-          fromDate === null || toDate === null
-            ? setNextButton(true)
-            : setNextButton(false);
+            fromDate === null || toDate === null
+                ? setNextButton(true)
+                : setNextButton(false);
         }
     };
 
-  const handleRadioChangeStepTwo = (event) => {
-    setRadioValueStepTwo(event.target.value);
+    const handleRadioChangeStepTwo = (event) => {
+        setRadioValueStepTwo(event.target.value);
 
-  };
+    };
 
-  useEffect(() => {
-    if (radioValueStepTwo === 'complaintType') {
-      setHideType(true)
-      setHideTown(false)
-      setHideSupervisor(false)
-    } else if (radioValueStepTwo === 'towns') {
-      setHideType(false)
-      setHideTown(true)
-      setHideSupervisor(false)
-    } else if (radioValueStepTwo === 'supervisors') {
-      setHideType(false)
-      setHideTown(false)
-      setHideSupervisor(true)
-    }
+    useEffect(() => {
+        if (radioValueStepTwo === 'complaintType') {
+            setHideType(true)
+            setHideTown(false)
+            setHideSupervisor(false)
+        } else if (radioValueStepTwo === 'towns') {
+            setHideType(false)
+            setHideTown(true)
+            setHideSupervisor(false)
+        } else if (radioValueStepTwo === 'supervisors') {
+            setHideType(false)
+            setHideTown(false)
+            setHideSupervisor(true)
+        }
 
-  }, [radioValueStepTwo])
+    }, [radioValueStepTwo])
 
     const handleOneDateChange = (date) => {
         setOneDate(date);
