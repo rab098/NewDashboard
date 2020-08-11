@@ -25,6 +25,7 @@ import Divider from "@material-ui/core/Divider";
 import InboxIcon from "@material-ui/icons/Inbox";
 import DraftsIcon from "@material-ui/icons/Drafts";
 
+import { IconButton } from "@material-ui/core";
 import { ImpulseSpinner } from "react-spinners-kit";
 import Backdrop from "@material-ui/core/Backdrop";
 import axios from "axios";
@@ -90,7 +91,7 @@ const useStyles = makeStyles((theme) => ({
 //   );
 // }
 
-export default function EditDialog(props, { passTown }) {
+export default function EditDialog(props) {
   const [open, setOpen] = React.useState(false);
   const classes = useStyles();
   const [loading, setLoading] = useState(false);
@@ -129,7 +130,7 @@ export default function EditDialog(props, { passTown }) {
       })
       .then(async (res) => {
         if (res.status === 200) {
-          passTown(_town);
+          props.onUpdate(props.rowData, _town);
           setLoading(false);
           setOpen(false);
         }
@@ -147,15 +148,19 @@ export default function EditDialog(props, { passTown }) {
   return (
     <div>
       {" "}
-      <EditIcon
+      <IconButton
         onClick={handleClickOpen}
-        style={{
-          color: "#008080",
-          fontSize: "20px",
-          padding: 0,
-          border: 0,
-        }}
-      />
+        style={{ backgroundColor: "transparent" }}
+      >
+        <EditIcon
+          style={{
+            color: "#008080",
+            fontSize: "20px",
+            padding: 0,
+            border: 0,
+          }}
+        />{" "}
+      </IconButton>
       <Dialog
         open={open}
         onClose={handleClose}

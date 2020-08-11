@@ -5,6 +5,8 @@ import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
+
+import Tooltip from "@material-ui/core/Tooltip";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
@@ -276,25 +278,9 @@ export default function AddForm(props) {
         )
         .then(async (res) => {
           if (res.status === 200) {
-            // console.log("ye hai prop" + props.row);
+            props.onAdd(res.data);
             setLoading(false);
             setOpen(false);
-            // let temp = props.row.length - 2;
-            // let id = JSON.stringify(props.row[temp].supervisorId) + 1;
-            // JSON.stringify(props.row).push({
-            //   supervisorId: id,
-            //   name: form.name,
-            //   email: form.email,
-            //   username: form.email,
-            //   phoneNumber: form.phoneNumber,
-            //   image: null,
-            //   town: form.town,
-            // });
-            // localStorage.setItem('accessToken',res.data.accessToken)
-
-            // store.set("userData", res.data);
-            // console.log("logged in!!");
-            // window.location = "/dashboard/home";
           }
         })
         .catch((err) => {
@@ -338,15 +324,38 @@ export default function AddForm(props) {
   return (
     <div>
       {" "}
-      <AddBoxIcon
+      {/* <Button
+        type="submit"
         className="addbutton"
-        onClick={handleClickOpen}
         style={{
-          fontSize: "1.7rem",
-          color: "#008080",
+          background: " #008080 ",
           border: 0,
+          color: "white",
+          fontVariant: "normal",
+          justifyContent: "center",
+          textDecoration: "none",
+
+          margin: "18px 16px  0 10px",
+          fontSize: "14 px ",
         }}
-      ></AddBoxIcon>
+        onClick={handleClickOpen}
+      >
+        Add Supervisor
+      </Button> */}
+      <Tooltip title="Add Supervisor">
+        <AddBoxIcon
+          className="addbutton"
+          onClick={handleClickOpen}
+          style={{
+            margin: "13px 16px  0 10px",
+            fontSize: "1.7rem",
+            color: "#008080",
+            border: 0,
+          }}
+        >
+          Add Supervisor
+        </AddBoxIcon>
+      </Tooltip>
       <Dialog
         classes={{ paper: classes.dialogPaper }}
         fullWidth={true}

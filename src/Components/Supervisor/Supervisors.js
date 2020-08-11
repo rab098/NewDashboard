@@ -5,6 +5,10 @@ import clsx from "clsx";
 import "../../ComponentsCss/Complaints.css";
 import "../../ComponentsCss/Supervisor.css";
 import { lighten, makeStyles } from "@material-ui/core/styles";
+import Input from "@material-ui/core/Input";
+import InputLabel from "@material-ui/core/InputLabel";
+import InputAdornment from "@material-ui/core/InputAdornment";
+
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import MoreHorizIcon from "@material-ui/icons/MoreHoriz";
@@ -46,6 +50,13 @@ import { ImpulseSpinner } from "react-spinners-kit";
 import Backdrop from "@material-ui/core/Backdrop";
 import AddForm from "./AddForm.js";
 import EditDialog from "./EditDialog.js";
+import InputBase from "@material-ui/core/InputBase";
+import { fade } from "@material-ui/core/styles";
+import MenuIcon from "@material-ui/icons/Menu";
+import SearchIcon from "@material-ui/icons/Search";
+
+import { IconButton } from "@material-ui/core";
+import CancelIcon from "@material-ui/icons/Cancel";
 import axios from "axios";
 let store = require("store");
 
@@ -253,10 +264,18 @@ const useStyles = makeStyles((theme) => ({
     zIndex: 1,
     color: "#fff",
   },
+  // searchIcon: {
+  //   padding: theme.spacing(0, 2),
+  //   height: "100%",
+  //   position: "absolute",
+  //   pointerEvents: "none",
+  //   display: "flex",
+  //   alignItems: "center",
+  //   justifyContent: "center",
+  // },
 
-  header: {
-    position: "sticky",
-    top: 0,
+  margin: {
+    margin: theme.spacing(1),
   },
 }));
 
@@ -273,9 +292,12 @@ export default function Supervisors() {
   // const [dense, setDense] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [open, setOpen] = React.useState(false);
-
+  const [clearOpen, setClearOpen] = React.useState(false);
   const [towns, setTowns] = React.useState([]);
   const [loading, setLoading] = useState(true);
+  const [search, setSearch] = useState("");
+  const [filteredCountries, setFilteredCountries] = useState([]);
+
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -304,14 +326,12 @@ export default function Supervisors() {
     setUserData({});
     window.location = "/";
   };
+
   async function fetchTowns() {
     const townObj = [];
     axios.get("https://m2r31169.herokuapp.com/api/getTowns").then((res) => {
-      console.log("Towns" + JSON.stringify(res.data.Towns));
-
       for (var i in res.data.Towns) {
         if (res.data.Towns[i] !== "Select Town...") {
-          console.log("Towns" + res.data.Towns[i]);
           townObj.push(res.data.Towns[i]);
         }
         // finalObj1.push(res.data.supervisors[i].town);
@@ -328,15 +348,18 @@ export default function Supervisors() {
   async function fetchData() {
     var finalObj = [];
     axios
-      .get("https://m2r31169.herokuapp.com/api/getSuperVisor_Town", {
-        headers: {
-          "x-access-token": userData.accessToken, //the token is a variable which holds the token
-        },
-      })
+      .get(
+        "https://m2r31169.herokuapp.com/api/getAllSupervisorsTownAndStatistics",
+        {
+          headers: {
+            "x-access-token": userData.accessToken, //the token is a variable which holds the token
+          },
+        }
+      )
       .then((res) => {
         for (var i in res.data.supervisors) {
+          // finalObj.push(res.data);
           finalObj.push(res.data.supervisors[i]);
-          // finalObj1.push(res.data.supervisors[i].town);
         }
 
         setSupervisors(finalObj);
@@ -355,7 +378,18 @@ export default function Supervisors() {
         }
       });
   }
-
+  function handleSetNewRow(value) {
+    //    setRows([...rows, value]);
+    setRows((o) => [...o, value]);
+  }
+  function handleUpdatedTown(previous, value) {
+    setRows(
+      rows.map((o) => {
+        if (o === previous) return { ...previous, town: value };
+        return o;
+      })
+    );
+  }
   useEffect(() => {
     console.log("aya");
     fetchData();
@@ -364,140 +398,191 @@ export default function Supervisors() {
   // const handleChangeDense = (event) => {
   //   setDense(event.target.checked);
   // };
-
+  const handleClear = () => {
+    setSearch("");
+  };
   const emptyRows =
     rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
 
+  useEffect(() => {
+    setFilteredCountries(
+      rows.filter(
+        (row) =>
+          row.name.toLowerCase().includes(search.toLowerCase()) ||
+          row.town.toLowerCase().includes(search.toLowerCase()) ||
+          row.phoneNumber.toLowerCase().includes(search.toLowerCase())
+      )
+    );
+  }, [search, rows]);
+
   return (
-    <div className={classes.row}>
+    <div>
       <Grid container justify="flex-start" alignItems="flex-start">
         <Grid item xs={12} sm={12} md={12} lg={12}>
-          <Paper className="filter elevationPaper">
-            <Grid item xs={12} sm={12} md={12} lg={12}>
-              <div>
+          <Paper
+            className="filter elevationPaper"
+            style={{
+              position: "-webkit-sticky",
+              position: "sticky",
+              top: 0,
+              bottom: 0,
+              zIndex: 1,
+            }}
+          >
+            <Grid container>
+              {/* <Grid item xs={12} sm={12} md={12} lg={12}>
                 <Box
                   className="box1"
                   textAlign="left"
                   color="#008080"
                   fontWeight="600"
-                  fontSize="1.5rem"
+                  fontSize="18px"
                   component="span"
                 >
-                  Supervisors
-                </Box>{" "}
-                <Box component="span" style={{ float: "right" }}>
-                  {" "}
-                  <div>
-                    <AddForm town={towns} />
-                  </div>
+                  Supervisors{" "}
                 </Box>
-              </div>
+              </Grid> */}
+
+              <Grid item xs={12} sm={4} md={6} lg={6}>
+                <Box component="span">
+                  {" "}
+                  <AddForm town={towns} onAdd={handleSetNewRow} />
+                </Box>
+              </Grid>
+              <Grid item xs={12} sm={8} md={6} lg={6}>
+                <Box
+                  flexGrow={1}
+                  style={{ float: "right" }}
+                  component="span"
+                  marginRight="10px"
+                >
+                  <FormControl>
+                    <Input
+                      onChange={(e) => {
+                        setSearch(e.target.value);
+                      }}
+                      value={search}
+                      placeholder="Search"
+                      id="input-with-icon-adornment"
+                      endAdornment={
+                        <InputAdornment position="end">
+                          <ClearIcon
+                            onClick={handleClear}
+                            fontSize="small"
+                            style={{
+                              color: "#008080",
+                              cursor: "pointer",
+                            }}
+                          />
+                        </InputAdornment>
+                      }
+                      startAdornment={
+                        <InputAdornment position="start">
+                          <SearchIcon
+                            style={{
+                              color: "#008080",
+                            }}
+                          />
+                        </InputAdornment>
+                      }
+                    />
+                  </FormControl>
+                </Box>{" "}
+              </Grid>
             </Grid>
           </Paper>
           {/* 
-          <Scrollbars style={{ minWidth: 100, minHeight: 400 }}> */}
-          <Scrollbars style={{ minWidth: 100, minHeight: 400, zIndex: 1 }}>
-            <Paper className="elevationPaper">
-              <TableContainer className="tableContainer">
-                <Table
-                  className="table"
-                  aria-labelledby="tableTitle"
-                  // size={dense ? "small" : "medium"}
-                  size="medium"
-                  aria-label="enhanced table"
-                >
-                  <EnhancedTableHead
-                    classes={classes}
-                    //numSelected={selected.length}
-                    order={order}
-                    orderBy={orderBy}
-                    //onSelectAllClick={handleSelectAllClick}
-                    onRequestSort={handleRequestSort}
-                    rowCount={rows.length}
-                  />
+          <Scrollbars style={{ minWidth: 100, minHeight: 370 }}> */}
+          <Paper className="elevationPaper">
+            <TableContainer className="tableContainer">
+              <Table
+                aria-labelledby="tableTitle"
+                // size={dense ? "small" : "medium"}
+                size="small"
+                aria-label="enhanced table"
+              >
+                <EnhancedTableHead
+                  classes={classes}
+                  //numSelected={selected.length}
+                  order={order}
+                  orderBy={orderBy}
+                  //onSelectAllClick={handleSelectAllClick}
+                  onRequestSort={handleRequestSort}
+                  rowCount={rows.length}
+                />
 
-                  <TableBody className="tableBody">
-                    {stableSort(rows, getComparator(order, orderBy))
-                      .slice(
-                        page * rowsPerPage,
-                        page * rowsPerPage + rowsPerPage
-                      )
-                      .map((row, index) => {
-                        const labelId = `enhanced-table-checkbox-${index}`;
-                        let _res = row.name;
-                        let res = _res.substring(0, 1).toUpperCase();
-                        return (
-                          <TableRow
-                            className="tableRow"
-                            hover
-                            role="checkbox"
-                            tabIndex={-1}
-                            key={row.supervisorId}
+                <TableBody className="tableBody">
+                  {stableSort(filteredCountries, getComparator(order, orderBy))
+                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                    .map((row, index) => {
+                      const labelId = `enhanced-table-checkbox-${index}`;
+                      let _res = row.name;
+                      let res = _res.substring(0, 1).toUpperCase();
+
+                      return (
+                        <TableRow
+                          className="tableRow"
+                          hover
+                          role="checkbox"
+                          tabIndex={-1}
+                          key={row.supervisorId}
+                        >
+                          <TableCell
+                            component="th"
+                            id={labelId}
+                            scope="row"
+                            style={{
+                              paddingLeft: "16px",
+                              paddingRight: "4px",
+                            }}
                           >
-                            <TableCell
-                              component="th"
-                              id={labelId}
-                              style={{
-                                paddingLeft: "16px",
-                                paddingRight: "4px",
-                              }}
+                            <Avatar
+                              className="gridd"
+                              alt="Remy Sharp"
+                              src={row.image}
+                              className={classes._theme}
                             >
-                              {" "}
-                              <Avatar
-                                className="gridd"
-                                alt="Remy Sharp"
-                                src={row.image}
-                                className={classes._theme}
-                              >
-                                {res}
-                              </Avatar>{" "}
-                            </TableCell>
-                            <TableCell
-                              align="left"
-                              style={{
-                                paddingLeft: "2px",
-                                paddingRight: "16px",
-                              }}
-                            >
-                              {" "}
-                              {row.name}
-                            </TableCell>{" "}
-                            <TableCell align="center">1</TableCell>
-                            <TableCell align="center">2</TableCell>
-                            <TableCell align="center">34</TableCell>
-                            <TableCell align="center">5</TableCell>
-                            <TableCell align="left">{row.email}</TableCell>
-                            {/* <TableCell align="left">{row.longitude}</TableCell> */}
-                            <TableCell align="left">
-                              {row.phoneNumber}
-                            </TableCell>
-                            <TableCell align="left">{row.town}</TableCell>
-                            <TableCell
-                              align="left"
-                              style={{
-                                paddingLeft: "3px",
-                                paddingRight: "3px",
-                              }}
-                            >
-                              {/* <EditIcon
-                                style={{
-                                  color: "#008080",
-                                  fontSize: "20px",
-                                  padding: 0,
-                                  border: 0,
-                                }}
-                              /> */}
-                              <EditDialog
-                                town={towns}
-                                rowData={row}
-                              ></EditDialog>{" "}
-                            </TableCell>{" "}
-                            <TableCell
-                              align="left"
-                              style={{
-                                paddingLeft: "3px",
-                                paddingRight: "16px",
-                              }}
+                              {res}
+                            </Avatar>{" "}
+                          </TableCell>
+                          <TableCell
+                            align="left"
+                            style={{
+                              paddingLeft: "2px",
+                              paddingRight: "16px",
+                            }}
+                          >
+                            {row.name}
+                          </TableCell>
+                          <TableCell align="center">{row.Resolved}</TableCell>
+                          <TableCell align="center">{row.Active}</TableCell>
+                          <TableCell align="center">{row.Unresolved}</TableCell>
+                          <TableCell align="center">{row.Rejected}</TableCell>
+                          <TableCell align="left">{row.email}</TableCell>
+                          <TableCell align="left">{row.phoneNumber}</TableCell>
+                          <TableCell align="left">{row.town}</TableCell>
+                          <TableCell
+                            align="left"
+                            style={{
+                              paddingLeft: "3px",
+                              paddingRight: "3px",
+                            }}
+                          >
+                            <EditDialog
+                              town={towns}
+                              rowData={row}
+                              onUpdate={handleUpdatedTown}
+                            ></EditDialog>{" "}
+                          </TableCell>{" "}
+                          <TableCell
+                            align="left"
+                            style={{
+                              paddingLeft: "3px",
+                              paddingRight: "16px",
+                            }}
+                          >
+                            <IconButton
+                              style={{ backgroundColor: "transparent" }}
                             >
                               <DeleteIcon
                                 style={{
@@ -507,24 +592,28 @@ export default function Supervisors() {
                                   border: 0,
                                 }}
                               />
-                            </TableCell>
-                            {/* <TableCell align="left">
-                              <MoreHorizIcon
-                                style={{
-                                  fontSize: "20px",
-                                  color: "#8A8A8A",
-                                }}
-                              />
-                            </TableCell> */}
-                          </TableRow>
-                        );
-                      })}
-                  </TableBody>
-                </Table>
-              </TableContainer>
-            </Paper>{" "}
-          </Scrollbars>{" "}
+                            </IconButton>
+                          </TableCell>{" "}
+                        </TableRow>
+                      );
+                    })}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </Paper>
+          {/* </Scrollbars> */}
+          {/* <Paper
+            className="filter elevationPaper"
+            style={{
+              position: "-webkit-sticky",
+              position: "sticky",
+              top: "300px",
+              bottom: 0,
+              zIndex: 1,
+            }}
+          > */}
           <TablePagination
+            style={{}}
             rowsPerPageOptions={[10, 15, 30]}
             component="div"
             count={rows.length}
@@ -533,6 +622,7 @@ export default function Supervisors() {
             onChangePage={handleChangePage}
             onChangeRowsPerPage={handleChangeRowsPerPage}
           />
+          {/* </Paper> */}
         </Grid>{" "}
       </Grid>
 
