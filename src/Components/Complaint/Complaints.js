@@ -273,6 +273,8 @@ export default function Complaints(props) {
           complaint: unresolved.filter((item) => item.town === supervisor.town),
         };
       }
+      console.log("lalala", Assign);
+
       // return obj;
     });
 
