@@ -7,7 +7,7 @@ import Avatar from "@material-ui/core/Avatar";
 import { makeStyles } from "@material-ui/core/styles";
 import "../PagesCss/Error.css";
 
-function ErrorPage() {
+function ErrorPage(props) {
   //USE EFFECT
   useEffect(() => {
     // setUserData(store.get("userData"));
@@ -17,7 +17,7 @@ function ErrorPage() {
     <div className="error">
       <div className="circle"></div>
       <div className="centered-text">
-        <p style={{ fontSize: "150px" }}>503</p>
+        <p style={{ fontSize: "150px" }}>{props.code}</p>
         <p style={{ fontSize: "20px" }}>{"Service temporarily unavailable"}</p>
       </div>
     </div>
