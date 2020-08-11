@@ -211,6 +211,11 @@ function Dashboard({ match }) {
           if (err.response) {
             if (err.response.status === 401 || err.response.status === 403) {
               handleLogoutAutomatically();
+            } else if (
+              err.response.status === 503 ||
+              err.response.status === 500
+            ) {
+              console.log(err.response.status);
             }
           }
 
@@ -241,6 +246,11 @@ function Dashboard({ match }) {
         if (err.response) {
           if (err.response.status === 401 || err.response.status === 403) {
             handleLogoutAutomatically();
+          } else if (
+            err.response.status === 503 ||
+            err.response.status === 500
+          ) {
+            console.log(err.response.status);
           }
         }
       });
@@ -270,6 +280,11 @@ function Dashboard({ match }) {
         if (err.response) {
           if (err.response.status === 401) {
             handleLogoutAutomatically();
+          } else if (
+            err.response.status === 503 ||
+            err.response.status === 500
+          ) {
+            console.log(err.response.status);
           }
         }
         console.log("Unable to get permission to notify.", err);
@@ -294,6 +309,11 @@ function Dashboard({ match }) {
           if (err.response) {
             if (err.response.status === 401 || err.response.status === 403) {
               handleLogoutAutomatically();
+            } else if (
+              err.response.status === 503 ||
+              err.response.status === 500
+            ) {
+              console.log(err.response.status);
             }
           }
           console.log("Unable to retrieve refreshed token ", err);
@@ -331,6 +351,11 @@ function Dashboard({ match }) {
           if (err.response) {
             if (err.response.status === 401 || err.response.status === 403) {
               handleLogoutAutomatically();
+            } else if (
+              err.response.status === 503 ||
+              err.response.status === 500
+            ) {
+              console.log(err.response.status);
             }
           }
           console.error(err);

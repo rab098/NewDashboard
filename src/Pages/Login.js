@@ -131,6 +131,12 @@ function Login() {
           }
         })
         .catch((err) => {
+          if (err.response) {
+            if (err.response.status === 503 || err.response.status === 500) {
+              console.log(err.response.status);
+            }
+          }
+
           console.error(err);
           console.log("login error");
           setForm({
