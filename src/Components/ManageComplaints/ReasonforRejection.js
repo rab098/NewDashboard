@@ -19,16 +19,21 @@ const useStyles = makeStyles((theme) => ({
     background: "white",
     marginTop: 15,
   },
+  backdrop: {
+    zIndex: 1000,
+    color: "#fff",
+  },
 }));
 
 export default function Rejection(props) {
-  const { token } = props;
+  const { token, loading } = props;
   let store = require("store");
   const [userData, setUserData] = useState(store.get("userData"));
 
   const classes = useStyles();
 
   const [reason, setReason] = useState([]);
+
   const [newReason, setNewReason] = useState("");
   const handleLogoutAutomatically = () => {
     store.remove("userData");
@@ -104,6 +109,7 @@ export default function Rejection(props) {
       });
   };
   const getReason = () => {
+    loading(true);
     var finalObj = [];
     axios
       .get("https://m2r31169.herokuapp.com/api/getRejectTags")
@@ -114,8 +120,11 @@ export default function Rejection(props) {
         }
         console.log("Reasonssssss" + finalObj.toString());
         setReason(finalObj);
+
+        loading(false);
       })
       .catch((err) => {
+        loading(false);
         if (err.response) {
           if (err.response.status === 401 || err.response.status === 403) {
             handleLogoutAutomatically();
@@ -156,6 +165,7 @@ export default function Rejection(props) {
             </ListItem>
           );
         })}
+
         <ListItem>
           <TextField
             variant="outlined"

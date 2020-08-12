@@ -3,13 +3,16 @@ import axios from "axios";
 import Type from "./Type";
 import AddType from "./AddType";
 import Box from "@material-ui/core/Box";
+import { ImpulseSpinner } from "react-spinners-kit";
+import Backdrop from "@material-ui/core/Backdrop";
 
 export default function ComplaintTypes(props) {
-  const { token } = props;
+  const { token, loading } = props;
   let store = require("store");
   const [userData, setUserData] = useState(store.get("userData"));
   const [types, setTypes] = useState([]);
   const [edit, setEdit] = useState(null);
+
   const handleLogoutAutomatically = () => {
     store.remove("userData");
     store.clearAll();
@@ -18,6 +21,7 @@ export default function ComplaintTypes(props) {
   };
 
   const getTypes = () => {
+    loading(true);
     var finalObj = [];
     axios
       .get(
@@ -29,6 +33,7 @@ export default function ComplaintTypes(props) {
         }
       )
       .then((res) => {
+        loading(false);
         console.log(res.data);
         for (var i in res.data) {
           finalObj.push(res.data);
@@ -38,6 +43,7 @@ export default function ComplaintTypes(props) {
         setTypes(finalObj[0]);
       })
       .catch((err) => {
+        loading(false);
         if (err.response) {
           if (err.response.status === 401 || err.response.status === 403) {
             handleLogoutAutomatically();

@@ -21,6 +21,8 @@ import AddCircleOutlineRoundedIcon from "@material-ui/icons/AddCircleOutlineRoun
 import Rating from "@material-ui/lab/Rating";
 import Stars from "./Stars";
 import DeleteIcon from "@material-ui/icons/Delete";
+import { ImpulseSpinner } from "react-spinners-kit";
+import Backdrop from "@material-ui/core/Backdrop";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -34,7 +36,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function FeedbackTags(props) {
-  const { token } = props;
+  const { token, loading } = props;
 
   const classes = useStyles();
   let store = require("store");
@@ -116,6 +118,7 @@ export default function FeedbackTags(props) {
     }
   };
   const getTags = () => {
+    loading(true);
     var finalObj = [];
     axios
       .get("https://m2r31169.herokuapp.com/api/feedbackAssociatedStars", {
@@ -124,6 +127,7 @@ export default function FeedbackTags(props) {
         },
       })
       .then((res) => {
+        loading(false);
         console.log("agyaa" + JSON.stringify(res.data));
         for (var i in res.data) {
           finalObj.push(res.data[i]);
@@ -132,6 +136,7 @@ export default function FeedbackTags(props) {
         setAllTags(finalObj);
       })
       .catch((err) => {
+        loading(false);
         if (err.response) {
           if (err.response.status === 401 || err.response.status === 403) {
             handleLogoutAutomatically();
