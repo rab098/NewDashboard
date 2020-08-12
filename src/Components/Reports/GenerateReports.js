@@ -932,7 +932,7 @@ function GenerateReports(props) {
                                         </Button>
                                         <Button
                                             variant="contained"
-                                            color="secondary"
+                                            color="primary"
                                             onClick={() => handleNext(index)}
                                             className={classes.button}
                                             disabled={nextButton}
