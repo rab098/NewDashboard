@@ -91,10 +91,16 @@ function GenerateReports(props) {
     const [nextButton, setNextButton] = useState(true);
 
     const [typeCheckboxCount, setTypeCheckboxCount] = useState(0)
+    const [typeValue, setTypeValue] = useState([])
+
 
     const [townsCheckboxCount, setTownsCheckboxCount] = useState(0)
+    const [townsValue, setTownsValue] = useState([])
+
 
     const [supervisorCheckboxCount, setSupervisorCheckboxCount] = useState(0)
+    const [supervisorValue, setSupervisorValue] = useState([])
+
 
 
     const [mainData, setMainData] = useState([]);
@@ -399,6 +405,7 @@ function GenerateReports(props) {
                                                 value="type"
                                                 control={<Checkbox color="primary"/>}
                                                 label={obj}
+                                                name={obj}
                                                 onChange={handleTypeCheckboxChange}
                                                 labelPlacement="end"
                                             />
@@ -418,6 +425,7 @@ function GenerateReports(props) {
                                                 control={<Checkbox color="primary"/>}
                                                 onChange={handleTownsCheckboxChange}
                                                 label={obj}
+                                                name={obj}
                                                 labelPlacement="end"
                                             />
                                         );
@@ -436,6 +444,7 @@ function GenerateReports(props) {
                                                 control={<Checkbox color="primary"/>}
                                                 onChange={handleSupervisorsCheckboxChange}
                                                 label={obj}
+                                                name={obj}
                                                 labelPlacement="end"
                                             />
                                         );
@@ -467,6 +476,9 @@ function GenerateReports(props) {
     const handleRadioChange = (event) => {
         // setNextButton(true);
         setRadioValue(event.target.value);
+        setOneDate(null)
+        setFromDate(null)
+        setToDate(null)
         setHideOne((prev) => !prev);
 
         if (event.target.value === "one") {
@@ -480,6 +492,9 @@ function GenerateReports(props) {
 
     const handleRadioChangeStepTwo = (event) => {
         setRadioValueStepTwo(event.target.value);
+        setTypeValue({})
+        setTownsValue({})
+        setSupervisorValue({})
         setTypeCheckboxCount(0)
         setTownsCheckboxCount(0)
         setSupervisorCheckboxCount(0)
@@ -512,17 +527,27 @@ function GenerateReports(props) {
 
     const handleTypeCheckboxChange = (event) => {
 
+        let typeValuesArray = []
+        let index
+        // setTypeValue([event.target.name])
+
 
         if (event.target.checked) {
             setTypeCheckboxCount(prevState => prevState + 1)
+            typeValuesArray.push(+(event.target.name))
         } else {
             setTypeCheckboxCount(prevState => prevState - 1)
+            index = typeValuesArray.indexOf(+(event.target.name))
+            typeValuesArray.splice(index, 1)
 
 
         }
+
+        setTypeValue(typeValuesArray)
     }
 
     const handleTownsCheckboxChange = (event) => {
+        // setTownsValue([event.target.name])
 
 
         if (event.target.checked) {
@@ -535,6 +560,7 @@ function GenerateReports(props) {
     }
 
     const handleSupervisorsCheckboxChange = (event) => {
+        // setSupervisorValue([event.target.name])
 
 
         if (event.target.checked) {
@@ -545,6 +571,10 @@ function GenerateReports(props) {
 
         }
     }
+
+    console.log("type value is = ",typeValue)
+    // console.log("town value is = ",townsValue)
+    // console.log("supervisor value is = ",supervisorValue)
 
 
     useEffect(() => {
@@ -594,54 +624,100 @@ function GenerateReports(props) {
         setNextButton(false);
     };
 
-    useEffect(() => {
-        if (oneDate !== null) {
-            setReportData(
-                mainData.filter((obj) => {
-                    // console.log("db date : ",Moment(obj.date).format("DD MMM yyyy"))
+    // useEffect(() => {
+    //     if (oneDate !== null) {
+    //         setReportData(
+    //             mainData.filter((obj) => {
+    //                 // console.log("db date : ",Moment(obj.date).format("DD MMM yyyy"))
+    //
+    //                 // const format = 'llll'
+    //                 //
+    //                 // return Moment(obj.date, format).unix() >= Moment(oneDate, format).unix()
+    //                 console.log("db date :", Moment(obj.date).format().substr(0, 10));
+    //                 console.log(
+    //                     "selected onDate :",
+    //                     Moment(oneDate).format().substr(0, 10)
+    //                 );
+    //                 // return new Date(obj.date.substring(0, 14)).getTime() === oneDate.getTime()
+    //                 return (
+    //                     Moment(obj.date).format().substr(0, 10) ===
+    //                     Moment(oneDate).format().substr(0, 10)
+    //                 );
+    //             })
+    //         );
+    //
+    //         // console.log("selected oneDate use effect : ",Moment(oneDate).format("DD MMM yyyy") )
+    //     }
+    // }, [oneDate]);
 
-                    // const format = 'llll'
-                    //
-                    // return Moment(obj.date, format).unix() >= Moment(oneDate, format).unix()
-                    console.log("db date :", Moment(obj.date).format().substr(0, 10));
-                    console.log(
-                        "selected onDate :",
-                        Moment(oneDate).format().substr(0, 10)
-                    );
-                    // return new Date(obj.date.substring(0, 14)).getTime() === oneDate.getTime()
-                    return (
-                        Moment(obj.date).format().substr(0, 10) ===
-                        Moment(oneDate).format().substr(0, 10)
-                    );
-                })
-            );
-
-            // console.log("selected oneDate use effect : ",Moment(oneDate).format("DD MMM yyyy") )
-        }
-    }, [oneDate]);
-
-    useEffect(() => {
-        if (fromDate !== null && toDate !== null) {
-            setReportData(
-                mainData.filter((obj) => {
-                    // console.log("db date : ",Moment(obj.date).format("DD MMM yyyy"))
-
-                    // return Moment(obj.date).format("DD MMM yyyy") >= Moment(fromDate).format("DD MMM yyyy") && Moment(obj.date).format("DD MMM yyyy") <= Moment(toDate).format("DD MMM yyyy")
-                    return (
-                        new Date(obj.date.substring(0, 19)).getTime() >=
-                        fromDate.getTime() &&
-                        new Date(obj.date.substring(0, 19)).getTime() <= toDate.getTime()
-                    );
-                })
-            );
-
-            console.log("from and to date: ", fromDate + toDate);
-        }
-    }, [toDate]);
+    // useEffect(() => {
+    //     if (fromDate !== null && toDate !== null) {
+    //         setReportData(
+    //             mainData.filter((obj) => {
+    //                 // console.log("db date : ",Moment(obj.date).format("DD MMM yyyy"))
+    //
+    //                 // return Moment(obj.date).format("DD MMM yyyy") >= Moment(fromDate).format("DD MMM yyyy") && Moment(obj.date).format("DD MMM yyyy") <= Moment(toDate).format("DD MMM yyyy")
+    //                 return (
+    //                     new Date(obj.date.substring(0, 19)).getTime() >=
+    //                     fromDate.getTime() &&
+    //                     new Date(obj.date.substring(0, 19)).getTime() <= toDate.getTime()
+    //                 );
+    //             })
+    //         );
+    //
+    //         console.log("from and to date: ", fromDate + toDate);
+    //     }
+    // }, [toDate]);
 
     function handleNext(index) {
         switch (index) {
             case 0:
+
+                if(radioValue === 'one'){
+                    if (oneDate !== null) {
+                        setReportData(
+                            mainData.filter((obj) => {
+                                // console.log("db date : ",Moment(obj.date).format("DD MMM yyyy"))
+
+                                // const format = 'llll'
+                                //
+                                // return Moment(obj.date, format).unix() >= Moment(oneDate, format).unix()
+                                console.log("db date :", Moment(obj.date).format().substr(0, 10));
+                                console.log(
+                                    "selected onDate :",
+                                    Moment(oneDate).format().substr(0, 10)
+                                );
+                                // return new Date(obj.date.substring(0, 14)).getTime() === oneDate.getTime()
+                                return (
+                                    Moment(obj.date).format().substr(0, 10) ===
+                                    Moment(oneDate).format().substr(0, 10)
+                                );
+                            })
+                        );
+
+                        // console.log("selected oneDate use effect : ",Moment(oneDate).format("DD MMM yyyy") )
+                    }
+                }
+
+                else
+                {
+                    if (fromDate !== null && toDate !== null) {
+                        setReportData(
+                            mainData.filter((obj) => {
+                                // console.log("db date : ",Moment(obj.date).format("DD MMM yyyy"))
+
+                                // return Moment(obj.date).format("DD MMM yyyy") >= Moment(fromDate).format("DD MMM yyyy") && Moment(obj.date).format("DD MMM yyyy") <= Moment(toDate).format("DD MMM yyyy")
+                                return (
+                                    new Date(obj.date.substring(0, 19)).getTime() >=
+                                    fromDate.getTime() &&
+                                    new Date(obj.date.substring(0, 19)).getTime() <= toDate.getTime()
+                                );
+                            })
+                        );
+
+                        console.log("from and to date: ", fromDate + toDate);
+                    }
+                }
                 console.log("its done yo!");
                 setActiveStep((prevActiveStep) => prevActiveStep + 1);
 
@@ -654,6 +730,15 @@ function GenerateReports(props) {
                 break;
             case 1:
 
+                if (radioValueStepTwo === 'complaintType'){
+                    if (typeCheckboxCount !== 0){
+                        setReportData(
+                            reportData.filter( (obj) => {
+                            }))
+                    }
+                }
+                else if(radioValueStepTwo === 'towns'){}
+                else{}
                 console.log("mhm?");
                 setActiveStep((prevActiveStep) => prevActiveStep + 1);
                 break;
@@ -665,8 +750,8 @@ function GenerateReports(props) {
         }
     }
 
-    console.log("typeCheckboxCount", typeCheckboxCount)
-    console.log("activeStep", activeStep)
+    // console.log("typeCheckboxCount", typeCheckboxCount)
+    // console.log("activeStep", activeStep)
 
     useEffect(() => {
         if (radioValueStepTwo === "complaintType") {
@@ -701,13 +786,14 @@ function GenerateReports(props) {
         }
     }, [reportData, radioValueStepTwo]);
 
-    console.log("reportData?", reportData);
+    // console.log("reportData?", reportData);
 
     const handleBack = (index) => {
 
         switch (index) {
             case 1:
                 // setHideOne(false)
+                setReportData(mainData)
                 setNextButton(false)
                 break
             case 2:
@@ -731,15 +817,15 @@ function GenerateReports(props) {
     const [reportType, setReportType] = React.useState("Total Complaints Yearly");
     const [pageSize, setPageSize] = React.useState("A4");
 
-    const [resume, setResume] = useState({});
+    // const [resume, setResume] = useState({});
 
-    const handleChange = (event) => {
-        setReportType(event.target.value);
-
-        if (reportType === "Total Complaints Yearly") {
-            console.log("display totals report");
-        }
-    };
+    // const handleChange = (event) => {
+    //     setReportType(event.target.value);
+    //
+    //     if (reportType === "Total Complaints Yearly") {
+    //         console.log("display totals report");
+    //     }
+    // };
 
     const handlePageSize = (event) => {
         setPageSize(event.target.value);
