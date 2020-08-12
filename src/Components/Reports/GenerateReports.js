@@ -399,14 +399,14 @@ function GenerateReports(props) {
                         {hideType === true && (
                             <FormControl component="fieldset">
                                 <FormGroup aria-label="position" column>
-                                    {sortedData.map((obj) => {
+                                    {sortedData.map((obj,index) => {
                                         return (
                                             <FormControlLabel
                                                 value="type"
                                                 control={<Checkbox color="primary"/>}
                                                 label={obj}
                                                 name={obj}
-                                                onChange={handleTypeCheckboxChange}
+                                                onChange={ (event) => handleTypeCheckboxChange(event,index)}
                                                 labelPlacement="end"
                                             />
                                         );
@@ -492,9 +492,9 @@ function GenerateReports(props) {
 
     const handleRadioChangeStepTwo = (event) => {
         setRadioValueStepTwo(event.target.value);
-        setTypeValue({})
-        setTownsValue({})
-        setSupervisorValue({})
+        setTypeValue([])
+        setTownsValue([])
+        setSupervisorValue([])
         setTypeCheckboxCount(0)
         setTownsCheckboxCount(0)
         setSupervisorCheckboxCount(0)
@@ -525,26 +525,33 @@ function GenerateReports(props) {
     }, [radioValueStepTwo]);
 
 
-    const handleTypeCheckboxChange = (event) => {
+    const handleTypeCheckboxChange = (event, index) => {
 
-        let typeValuesArray = []
-        let index
+        // let typeValuesArray = []
+        // let indexVal = index
         // setTypeValue([event.target.name])
 
+        // console.log("indexVal" , indexVal)
 
         if (event.target.checked) {
             setTypeCheckboxCount(prevState => prevState + 1)
-            typeValuesArray.push(+(event.target.name))
+            // typeValuesArray[indexVal] = event.target.name
+            setTypeValue([...typeValue, event.target.name])
         } else {
             setTypeCheckboxCount(prevState => prevState - 1)
-            index = typeValuesArray.indexOf(+(event.target.name))
-            typeValuesArray.splice(index, 1)
+            // index = typeValuesArray.indexOf(event.target.name)
+            // typeValuesArray.splice(indexVal, 1)
+            setTypeValue(
+                typeValue.filter( v => v !== event.target.name)
+            )
 
 
         }
 
-        setTypeValue(typeValuesArray)
+        // setTypeValue([...typeValue,typeValuesArray])
     }
+
+    console.log("type value is = ",typeValue)
 
     const handleTownsCheckboxChange = (event) => {
         // setTownsValue([event.target.name])
@@ -552,8 +559,12 @@ function GenerateReports(props) {
 
         if (event.target.checked) {
             setTownsCheckboxCount(prevState => prevState + 1)
+            setTownsValue([...townsValue, event.target.name])
         } else {
             setTownsCheckboxCount(prevState => prevState - 1)
+            setTownsValue(
+                townsValue.filter( v => v !== event.target.name)
+            )
 
 
         }
@@ -565,14 +576,17 @@ function GenerateReports(props) {
 
         if (event.target.checked) {
             setSupervisorCheckboxCount(prevState => prevState + 1)
+            setSupervisorValue([...supervisorValue, event.target.name])
+
         } else {
             setSupervisorCheckboxCount(prevState => prevState - 1)
-
+            setSupervisorValue(
+                supervisorValue.filter( v => v !== event.target.name)
+            )
 
         }
     }
 
-    console.log("type value is = ",typeValue)
     // console.log("town value is = ",townsValue)
     // console.log("supervisor value is = ",supervisorValue)
 
@@ -733,12 +747,33 @@ function GenerateReports(props) {
                 if (radioValueStepTwo === 'complaintType'){
                     if (typeCheckboxCount !== 0){
                         setReportData(
-                            reportData.filter( (obj) => {
-                            }))
+                            reportData.filter( (obj) => typeValue.includes(obj.type)
+
+
+                                // console.log("Object type", obj.type)
+                                // console.log("checking value", typeValue)
+
+
+                                // return (obj.type === typeValue)
+
+
+                            ))
                     }
                 }
-                else if(radioValueStepTwo === 'towns'){}
-                else{}
+                else if(radioValueStepTwo === 'towns'){
+                    if (townsCheckboxCount !== 0){
+                        setReportData(
+                            reportData.filter( (obj) => townsValue.includes(obj.town))
+                        )
+                    }
+                }
+                else{
+                    if (supervisorCheckboxCount !== 0){
+                        setReportData(
+                            reportData.filter( (obj) => supervisorValue.includes(obj.supervisorName))
+                        )
+                    }
+                }
                 console.log("mhm?");
                 setActiveStep((prevActiveStep) => prevActiveStep + 1);
                 break;
@@ -751,7 +786,7 @@ function GenerateReports(props) {
     }
 
     // console.log("typeCheckboxCount", typeCheckboxCount)
-    // console.log("activeStep", activeStep)
+    console.log("New report data", reportData)
 
     useEffect(() => {
         if (radioValueStepTwo === "complaintType") {
