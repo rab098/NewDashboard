@@ -121,10 +121,15 @@ function GenerateReports(props) {
     const [hideTown, setHideTown] = useState(false);
     const [hideSupervisor, setHideSupervisor] = useState(false);
 
-    const [isChecked, setIsChecked] = useState(false)
+    const [reportObject, setReportObject] = useState({
+        numberOfRows: 0,
+        dateRadioValue:'',
+        dateFrom: '',
+        dateTo: '',
+        dateOne: '',
+        complaints: []
+    })
 
-
-    const [stepIndexNew, setStepIndexNew] = useState();
 
     // const exportPDF = () => {
     //      resume.save();
@@ -805,6 +810,17 @@ function GenerateReports(props) {
                     }
                 }
                 console.log("mhm?");
+
+                setReportObject({
+                    numberOfRows: reportData.length,
+                    dateRadioValue: radioValue,
+                    dateFrom:  fromDate,
+                    dateTo: toDate,
+                    dateOne: oneDate,
+                    complaints: reportData
+                    }
+
+                )
                 setActiveStep((prevActiveStep) => prevActiveStep + 1);
                 break;
             case 2:
@@ -903,7 +919,7 @@ function GenerateReports(props) {
 
     const _exportPdfTable = () => {
         // change this number to generate more or less rows of data
-        PdfMakeTable(20);
+        PdfMakeTable(reportObject);
     };
 
     return (

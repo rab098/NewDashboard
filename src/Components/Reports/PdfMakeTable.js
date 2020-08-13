@@ -1,5 +1,7 @@
 import pdfMake from 'pdfmake/build/pdfmake';
 import vfsFonts from 'pdfmake/build/vfs_fonts';
+import Moment from "moment";
+
 
 const _format = (data) => {
     return data.map(item => {
@@ -12,29 +14,89 @@ const _format = (data) => {
     });
 }
 
-export default (props) => {
+export default (reportObject) => {
     const {vfs} = vfsFonts.pdfMake;
     pdfMake.vfs = vfs;
 
-    console.log(props)
+    console.log(reportObject)
     // const data = fakeData(rows);
     // const formattedData = _format(data);
+
+    // let bodyData = reportObject.map(function(obj) {
+    //     return Object.keys(obj).sort().map(function(key) {
+    //         return obj[key];
+    //     });
+    // });
+
+
+    // let bodyData = [
+    //     ['ID', 'TYPE', 'DATE', 'PRIORITY', 'TOWN','SUPERVISOR', 'STATUS'],
+    //     ['123455','ok','no','oh','town','status','date'],
+    //     ['123455','ok','no','oh','town','status','date'],
+    //     ['123455','ok','no','oh','town','status','date'],
+    // ]
+
+    let bodyData = [['ID', 'TYPE', 'DATE', 'PRIORITY', 'TOWN','SUPERVISOR', 'STATUS'],]
+    // for(let i in reportObject.complaints){
+    //     bodyData.push(reportObject.complaints[i].id)
+    //     bodyData.push(reportObject.complaints[i].type)
+    //     bodyData.push(reportObject.complaints[i].date)
+    //     bodyData.push(reportObject.complaints[i].priority)
+    //     bodyData.push(reportObject.complaints[i].town)
+    //     bodyData.push(reportObject.complaints[i].supervisorName)
+    //     bodyData.push(reportObject.complaints[i].statusType)
+    //
+    // }
+
+
+    reportObject.complaints.forEach(function(sourceRow) {
+        let dataRow = [];
+
+        dataRow.push(sourceRow.id);
+        dataRow.push(sourceRow.type);
+        dataRow.push(sourceRow.date);
+        dataRow.push(sourceRow.priority);
+        dataRow.push(sourceRow.town);
+        dataRow.push(sourceRow.supervisorName);
+        dataRow.push(sourceRow.statusType)
+
+
+        bodyData.push(dataRow)
+    });
+
+    console.log(bodyData)
+
 
     const documentDefinition = {
         pageSize: 'A4',
         pageOrientation: 'portrait',
         content: [
-            {text: 'Sindh Solid Waste Management', bold: true, style: 'header', fontSize: 25, },
-            'Report generated from ' + props + ' to ' + props,
-            {text: 'A simple table (no headers, no width specified, no spans, no styling)', style: 'subheader'},
+            {text: 'Sindh Solid Waste Management', bold: true, style: 'header', fontSize: 25,margin: [0, 20, 0, 8] },
+            {text: reportObject.dateRadioValue === 'one' ? 'Report generated for ' + Moment(reportObject.dateOne).format('DD/MMM/YYYY') : 'Report generated from ' + Moment(reportObject.dateFrom).format('DD/MMM/YYYY') + '  till  ' + Moment(reportObject.dateTo).format('DD/MMM/YYYY'), italics:true , fontSize:10, margin: [0, 8, 0, 8] },
+            {text: 'A simple table (no headers, no width specified, no spans, no styling)', style: 'subheader' ,margin: [0, 20, 0, 8]},
+
             'The following table has nothing more than a body array',
             {
                 style: 'tableExample',
                 table: {
-                    body: [
-                        ['Column 1', 'Column 2', 'Column 3'],
-                        ['One value goes here', 'Another one here', 'OK?']
-                    ]
+                    fontSize: 20,
+                    borderTop: true,
+                    bold: true,
+                    body: bodyData
+                    //     [
+                    //     ['ID', 'TYPE', 'DATE', 'PRIORITY', 'TOWN','SUPERVISOR', 'STATUS'],
+                    //     bodyData
+                    //     // function (reportObject) {
+                    //     // for (let i in reportObject){
+                    //     //      [reportObject[i].id, reportObject[i].type]
+                    //     // }
+                    //     //
+                    //     // }
+                    //     // reportObject.complaints.map((obj) => {
+                    //     //    return [obj.id, obj.type, obj.date, obj.priority, obj.town, obj.supervisorName, obj.statusType]
+                    //     //     }
+                    //     // )
+                    // ]
                 }
             },
             {text: 'A simple table with nested elements', style: 'subheader'},
