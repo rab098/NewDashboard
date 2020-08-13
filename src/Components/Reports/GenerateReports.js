@@ -104,6 +104,8 @@ function GenerateReports(props) {
 
 
     const [mainData, setMainData] = useState([]);
+    const [rawData, setRawData] = useState([]);
+
 
     const [reportData, setReportData] = useState([]);
 
@@ -691,6 +693,23 @@ function GenerateReports(props) {
                     if (oneDate !== null) {
                         setReportData(
                             mainData.filter((obj) => {
+
+                                console.log("db date :", Moment(obj.date).format().substr(0, 10));
+                                console.log(
+                                    "selected onDate :",
+                                    Moment(oneDate).format().substr(0, 10)
+                                );
+                                // return new Date(obj.date.substring(0, 14)).getTime() === oneDate.getTime()
+                                return (
+                                    Moment(obj.date).format().substr(0, 10) ===
+                                    Moment(oneDate).format().substr(0, 10)
+                                );
+                            })
+                        )
+
+
+                        setRawData(
+                            mainData.filter((obj) => {
                                 // console.log("db date : ",Moment(obj.date).format("DD MMM yyyy"))
 
                                 // const format = 'llll'
@@ -706,10 +725,8 @@ function GenerateReports(props) {
                                     Moment(obj.date).format().substr(0, 10) ===
                                     Moment(oneDate).format().substr(0, 10)
                                 );
-                            })
-                        );
-
-                        // console.log("selected oneDate use effect : ",Moment(oneDate).format("DD MMM yyyy") )
+                            }
+                        ))
                     }
                 }
 
@@ -729,7 +746,20 @@ function GenerateReports(props) {
                             })
                         );
 
-                        console.log("from and to date: ", fromDate + toDate);
+                        // console.log("from and to date: ", fromDate + toDate);
+
+                        setRawData(
+                            mainData.filter((obj) => {
+                                // console.log("db date : ",Moment(obj.date).format("DD MMM yyyy"))
+
+                                // return Moment(obj.date).format("DD MMM yyyy") >= Moment(fromDate).format("DD MMM yyyy") && Moment(obj.date).format("DD MMM yyyy") <= Moment(toDate).format("DD MMM yyyy")
+                                return (
+                                    new Date(obj.date.substring(0, 19)).getTime() >=
+                                    fromDate.getTime() &&
+                                    new Date(obj.date.substring(0, 19)).getTime() <= toDate.getTime()
+                                );
+                            })
+                        )
                     }
                 }
                 console.log("its done yo!");
@@ -832,6 +862,7 @@ function GenerateReports(props) {
                 setNextButton(false)
                 break
             case 2:
+                setReportData(rawData)
                 setNextButton(false)
                 break
             default:
@@ -901,7 +932,7 @@ function GenerateReports(props) {
                                         </Button>
                                         <Button
                                             variant="contained"
-                                            color="secondary"
+                                            color="primary"
                                             onClick={() => handleNext(index)}
                                             className={classes.button}
                                             disabled={nextButton}
