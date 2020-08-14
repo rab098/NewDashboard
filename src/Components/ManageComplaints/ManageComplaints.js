@@ -12,6 +12,8 @@ import Box from "@material-ui/core/Box";
 import ComplaintTypes from "./Type/ComplaintTypes";
 import Rejection from "./ReasonforRejection";
 import FeedbackTags from "./FeedbackTags/FeedbackTags";
+import { ImpulseSpinner } from "react-spinners-kit";
+import Backdrop from "@material-ui/core/Backdrop";
 
 let store = require("store");
 
@@ -53,6 +55,10 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
     backgroundColor: "transparent",
   },
+  backdrop: {
+    zIndex: 100000,
+    color: "#fff",
+  },
 }));
 
 export default function ManageComplaints() {
@@ -61,13 +67,17 @@ export default function ManageComplaints() {
 
   const [userData, setUserData] = useState(store.get("userData"));
   const [value, setValue] = React.useState(0);
-
+  const [loading, setLoading] = useState(true);
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
 
   const handleChangeIndex = (index) => {
     setValue(index);
+  };
+
+  const toggleLoading = (item) => {
+    setLoading(item);
   };
 
   return (
@@ -101,7 +111,10 @@ export default function ManageComplaints() {
           dir={theme.direction}
         >
           {/* <Scrollbars style={{ minWidth: 100, minHeight: 510 }}> */}
-          <ComplaintTypes token={userData.accessToken} />
+          <ComplaintTypes
+            token={userData.accessToken}
+            loading={toggleLoading}
+          />
           {/* </Scrollbars> */}
         </TabPanel>
         <TabPanel
@@ -111,7 +124,7 @@ export default function ManageComplaints() {
           dir={theme.direction}
         >
           {/* <Scrollbars style={{ minWidth: 100, minHeight: 510 }}> */}
-          <FeedbackTags token={userData.accessToken} />
+          <FeedbackTags token={userData.accessToken} loading={toggleLoading} />
           {/* </Scrollbars> */}
         </TabPanel>
         <TabPanel
@@ -122,10 +135,13 @@ export default function ManageComplaints() {
         >
           {" "}
           {/* <Scrollbars style={{ minWidth: 100, minHeight: 510 }}> */}
-          <Rejection token={userData.accessToken} />
+          <Rejection token={userData.accessToken} loading={toggleLoading} />
           {/* </Scrollbars> */}
         </TabPanel>
       </SwipeableViews>
+      <Backdrop className={classes.backdrop} open={loading}>
+        <ImpulseSpinner size={90} color="#008081" loading={loading} />
+      </Backdrop>
     </div>
   );
 }

@@ -115,6 +115,9 @@ function GenerateReports(props) {
 
     const [radioValueStepTwo, setRadioValueStepTwo] = useState("complaintType");
 
+    const [radioValueSupervisor, setRadioValueSupervisor] = useState("unresolved");
+
+
 
     const [sortedData, setSortedData] = useState([]);
 
@@ -212,7 +215,13 @@ function GenerateReports(props) {
                 setFirstDate(datesObj[0]);
                 setLastDate(datesObj[datesObj.length - 1]);
                 setToDate(lastDate);
-                setReportData(mainObj);
+
+                if (userData.Role === 'ADMIN'){
+                    setReportData(mainObj);
+                }
+                else{
+                    setReportData(mainObj.filter((obj) => obj.Role === 'SUPERVISOR'))
+                }
                 setMainData(mainObj);
             })
             .catch((err) => {
@@ -275,6 +284,7 @@ function GenerateReports(props) {
         return [
             "Select the dates",
             "Choose how you want to sort the complaints",
+            "Report Description",
             "Generate your report",
         ];
     }
@@ -286,7 +296,7 @@ function GenerateReports(props) {
                 return (
                     <div>
                         <p>
-                            You can choose to generate a one day report or a multiple days
+                            You can choose to generate a one day report or multiple days
                             report.
                         </p>
                         <RadioGroup
@@ -377,52 +387,55 @@ function GenerateReports(props) {
             case 1:
                 return (
                     <div>
-                        <RadioGroup
-                            row
-                            aria-label="position"
-                            name="position"
-                            defaultValue={radioValueStepTwo}
-                            onChange={handleRadioChangeStepTwo}
-                        >
-                            <FormControlLabel
-                                value="complaintType"
-                                control={<Radio color="primary"/>}
-                                label="Type Wise"
-                                labelPlacement="end"
-                            />
-                            {/*<FormControlLabel*/}
-                            {/*    value="towns"*/}
-                            {/*    control={<Radio color="primary"/>}*/}
-                            {/*    label="Town Wise"*/}
-                            {/*    labelPlacement="end"*/}
-                            {/*/>*/}
+                        {userData.Role ==='ADMIN' ?
 
-                            <FormControlLabel
-                                value="supervisors"
-                                control={<Radio color="primary"/>}
-                                label="Supervisor Wise"
-                                labelPlacement="end"
-                            />
-                        </RadioGroup>
+                            <div>
+                            <RadioGroup
+                                row
+                                aria-label="position"
+                                name="position"
+                                defaultValue={radioValueStepTwo}
+                                onChange={handleRadioChangeStepTwo}
+                            >
+                                <FormControlLabel
+                                    value="complaintType"
+                                    control={<Radio color="primary"/>}
+                                    label="Type Wise"
+                                    labelPlacement="end"
+                                />
+                                {/*<FormControlLabel*/}
+                                {/*    value="towns"*/}
+                                {/*    control={<Radio color="primary"/>}*/}
+                                {/*    label="Town Wise"*/}
+                                {/*    labelPlacement="end"*/}
+                                {/*/>*/}
 
-                        {hideType === true && (
-                            <FormControl component="fieldset">
-                                <FormGroup aria-label="position" column>
-                                    {sortedData.map((obj,index) => {
-                                        return (
-                                            <FormControlLabel
-                                                value="type"
-                                                control={<Checkbox color="primary"/>}
-                                                label={obj}
-                                                name={obj}
-                                                onChange={ (event) => handleTypeCheckboxChange(event,index)}
-                                                labelPlacement="end"
-                                            />
-                                        );
-                                    })}
-                                </FormGroup>
-                            </FormControl>
-                        )}
+                                <FormControlLabel
+                                    value="supervisors"
+                                    control={<Radio color="primary"/>}
+                                    label="Supervisor Wise"
+                                    labelPlacement="end"
+                                />
+                            </RadioGroup>
+
+                            {hideType === true && (
+                                <FormControl component="fieldset">
+                                    <FormGroup aria-label="position" column>
+                                        {sortedData.map((obj,index) => {
+                                            return (
+                                                <FormControlLabel
+                                                    value="type"
+                                                    control={<Checkbox color="primary"/>}
+                                                    label={obj}
+                                                    name={obj}
+                                                    onChange={ (event) => handleTypeCheckboxChange(event,index)}
+                                                    labelPlacement="end"
+                                                />
+                                            );
+                                        })}
+                                    </FormGroup>
+                                </FormControl>
+                            )}
 
                         {/*{hideTown === true && (*/}
                         {/*    <FormControl component="fieldset">*/}
@@ -445,25 +458,75 @@ function GenerateReports(props) {
 
                         {hideSupervisor === true && (
                             <FormControl component="fieldset">
-                                <FormGroup aria-label="position" column>
-                                    {sortedData.map((obj) => {
-                                        return (
-                                            <FormControlLabel
-                                                value="supervisor"
-                                                control={<Checkbox color="primary"/>}
-                                                onChange={handleSupervisorsCheckboxChange}
-                                                label={obj}
-                                                name={obj}
-                                                labelPlacement="end"
-                                            />
-                                        );
-                                    })}
-                                </FormGroup>
+                            <FormGroup aria-label="position" column>
+                            {sortedData.map((obj) => {
+                                return (
+                                    <FormControlLabel
+                                        value="supervisor"
+                                        control={<Checkbox color="primary"/>}
+                                        onChange={handleSupervisorsCheckboxChange}
+                                        label={obj}
+                                        name={obj}
+                                        labelPlacement="end"
+                                    />
+                                );
+                            })}
+                            </FormGroup>
                             </FormControl>
-                        )}
+                            )}
+
+                            </div>
+                            :
+
+                        <div>
+                            <RadioGroup
+                                column
+                                aria-label="position"
+                                name="position"
+                                defaultValue={radioValueSupervisor}
+                                onChange={handleRadioChangeSupervisor}
+                            >
+                                <FormControlLabel
+                                    value="unresolved"
+                                    control={<Radio color="primary"/>}
+                                    label="Unresolved"
+                                    labelPlacement="end"
+                                />
+                                <FormControlLabel
+                                    value="active"
+                                    control={<Radio color="primary"/>}
+                                    label="Active"
+                                    labelPlacement="end"
+                                />
+
+                                <FormControlLabel
+                                    value="resolved"
+                                    control={<Radio color="primary"/>}
+                                    label="Resolved"
+                                    labelPlacement="end"
+                                />
+                            </RadioGroup>
+
+                        </div>}
+
                     </div>
                 );
             case 2:
+                return (
+
+                    <div>
+                        <p>Please provide a brief description of your report.</p>
+                        <TextField
+                            id="outlined-multiline-static"
+                            label="Description"
+                            multiline
+                            rows="4"
+                            defaultValue="Description"
+                            variant="outlined"
+                        />
+                    </div>
+                );
+            case 3:
                 return (
 
                     <div>
@@ -481,6 +544,16 @@ function GenerateReports(props) {
         }
     }
 
+
+    // useEffect( () => {
+    //     if(userData.Role === 'SUPERVISOR'){
+    //         setReportData(
+    //             reportData.filter( (obj) => {
+    //                 return obj.Role === 'SUPERVISOR'
+    //             })
+    //         )
+    //     }
+    // },[userData.Role])
 
     const handleRadioChange = (event) => {
         // setNextButton(true);
@@ -523,6 +596,10 @@ function GenerateReports(props) {
 
 
 
+    };
+
+    const handleRadioChangeSupervisor = (event) => {
+        setRadioValueStepTwo(event.target.value);
     };
 
     useEffect(() => {
@@ -795,29 +872,50 @@ function GenerateReports(props) {
                 break;
             case 1:
 
-                if (radioValueStepTwo === 'complaintType'){
-                    if (typeCheckboxCount !== 0){
-                        setReportData(
-                            reportData.filter( (obj) => typeValue.includes(obj.type)
+                if (userData.Role === 'ADMIN'){
+                    if (radioValueStepTwo === 'complaintType'){
+                        if (typeCheckboxCount !== 0){
+                            setReportData(
+                                reportData.filter( (obj) => typeValue.includes(obj.type)
 
-                            ))
+                                ))
+                        }
+                    }
+                        // else if(radioValueStepTwo === 'towns'){
+                        //     if (townsCheckboxCount !== 0){
+                        //         setReportData(
+                        //             reportData.filter( (obj) => townsValue.includes(obj.town))
+                        //         )
+                        //     }
+                    // }
+                    else{
+                        if (supervisorCheckboxCount !== 0){
+                            setReportData(
+                                reportData.filter( (obj) => supervisorValue.includes(obj.supervisorName))
+                            )
+                        }
                     }
                 }
-                // else if(radioValueStepTwo === 'towns'){
-                //     if (townsCheckboxCount !== 0){
-                //         setReportData(
-                //             reportData.filter( (obj) => townsValue.includes(obj.town))
-                //         )
-                //     }
-                // }
-                else{
-                    if (supervisorCheckboxCount !== 0){
+                else {
+                    if (radioValueSupervisor === 'unresolved'){
                         setReportData(
-                            reportData.filter( (obj) => supervisorValue.includes(obj.supervisorName))
+                            reportData.filter( (obj) => obj.type === 'Unresolved')
+                        )
+                    }
+
+                    else if (radioValueSupervisor === 'active'){
+                        setReportData(
+                            reportData.filter( (obj) => obj.type === 'Active')
+                        )
+                    }
+
+                    else if (radioValueSupervisor === 'resolved'){
+                        setReportData(
+                            reportData.filter( (obj) => obj.type === 'Resolved')
                         )
                     }
                 }
-                // console.log("mhm?");
+
 
                 setReportObject({
                     numberOfRows: reportData.length,

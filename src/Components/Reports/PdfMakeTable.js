@@ -73,7 +73,8 @@ export default (reportObject) => {
         content: [
             {text: 'Sindh Solid Waste Management', bold: true, style: 'header', fontSize: 25,margin: [0, 20, 0, 8] },
             {text: reportObject.dateRadioValue === 'one' ? 'Report generated for ' + Moment(reportObject.dateOne).format('DD/MMM/YYYY') : 'Report generated from  ' + Moment(reportObject.dateFrom).format('DD/MMM/YYYY') + '  till  ' + Moment(reportObject.dateTo).format('DD/MMM/YYYY'), italics:true , fontSize:10, margin: [0, 5, 0, 5] },
-            {text: reportObject.sortRadioValue === 'complaintType' ? 'The following table has been generated Type Wise' : 'The following table has been generated Supervisor Wise' , style: 'subheader' ,margin: [0, 20, 0, 8]},
+            {text: reportObject.description},
+            // {text: reportObject.sortRadioValue === 'complaintType' ? 'The following table has been generated Type Wise' : 'The following table has been generated Supervisor Wise' , style: 'subheader' ,margin: [0, 20, 0, 8]},
 
             {
                 style: 'tableExample',
