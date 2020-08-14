@@ -155,7 +155,7 @@ function EnhancedTableHead(props) {
             direction={orderBy === "name" ? order : "asc"}
             onClick={createSortHandler("name")}
           >
-            NAME
+            Name
             {/* {console.log(orderBy === _headCell.id)} */}
             {orderBy === "name" ? (
               <span className={classes.visuallyHidden}>
@@ -208,6 +208,7 @@ function EnhancedTableHead(props) {
             />
           </TableCell>
         </Tooltip>
+
         {headCells.map((headCell) => (
           <TableCell
             key={headCell.id}
@@ -220,7 +221,8 @@ function EnhancedTableHead(props) {
               direction={orderBy === headCell.id ? order : "asc"}
               onClick={createSortHandler(headCell.id)}
             >
-              {headCell.label.toUpperCase()}
+              {/* .toUpperCase() */}
+              {headCell.label}
               {/* {console.log(orderBy === headCell.id)} */}
               {orderBy === headCell.id ? (
                 <span className={classes.visuallyHidden}>
@@ -323,7 +325,17 @@ function Row(props) {
     handleDelete,
   } = props;
   const [open, setOpen] = React.useState(false);
+  const [supervisorId, setSupervisorId] = React.useState("");
+  function handleExpand(id) {
+    if (open === false) {
+      setSupervisorId(id);
+    } else {
+      setSupervisorId("");
+    }
+    setOpen(!open);
 
+    console.log("opn  " + open);
+  }
   return (
     <React.Fragment>
       <TableRow hover role="checkbox" tabIndex={-1} key={row.supervisorId}>
@@ -379,9 +391,7 @@ function Row(props) {
             paddingRight: "0px",
           }}
         >
-          <IconButton
-            style={{ backgroundColor: "transparent", padding: "0px" }}
-          >
+          <IconButton style={{ backgroundColor: "transparent" }}>
             <DeleteIcon
               onClick={handleDelete(row.supervisorId)}
               style={{
@@ -398,10 +408,12 @@ function Row(props) {
           style={{ paddingLeft: "0px", paddingRight: "16px" }}
         >
           <IconButton
-            style={{ backgroundColor: "transparent", padding: "0px" }}
+            style={{ backgroundColor: "transparent" }}
             aria-label="expand row"
             size="small"
-            onClick={() => setOpen(!open)}
+            onClick={() => {
+              handleExpand(row.supervisorId);
+            }}
           >
             {open ? (
               <KeyboardArrowUpIcon
@@ -434,7 +446,7 @@ function Row(props) {
         >
           {" "}
           <Collapse in={open} timeout="auto" unmountOnExit>
-            <ResolveTime />
+            <ResolveTime superId={supervisorId} />
           </Collapse>
         </TableCell>
       </TableRow>
@@ -565,6 +577,7 @@ export default function Supervisors() {
         }
       )
       .then((res) => {
+        console.log("suepr     " + JSON.stringify(userData));
         for (var i in res.data.supervisors) {
           // finalObj.push(res.data);
           finalObj.push(res.data.supervisors[i]);
@@ -631,7 +644,7 @@ export default function Supervisors() {
       <Grid container justify="flex-start" alignItems="flex-start">
         <Grid item xs={12} sm={12} md={12} lg={12}>
           <Paper
-            className="filter elevationPaper"
+            className="filter elevationPaper1"
             style={{
               position: "-webkit-sticky",
               position: "sticky",
@@ -704,7 +717,7 @@ export default function Supervisors() {
           </Paper>
           {/* 
           <Scrollbars style={{ minWidth: 100, minHeight: 370 }}> */}
-          <Paper className="elevationPaper">
+          <Paper className="elevationPaper1">
             <TableContainer className="tableContainer">
               <Table
                 aria-labelledby="tableTitle"

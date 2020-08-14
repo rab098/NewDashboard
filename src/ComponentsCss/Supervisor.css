@@ -38,6 +38,7 @@
 .tableRow2 {
   /* border-top: 1px solid
   rgba(224, 224, 224, 1); */
+
   background-color: white;
   border-bottom: 10px solid #f3f3f3;
 }
@@ -53,10 +54,16 @@
   padding: 0px 15px 0 15px;
   text-align: center;
   height: max-content;
-  border: none !important;
 }
 
 .resolve-texts {
-  padding: 10px 0 0px 0;
+  padding: 10px 0 10px 0;
+  font-weight: 600;
+  font-size: 16px;
   margin: 10px 0 0 0;
+}
+
+.elevationPaper1 {
+  box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.14) !important;
+  padding: 0px;
 }

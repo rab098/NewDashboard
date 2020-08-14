@@ -155,8 +155,6 @@ export default function EditDialog(props) {
         onClick={handleClickOpen}
         style={{
           backgroundColor: "transparent",
-          padding: "0px",
-          margin: "0px",
         }}
       >
         <EditIcon
@@ -202,7 +200,7 @@ export default function EditDialog(props) {
             {props.town.map((t) => (
               <ListItem
                 style={{
-                  boxShadow: "0px 0px 8px -5px rgba(124,133,133,1)",
+                  boxShadow: " 0 1px 4px 0 rgba(0, 0, 0, 0.19)",
                 }}
                 button
                 selected={selectedIndex === t}

@@ -10,22 +10,19 @@ let store = require("store");
 
 let Chartist = require("chartist");
 
-function ResolveTime() {
+function ResolveTime(props) {
   const [resolveTime, setResolveTime] = useState({
-    less: 70,
-    medium: 20,
-    high: 5,
-    greaterThanTwentyFour: 5,
+    less: 0,
+    medium: 0,
+    high: 0,
+    greaterThanTwentyFour: 0,
   });
 
   const [resolveTimeCheck, setResolveTimeCheck] = useState(0);
 
   const [userData, setUserData] = useState(store.get("userData"));
 
-  const headers = {
-    "Content-Type": "application/json",
-    "x-access-token": userData.accessToken,
-  };
+  const headers = {};
 
   const handleLogoutAutomatically = () => {
     store.remove("userData");
@@ -36,9 +33,15 @@ function ResolveTime() {
 
   useEffect(() => {
     axios
-      .get("https://m2r31169.herokuapp.com/api/getresolveTime", {
-        headers: headers,
-      })
+      .get(
+        "https://m2r31169.herokuapp.com/api/getSupervisorResolveTime?id=" +
+          props.superId,
+        {
+          headers: {
+            "x-access-token": userData.accessToken, //the token is a variable which holds the token
+          },
+        }
+      )
       .then((res) => {
         console.log("resolveTime coming", res.data);
 
@@ -73,6 +76,14 @@ function ResolveTime() {
             err.response.status === 500
           ) {
             console.log(err.response.status);
+          } else if (err.response.status === 400) {
+            setResolveTimeCheck(1);
+            setResolveTime({
+              less: 0,
+              medium: 0,
+              high: 0,
+              greaterThanTwentyFour: 0,
+            });
           }
         }
         console.error(err);
@@ -98,98 +109,18 @@ function ResolveTime() {
 
   return (
     <div className="resolve-mains">
-      <div className="resolve-headings">
+      <Box
+        style={{
+          borderBottom: "1px solid #99999957",
+        }}
+        textAlign="center"
+        color="black"
+        fontWeight="600"
+        component="div"
+        fontSize="18"
+      >
         <p className="resolve-texts">Resolve Time Analysis</p>
-
-        <Box
-          padding="none"
-          textAlign="left"
-          color="#43a047"
-          fontWeight="bold"
-          component="span"
-          fontSize="3rem"
-        >
-          .
-        </Box>
-        <Box
-          padding="none"
-          textAlign="left"
-          color="#008081"
-          fontWeight="600"
-          component="span"
-          fontSize="0.75rem"
-        >
-          {" "}
-          1 to 9 hours
-        </Box>
-        <Box
-          padding="none"
-          textAlign="left"
-          color=" #f4c63d"
-          fontWeight="bold"
-          component="span"
-          fontSize="3rem"
-          marginLeft={1}
-        >
-          .
-        </Box>
-        <Box
-          padding="none"
-          textAlign="left"
-          color="#008080"
-          fontWeight="600"
-          component="span"
-          fontSize="0.75rem"
-        >
-          {" "}
-          10 to 16 hours
-        </Box>
-        <Box
-          padding="none"
-          textAlign="left"
-          color="#fb8c00"
-          fontWeight="bold"
-          component="span"
-          fontSize="3rem"
-          marginLeft={1}
-        >
-          .
-        </Box>
-        <Box
-          padding="none"
-          textAlign="left"
-          color="#008080"
-          fontWeight="600"
-          component="span"
-          fontSize="0.75rem"
-        >
-          {" "}
-          17 to 24 hours
-        </Box>
-
-        <Box
-          padding="none"
-          textAlign="left"
-          color="#FF0000"
-          fontWeight="bold"
-          component="span"
-          fontSize="3rem"
-          marginLeft={1}
-        >
-          .
-        </Box>
-        <Box
-          padding="none"
-          textAlign="left"
-          color="#008080"
-          fontWeight="600"
-          component="span"
-          fontSize="0.75rem"
-        >
-          {" "}
-          more than 24 hours
-        </Box>
-      </div>
+      </Box>
 
       {resolveTimeCheck === 0 ? (
         <ChartistGraph
@@ -200,9 +131,92 @@ function ResolveTime() {
         />
       ) : (
         <div className="no-resolve-time-heading">
-          <p className="resolve-text">Not available</p>
+          <p className="resolve-text">No Complain Resolved</p>
         </div>
       )}
+
+      <div style={{ textAlign: "center", borderTop: "1px solid #99999957" }}>
+        {" "}
+        <Box
+          textAlign="left"
+          color="#43a047"
+          fontWeight="bold"
+          component="span"
+          fontSize="3rem"
+        >
+          .
+        </Box>
+        <Box
+          textAlign="left"
+          color="#008081"
+          fontWeight="600"
+          component="span"
+          fontSize="0.75rem"
+        >
+          {" "}
+          1 to 9 hours
+        </Box>
+        <Box
+          textAlign="left"
+          color=" #f4c63d"
+          fontWeight="bold"
+          component="span"
+          fontSize="3rem"
+          marginLeft={1}
+        >
+          .
+        </Box>
+        <Box
+          textAlign="left"
+          color="#008080"
+          fontWeight="600"
+          component="span"
+          fontSize="0.75rem"
+        >
+          {" "}
+          10 to 16 hours
+        </Box>
+        <Box
+          textAlign="left"
+          color="#fb8c00"
+          fontWeight="bold"
+          component="span"
+          fontSize="3rem"
+          marginLeft={1}
+        >
+          .
+        </Box>
+        <Box
+          textAlign="left"
+          color="#008080"
+          fontWeight="600"
+          component="span"
+          fontSize="0.75rem"
+        >
+          {" "}
+          17 to 24 hours
+        </Box>
+        <Box
+          textAlign="left"
+          color="#FF0000"
+          fontWeight="bold"
+          component="span"
+          fontSize="3rem"
+          marginLeft={1}
+        >
+          .
+        </Box>
+        <Box
+          textAlign="left"
+          color="#008080"
+          fontWeight="600"
+          component="span"
+          fontSize="0.75rem"
+        >
+          {" "}
+          more than 24 hours
+        </Box>
+      </div>
     </div>
   );
 
