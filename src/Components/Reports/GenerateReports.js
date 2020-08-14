@@ -115,16 +115,23 @@ function GenerateReports(props) {
 
     const [radioValueStepTwo, setRadioValueStepTwo] = useState("complaintType");
 
+
     const [sortedData, setSortedData] = useState([]);
 
     const [hideType, setHideType] = useState(false);
     const [hideTown, setHideTown] = useState(false);
     const [hideSupervisor, setHideSupervisor] = useState(false);
 
-    const [isChecked, setIsChecked] = useState(false)
+    const [reportObject, setReportObject] = useState({
+        numberOfRows: 0,
+        dateRadioValue:'',
+        dateFrom: '',
+        dateTo: '',
+        dateOne: '',
+        sortRadioValue:'',
+        complaints: []
+    })
 
-
-    const [stepIndexNew, setStepIndexNew] = useState();
 
     // const exportPDF = () => {
     //      resume.save();
@@ -171,7 +178,7 @@ function GenerateReports(props) {
                     tmpObj["afterImage"] = res.data[i].complain.resolvedComplaintImage;
                     tmpObj["statusType"] = res.data[i].complain.Status.statusType;
                     tmpObj["statusId"] = res.data[i].complain.Status.id;
-                    tmpObj["date"] = res.data[i].complain.createdAt;
+                    tmpObj["date"] = Moment(res.data[i].complain.createdAt).format();
                     tmpObj["town"] = res.data[i].complain.Location.town.name;
                     tmpObj["priority"] =
                         res.data[i].complain.noOfRequests > 5
@@ -224,34 +231,34 @@ function GenerateReports(props) {
             });
     };
 
-    const getSupervisor = () => {
-        axios
-            .get(`https://m2r31169.herokuapp.com/api/getSuperVisor_Town`, {
-                headers: headers,
-            })
-            .then((res) => {
-                console.log("supervisor and town coming!", res.data);
-            })
-            .catch((err) => {
-                if (err.response) {
-                    if (err.response.status === 401 || err.response.status === 403) {
-                        handleLogoutAutomatically();
-                    } else if (
-                        err.response.status === 503 ||
-                        err.response.status === 500
-                    ) {
-                        console.log(err.response.status);
-                    }
-                }
-
-                console.log("supervisor and towns not coming", err.response);
-            });
-    };
+    // const getSupervisor = () => {
+    //     axios
+    //         .get(`https://m2r31169.herokuapp.com/api/getSuperVisor_Town`, {
+    //             headers: headers,
+    //         })
+    //         .then((res) => {
+    //             console.log("supervisor and town coming!", res.data);
+    //         })
+    //         .catch((err) => {
+    //             if (err.response) {
+    //                 if (err.response.status === 401 || err.response.status === 403) {
+    //                     handleLogoutAutomatically();
+    //                 } else if (
+    //                     err.response.status === 503 ||
+    //                     err.response.status === 500
+    //                 ) {
+    //                     console.log(err.response.status);
+    //                 }
+    //             }
+    //
+    //             console.log("supervisor and towns not coming", err.response);
+    //         });
+    // };
 
     useEffect(() => {
         // console.log("userData" + JSON.stringify(userData));
         getComplaints();
-        getSupervisor();
+        // getSupervisor();
         // setComplaintFilter("active");
     }, [userData]);
 
@@ -380,15 +387,15 @@ function GenerateReports(props) {
                             <FormControlLabel
                                 value="complaintType"
                                 control={<Radio color="primary"/>}
-                                label="Complaint Type"
+                                label="Type Wise"
                                 labelPlacement="end"
                             />
-                            <FormControlLabel
-                                value="towns"
-                                control={<Radio color="primary"/>}
-                                label="Town Wise"
-                                labelPlacement="end"
-                            />
+                            {/*<FormControlLabel*/}
+                            {/*    value="towns"*/}
+                            {/*    control={<Radio color="primary"/>}*/}
+                            {/*    label="Town Wise"*/}
+                            {/*    labelPlacement="end"*/}
+                            {/*/>*/}
 
                             <FormControlLabel
                                 value="supervisors"
@@ -417,24 +424,24 @@ function GenerateReports(props) {
                             </FormControl>
                         )}
 
-                        {hideTown === true && (
-                            <FormControl component="fieldset">
-                                <FormGroup aria-label="position" column>
-                                    {sortedData.map((obj) => {
-                                        return (
-                                            <FormControlLabel
-                                                value="town"
-                                                control={<Checkbox color="primary"/>}
-                                                onChange={handleTownsCheckboxChange}
-                                                label={obj}
-                                                name={obj}
-                                                labelPlacement="end"
-                                            />
-                                        );
-                                    })}
-                                </FormGroup>
-                            </FormControl>
-                        )}
+                        {/*{hideTown === true && (*/}
+                        {/*    <FormControl component="fieldset">*/}
+                        {/*        <FormGroup aria-label="position" column>*/}
+                        {/*            {sortedData.map((obj) => {*/}
+                        {/*                return (*/}
+                        {/*                    <FormControlLabel*/}
+                        {/*                        value="town"*/}
+                        {/*                        control={<Checkbox color="primary"/>}*/}
+                        {/*                        onChange={handleTownsCheckboxChange}*/}
+                        {/*                        label={obj}*/}
+                        {/*                        name={obj}*/}
+                        {/*                        labelPlacement="end"*/}
+                        {/*                    />*/}
+                        {/*                );*/}
+                        {/*            })}*/}
+                        {/*        </FormGroup>*/}
+                        {/*    </FormControl>*/}
+                        {/*)}*/}
 
                         {hideSupervisor === true && (
                             <FormControl component="fieldset">
@@ -495,18 +502,26 @@ function GenerateReports(props) {
     const handleRadioChangeStepTwo = (event) => {
         setRadioValueStepTwo(event.target.value);
         setTypeValue([])
-        setTownsValue([])
+        // setTownsValue([])
         setSupervisorValue([])
         setTypeCheckboxCount(0)
-        setTownsCheckboxCount(0)
+        // setTownsCheckboxCount(0)
         setSupervisorCheckboxCount(0)
+
 
         if (event.target.value === "complaintType") {
             typeCheckboxCount === 0 ? setNextButton(true) : setNextButton(false);
-        } else if (event.target.value === "towns") {
-            townsCheckboxCount === 0 ? setNextButton(true) : setNextButton(false);
-        } else if (event.target.value === "supervisors")
+        }
+        else if (event.target.value === "supervisors")
             supervisorCheckboxCount === 0 ? setNextButton(true) : setNextButton(false);
+        // if (event.target.value === "complaintType") {
+        //     typeCheckboxCount === 0 ? setNextButton(true) : setNextButton(false);
+        // } else if (event.target.value === "towns") {
+        //     townsCheckboxCount === 0 ? setNextButton(true) : setNextButton(false);
+        // } else if (event.target.value === "supervisors")
+        //     supervisorCheckboxCount === 0 ? setNextButton(true) : setNextButton(false);
+
+
 
     };
 
@@ -515,11 +530,13 @@ function GenerateReports(props) {
             setHideType(true);
             setHideTown(false);
             setHideSupervisor(false);
-        } else if (radioValueStepTwo === "towns") {
-            setHideType(false);
-            setHideTown(true);
-            setHideSupervisor(false);
-        } else if (radioValueStepTwo === "supervisors") {
+        }
+        // else if (radioValueStepTwo === "towns") {
+        //     setHideType(false);
+        //     setHideTown(true);
+        //     setHideSupervisor(false);
+        // }
+        else if (radioValueStepTwo === "supervisors") {
             setHideType(false);
             setHideTown(false);
             setHideSupervisor(true);
@@ -555,22 +572,22 @@ function GenerateReports(props) {
 
     console.log("type value is = ",typeValue)
 
-    const handleTownsCheckboxChange = (event) => {
-        // setTownsValue([event.target.name])
-
-
-        if (event.target.checked) {
-            setTownsCheckboxCount(prevState => prevState + 1)
-            setTownsValue([...townsValue, event.target.name])
-        } else {
-            setTownsCheckboxCount(prevState => prevState - 1)
-            setTownsValue(
-                townsValue.filter( v => v !== event.target.name)
-            )
-
-
-        }
-    }
+    // const handleTownsCheckboxChange = (event) => {
+    //     // setTownsValue([event.target.name])
+    //
+    //
+    //     if (event.target.checked) {
+    //         setTownsCheckboxCount(prevState => prevState + 1)
+    //         setTownsValue([...townsValue, event.target.name])
+    //     } else {
+    //         setTownsCheckboxCount(prevState => prevState - 1)
+    //         setTownsValue(
+    //             townsValue.filter( v => v !== event.target.name)
+    //         )
+    //
+    //
+    //     }
+    // }
 
     const handleSupervisorsCheckboxChange = (event) => {
         // setSupervisorValue([event.target.name])
@@ -603,15 +620,15 @@ function GenerateReports(props) {
 
     }, [typeCheckboxCount, activeStep])
 
-    useEffect(() => {
-
-        if (townsCheckboxCount === 0 && activeStep === 1) {
-            setNextButton(true)
-        } else if (townsCheckboxCount !== 0 && activeStep === 1)
-            setNextButton(false)
-
-
-    }, [townsCheckboxCount, activeStep])
+    // useEffect(() => {
+    //
+    //     if (townsCheckboxCount === 0 && activeStep === 1) {
+    //         setNextButton(true)
+    //     } else if (townsCheckboxCount !== 0 && activeStep === 1)
+    //         setNextButton(false)
+    //
+    //
+    // }, [townsCheckboxCount, activeStep])
 
 
     useEffect(() => {
@@ -738,11 +755,15 @@ function GenerateReports(props) {
                                 // console.log("db date : ",Moment(obj.date).format("DD MMM yyyy"))
 
                                 // return Moment(obj.date).format("DD MMM yyyy") >= Moment(fromDate).format("DD MMM yyyy") && Moment(obj.date).format("DD MMM yyyy") <= Moment(toDate).format("DD MMM yyyy")
-                                return (
-                                    new Date(obj.date.substring(0, 19)).getTime() >=
-                                    fromDate.getTime() &&
-                                    new Date(obj.date.substring(0, 19)).getTime() <= toDate.getTime()
-                                );
+                                // return (
+                                //     new Date(obj.date.substring(0, 19)).getTime() >=
+                                //     fromDate.getTime() &&
+                                //     new Date(obj.date.substring(0, 19)).getTime() <= toDate.getTime()
+                                // );
+
+                                return new Date(obj.date.substring(0, 19)).getTime() >= new Date(fromDate.getFullYear(), fromDate.getMonth(), fromDate.getDate(), 0, 0, 0).getTime()
+                                    && new Date(obj.date.substring(0, 19)).getTime() <= new Date(toDate.getFullYear(), toDate.getMonth(), toDate.getDate(), 23, 59, 0).getTime()
+
                             })
                         );
 
@@ -779,24 +800,16 @@ function GenerateReports(props) {
                         setReportData(
                             reportData.filter( (obj) => typeValue.includes(obj.type)
 
-
-                                // console.log("Object type", obj.type)
-                                // console.log("checking value", typeValue)
-
-
-                                // return (obj.type === typeValue)
-
-
                             ))
                     }
                 }
-                else if(radioValueStepTwo === 'towns'){
-                    if (townsCheckboxCount !== 0){
-                        setReportData(
-                            reportData.filter( (obj) => townsValue.includes(obj.town))
-                        )
-                    }
-                }
+                // else if(radioValueStepTwo === 'towns'){
+                //     if (townsCheckboxCount !== 0){
+                //         setReportData(
+                //             reportData.filter( (obj) => townsValue.includes(obj.town))
+                //         )
+                //     }
+                // }
                 else{
                     if (supervisorCheckboxCount !== 0){
                         setReportData(
@@ -804,7 +817,19 @@ function GenerateReports(props) {
                         )
                     }
                 }
-                console.log("mhm?");
+                // console.log("mhm?");
+
+                setReportObject({
+                    numberOfRows: reportData.length,
+                    dateRadioValue: radioValue,
+                    dateFrom:  fromDate,
+                    dateTo: toDate,
+                    dateOne: oneDate,
+                    sortRadioValue: radioValueStepTwo,
+                    complaints: reportData
+                    }
+
+                )
                 setActiveStep((prevActiveStep) => prevActiveStep + 1);
                 break;
             case 2:
@@ -828,16 +853,18 @@ function GenerateReports(props) {
                             reportData.map((obj, index) => obj.type).indexOf(type) === index
                     )
             );
-        } else if (radioValueStepTwo === "towns") {
-            setSortedData(
-                reportData
-                    .map((obj, index) => obj.town)
-                    .filter(
-                        (town, index) =>
-                            reportData.map((obj, index) => obj.town).indexOf(town) === index
-                    )
-            );
-        } else if (radioValueStepTwo === "supervisors") {
+        }
+        // else if (radioValueStepTwo === "towns") {
+        //     setSortedData(
+        //         reportData
+        //             .map((obj, index) => obj.town)
+        //             .filter(
+        //                 (town, index) =>
+        //                     reportData.map((obj, index) => obj.town).indexOf(town) === index
+        //             )
+        //     );
+        // }
+        else if (radioValueStepTwo === "supervisors") {
             setSortedData(
                 reportData
                     .map((obj, index) => obj.supervisorName)
@@ -903,7 +930,7 @@ function GenerateReports(props) {
 
     const _exportPdfTable = () => {
         // change this number to generate more or less rows of data
-        PdfMakeTable(20);
+        PdfMakeTable(reportObject);
     };
 
     return (
