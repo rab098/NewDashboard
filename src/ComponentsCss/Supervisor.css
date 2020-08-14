@@ -34,3 +34,29 @@
 .MuiListItem-root.Mui-selected:hover {
   background-color: #c8cfcf !important;
 }
+
+.tableRow2 {
+  /* border-top: 1px solid
+  rgba(224, 224, 224, 1); */
+  background-color: white;
+  border-bottom: 10px solid #f3f3f3;
+}
+
+.resolve-mains {
+  margin: 5px 10px 15px 10px;
+  background-color: white;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.2), 0 2px 8px 0 rgba(0, 0, 0, 0.19);
+  border-radius: 5px;
+}
+
+.resolve-headings {
+  padding: 0px 15px 0 15px;
+  text-align: center;
+  height: max-content;
+  border: none !important;
+}
+
+.resolve-texts {
+  padding: 10px 0 0px 0;
+  margin: 10px 0 0 0;
+}
