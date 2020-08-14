@@ -54,10 +54,15 @@ import InputBase from "@material-ui/core/InputBase";
 import { fade } from "@material-ui/core/styles";
 import MenuIcon from "@material-ui/icons/Menu";
 import SearchIcon from "@material-ui/icons/Search";
+import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
+import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
 
+import Collapse from "@material-ui/core/Collapse";
 import { IconButton } from "@material-ui/core";
 import CancelIcon from "@material-ui/icons/Cancel";
+import ResolveTime from "./ResolveTime.js";
 import axios from "axios";
+
 let store = require("store");
 
 function descendingComparator(a, b, orderBy) {
@@ -96,6 +101,12 @@ function stableSort(array, comparator) {
 // ];
 const headCells = [
   {
+    id: "performance",
+    numeric: true,
+    disablePadding: false,
+    label: "Weekly Performance",
+  },
+  {
     id: "email",
     numeric: false,
     disablePadding: false,
@@ -126,7 +137,11 @@ function EnhancedTableHead(props) {
 
   return (
     <TableHead className="tableHead">
-      <TableRow>
+      <TableRow
+        style={{
+          borderBottom: "10px solid #f3f3f3",
+        }}
+      >
         <TableCell></TableCell>
         <TableCell
           // colSpan={2}
@@ -215,6 +230,9 @@ function EnhancedTableHead(props) {
             </TableSortLabel>
           </TableCell>
         ))}
+        <TableCell></TableCell>
+        <TableCell></TableCell>
+        <TableCell></TableCell>
       </TableRow>
     </TableHead>
   );
@@ -279,6 +297,161 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+function createData(name, calories, fat, carbs, protein, price) {
+  return {
+    name,
+    calories,
+    fat,
+    carbs,
+    protein,
+    price,
+    history: [
+      { date: "2020-01-05", customerId: "11091700", amount: 3 },
+      { date: "2020-01-02", customerId: "Anonymous", amount: 1 },
+    ],
+  };
+}
+
+function Row(props) {
+  const {
+    row,
+    labelId,
+    classes,
+    res,
+    towns,
+    handleUpdatedTown,
+    handleDelete,
+  } = props;
+  const [open, setOpen] = React.useState(false);
+
+  return (
+    <React.Fragment>
+      <TableRow hover role="checkbox" tabIndex={-1} key={row.supervisorId}>
+        <TableCell
+          component="th"
+          id={labelId}
+          scope="row"
+          style={{
+            paddingLeft: "16px",
+            paddingRight: "4px",
+          }}
+        >
+          <Avatar
+            className="gridd"
+            alt="Remy Sharp"
+            src={row.image}
+            className={classes._theme}
+          >
+            {res}
+          </Avatar>{" "}
+        </TableCell>
+        <TableCell
+          align="left"
+          style={{
+            paddingLeft: "2px",
+            paddingRight: "16px",
+          }}
+        >
+          {row.name}
+        </TableCell>
+        <TableCell align="center">{row.Resolved}</TableCell>
+        <TableCell align="center">{row.Active}</TableCell>
+        <TableCell align="center">{row.Unresolved}</TableCell>
+        <TableCell align="center">{row.Rejected}</TableCell>
+        <TableCell align="center">70%</TableCell>
+        <TableCell align="left">{row.email}</TableCell>
+        <TableCell align="left">{row.phoneNumber}</TableCell>
+        <TableCell align="left">{row.town}</TableCell>
+        <TableCell
+          align="left"
+          style={{ paddingLeft: "0px", paddingRight: "0px" }}
+        >
+          <EditDialog
+            town={towns}
+            rowData={row}
+            onUpdate={handleUpdatedTown}
+          ></EditDialog>{" "}
+        </TableCell>{" "}
+        <TableCell
+          align="left"
+          style={{
+            paddingLeft: "0px",
+            paddingRight: "0px",
+          }}
+        >
+          <IconButton
+            style={{ backgroundColor: "transparent", padding: "0px" }}
+          >
+            <DeleteIcon
+              onClick={handleDelete(row.supervisorId)}
+              style={{
+                color: "#008080",
+                fontSize: "20px",
+                padding: 0,
+                border: 0,
+              }}
+            />
+          </IconButton>
+        </TableCell>
+        <TableCell
+          align="left"
+          style={{ paddingLeft: "0px", paddingRight: "16px" }}
+        >
+          <IconButton
+            style={{ backgroundColor: "transparent", padding: "0px" }}
+            aria-label="expand row"
+            size="small"
+            onClick={() => setOpen(!open)}
+          >
+            {open ? (
+              <KeyboardArrowUpIcon
+                style={{
+                  color: "#008080",
+                  fontSize: "20px",
+                  padding: 0,
+                  border: 0,
+                }}
+              />
+            ) : (
+              <KeyboardArrowDownIcon
+                style={{
+                  color: "#008080",
+                  fontSize: "20px",
+                  padding: 0,
+                  border: 0,
+                }}
+              />
+            )}
+          </IconButton>
+        </TableCell>
+      </TableRow>
+      <TableRow className="tableRow2">
+        <TableCell
+          style={{
+            padding: "0px 24px 0px 16px",
+          }}
+          colSpan={13}
+        >
+          {" "}
+          <Collapse in={open} timeout="auto" unmountOnExit>
+            <ResolveTime />
+          </Collapse>
+        </TableCell>
+      </TableRow>
+    </React.Fragment>
+  );
+}
+
+Row.propTypes = {
+  classes: PropTypes.object.isRequired,
+  row: PropTypes.object.isRequired,
+  labelId: PropTypes.number.isRequired,
+  res: PropTypes.string.isRequired,
+  towns: PropTypes.object.isRequired,
+  handleUpdatedTown: PropTypes.func.isRequired,
+  handleDelete: PropTypes.func.isRequired,
+};
+
 export default function Supervisors() {
   const classes = useStyles();
   const [order, setOrder] = React.useState("asc");
@@ -325,6 +498,41 @@ export default function Supervisors() {
     store.clearAll();
     setUserData({});
     window.location = "/";
+  };
+  const handleDelete = (value) => () => {
+    setLoading(true);
+    let body = { id: value };
+    axios
+      .post("https://m2r31169.herokuapp.com/api/deleteSupervisor", body, {
+        headers: {
+          "x-access-token": userData.accessToken, //the token is a variable which holds the token
+        },
+      })
+      .then((res) => {
+        if (res.status === 200) {
+          const newList = rows.filter((item) => item.supervisorId !== value);
+
+          setRows(newList);
+
+          setLoading(false);
+        }
+
+        // setTown(finalObj1);
+      })
+      .catch((err) => {
+        if (err.response) {
+          if (err.response.status == 400) {
+            setLoading(false);
+            console.log(err.response.status);
+          }
+          if (err.response.status === 401 || err.response.status === 403) {
+            handleLogoutAutomatically();
+          }
+          if (err.response.status === 503 || err.response.status === 500) {
+            console.log(err.response.status);
+          }
+        }
+      });
   };
 
   async function fetchTowns() {
@@ -394,7 +602,7 @@ export default function Supervisors() {
     );
   }
   useEffect(() => {
-    console.log("aya");
+    console.log("yaaa");
     fetchData();
   }, []);
 
@@ -523,82 +731,104 @@ export default function Supervisors() {
                       let res = _res.substring(0, 1).toUpperCase();
 
                       return (
-                        <TableRow
-                          className="tableRow"
-                          hover
-                          role="checkbox"
-                          tabIndex={-1}
-                          key={row.supervisorId}
-                        >
-                          <TableCell
-                            component="th"
-                            id={labelId}
-                            scope="row"
-                            style={{
-                              paddingLeft: "16px",
-                              paddingRight: "4px",
-                            }}
-                          >
-                            <Avatar
-                              className="gridd"
-                              alt="Remy Sharp"
-                              src={row.image}
-                              className={classes._theme}
-                            >
-                              {res}
-                            </Avatar>{" "}
-                          </TableCell>
-                          <TableCell
-                            align="left"
-                            style={{
-                              paddingLeft: "2px",
-                              paddingRight: "16px",
-                            }}
-                          >
-                            {row.name}
-                          </TableCell>
-                          <TableCell align="center">{row.Resolved}</TableCell>
-                          <TableCell align="center">{row.Active}</TableCell>
-                          <TableCell align="center">{row.Unresolved}</TableCell>
-                          <TableCell align="center">{row.Rejected}</TableCell>
-                          <TableCell align="left">{row.email}</TableCell>
-                          <TableCell align="left">{row.phoneNumber}</TableCell>
-                          <TableCell align="left">{row.town}</TableCell>
-                          <TableCell
-                            align="left"
-                            style={{
-                              paddingLeft: "3px",
-                              paddingRight: "3px",
-                            }}
-                          >
-                            <EditDialog
-                              town={towns}
-                              rowData={row}
-                              onUpdate={handleUpdatedTown}
-                            ></EditDialog>{" "}
-                          </TableCell>{" "}
-                          <TableCell
-                            align="left"
-                            style={{
-                              paddingLeft: "3px",
-                              paddingRight: "16px",
-                            }}
-                          >
-                            <IconButton
-                              style={{ backgroundColor: "transparent" }}
-                            >
-                              <DeleteIcon
-                                style={{
-                                  color: "#008080",
-                                  fontSize: "20px",
-                                  padding: 0,
-                                  border: 0,
-                                }}
-                              />
-                            </IconButton>
-                          </TableCell>{" "}
-                        </TableRow>
+                        <Row
+                          key={row.name}
+                          row={row}
+                          classes={classes}
+                          labelId={labelId}
+                          res={res}
+                          towns={towns}
+                          handleUpdatedTown={handleUpdatedTown}
+                          handleDelete={handleDelete}
+                        />
                       );
+                      // return (
+                      // <TableRow
+                      //   className="tableRow"
+                      //   hover
+                      //   role="checkbox"
+                      //   tabIndex={-1}
+                      //   key={row.supervisorId}
+                      // >
+                      //     <TableCell
+                      //       component="th"
+                      //       id={labelId}
+                      //       scope="row"
+                      //       style={{
+                      //         paddingLeft: "16px",
+                      //         paddingRight: "4px",
+                      //       }}
+                      //     >
+                      //       <Avatar
+                      //         className="gridd"
+                      //         alt="Remy Sharp"
+                      //         src={row.image}
+                      //         className={classes._theme}
+                      //       >
+                      //         {res}
+                      //       </Avatar>{" "}
+                      //     </TableCell>
+                      //     <TableCell
+                      //       align="left"
+                      //       style={{
+                      //         paddingLeft: "2px",
+                      //         paddingRight: "16px",
+                      //       }}
+                      //     >
+                      //       {row.name}
+                      //     </TableCell>
+                      //     <TableCell align="center">{row.Resolved}</TableCell>
+                      //     <TableCell align="center">{row.Active}</TableCell>
+                      //     <TableCell align="center">{row.Unresolved}</TableCell>
+                      //     <TableCell align="center">{row.Rejected}</TableCell>
+                      //     <TableCell align="left">{row.email}</TableCell>
+                      //     <TableCell align="left">{row.phoneNumber}</TableCell>
+                      //     <TableCell align="left">{row.town}</TableCell>
+                      //     <TableCell
+                      //       align="left"
+                      //       style={{
+                      //         paddingLeft: "3px",
+                      //         paddingRight: "3px",
+                      //       }}
+                      //     >
+                      //       <EditDialog
+                      //         town={towns}
+                      //         rowData={row}
+                      //         onUpdate={handleUpdatedTown}
+                      //       ></EditDialog>{" "}
+                      //     </TableCell>{" "}
+                      //     <TableCell
+                      //       align="left"
+                      //       style={{
+                      //         paddingLeft: "3px",
+                      //         paddingRight: "16px",
+                      //       }}
+                      //     >
+                      //       <IconButton
+                      //         style={{ backgroundColor: "transparent" }}
+                      //       >
+                      //         <DeleteIcon
+                      //           onClick={handleDelete(row.supervisorId)}
+                      //           style={{
+                      //             color: "#008080",
+                      //             fontSize: "20px",
+                      //             padding: 0,
+                      //             border: 0,
+                      //           }}
+                      //         />
+                      //       </IconButton>
+                      //     </TableCell>
+                      //     <TableCell
+                      //       align="left"
+                      //       style={{
+                      //         paddingLeft: "3px",
+                      //         paddingRight: "3px",
+                      //       }}
+                      //     >
+                      //       {" "}
+                      //     </TableCell>
+                      //   </TableRow>
+                      // );
                     })}
                 </TableBody>
               </Table>

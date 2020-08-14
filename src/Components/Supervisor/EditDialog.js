@@ -153,7 +153,11 @@ export default function EditDialog(props) {
       {" "}
       <IconButton
         onClick={handleClickOpen}
-        style={{ backgroundColor: "transparent" }}
+        style={{
+          backgroundColor: "transparent",
+          padding: "0px",
+          margin: "0px",
+        }}
       >
         <EditIcon
           style={{
