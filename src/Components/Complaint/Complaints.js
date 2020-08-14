@@ -533,7 +533,7 @@ export default function Complaints(props) {
         <Grid item xs={12} sm={12} md={12} lg={9}>
           <Paper className="filter elevationPaper">
             <Grid item xs={12} sm={12} md={12} lg={12}>
-              <div>
+              <div style={{ minHeight: "50px" }}>
                 <Box
                   textAlign="left"
                   color="#008080"
@@ -583,7 +583,7 @@ export default function Complaints(props) {
                 >
                   {active ? "All Complaints" : "Only Active Complaints"}
                 </Button> */}
-                  <br />
+
                   <Button
                     disabled={clear}
                     className="clearButton"
@@ -603,7 +603,14 @@ export default function Complaints(props) {
                 </Box>
               </div>
             </Grid>
-            <Grid item xs={9} sm={9} md={12} lg={12}>
+            <Grid
+              item
+              xs={9}
+              sm={9}
+              md={12}
+              lg={12}
+              style={{ display: window.innerWidth > 600 ? "block" : "none" }}
+            >
               <SelectFilter
                 key={filter["statusType"][0]}
                 orignalData={orignalData}
@@ -625,7 +632,7 @@ export default function Complaints(props) {
               <SelectFilter
                 name="type"
                 orignalData={orignalData}
-                label="Complaint Type"
+                label="Type"
                 value={filter["type"]}
                 key={filter["type"][0]}
                 filterValue={filterTable}
@@ -665,7 +672,7 @@ export default function Complaints(props) {
             </Grid>
           </Paper>
 
-          <Scrollbars style={{ minWidth: 100, minHeight: 400 }}>
+          <Scrollbars style={{ minWidth: 150, minHeight: 400 }}>
             <Paper className="elevationPaper">
               <TableContainer className="tableContainer">
                 <Table

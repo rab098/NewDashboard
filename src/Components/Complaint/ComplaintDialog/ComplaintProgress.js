@@ -231,6 +231,7 @@ export default function ComplaintProgress(props) {
             title="Supervisor"
             name={
               sel.supervisorId &&
+              supervisors.find((x) => x.supervisorId == sel.supervisorId) &&
               supervisors.find((x) => x.supervisorId == sel.supervisorId).name
             }
             display={
