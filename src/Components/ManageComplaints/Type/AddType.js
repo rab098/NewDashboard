@@ -106,6 +106,7 @@ export default function AddType(props) {
             err.response.status === 500
           ) {
             console.log(err.response.status);
+            alert("Something went wrong. Please try again later");
           }
         }
         if (err.response) {

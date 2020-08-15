@@ -143,6 +143,7 @@ export default function EditDialog(props) {
           }
           if (err.response.status === 503 || err.response.status === 500) {
             console.log(err.response.status);
+            alert("Something went wrong. Please try again later");
           }
         }
       });

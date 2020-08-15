@@ -136,6 +136,7 @@ function Profile(props) {
           }
           if (err.response.status === 503 || err.response.status === 500) {
             console.log(err.response.status);
+            alert("Something went wrong. Please try again later");
           }
         }
         setLoading(false);
@@ -184,6 +185,10 @@ function Profile(props) {
 
           if (error.response.status == 400)
             alert("Please choose a valid image  ");
+        }
+        if (err.response.status === 503 || err.response.status === 500) {
+          console.log(err.response.status);
+          alert("Something went wrong. Please try again later");
         } else {
           console.log(err);
         }
@@ -224,6 +229,7 @@ function Profile(props) {
           }
           if (err.response.status === 503 || err.response.status === 500) {
             console.log(err.response.status);
+            alert("Something went wrong. Please try again later");
           }
         }
         setLoading(false);
