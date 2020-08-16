@@ -1,6 +1,7 @@
 import pdfMake from 'pdfmake/build/pdfmake';
 import vfsFonts from 'pdfmake/build/vfs_fonts';
 import Moment from "moment";
+import grey from "@material-ui/core/colors/grey";
 
 
 const _format = (data) => {
@@ -54,7 +55,7 @@ export default (reportObject) => {
 
         dataRow.push(sourceRow.id);
         dataRow.push(sourceRow.type);
-        dataRow.push(Moment(sourceRow.date).format('DD/MM/YY'));
+        dataRow.push(Moment(sourceRow.date).format('DD/MMM/YY'));
         dataRow.push(sourceRow.priority);
         dataRow.push(sourceRow.town);
         dataRow.push(sourceRow.supervisorName);
@@ -71,9 +72,11 @@ export default (reportObject) => {
         pageSize: 'A4',
         pageOrientation: 'portrait',
         content: [
-            {text: 'Sindh Solid Waste Management', bold: true, style: 'header', fontSize: 25,margin: [0, 20, 0, 8] },
-            {text: reportObject.dateRadioValue === 'one' ? 'Report generated for ' + Moment(reportObject.dateOne).format('DD/MMM/YYYY') : 'Report generated from  ' + Moment(reportObject.dateFrom).format('DD/MMM/YYYY') + '  till  ' + Moment(reportObject.dateTo).format('DD/MMM/YYYY'), italics:true , fontSize:10, margin: [0, 5, 0, 5] },
-            {text: reportObject.description},
+            {text: 'Sindh Solid Waste Management', bold: true, style: 'header', fontSize: 25,margin: [0, 10, 0, 5] },
+            {text: reportObject.dateRadioValue === 'one' ? 'Report generated for ' + Moment(reportObject.dateOne).format('DD MMM YYYY') : 'Report generated from  ' + Moment(reportObject.dateFrom).format('DD/MMM/YYYY') + '  till  ' + Moment(reportObject.dateTo).format('DD/MMM/YYYY'), italics:true , fontSize:9, margin: [0, 0, 0, 5], color: '#8E9397' },
+            // {text: 'Report generated on ' + Moment().format('DD MMM YYYY'), italics:true , fontSize:9, margin: [0, 0, 0, 5], color: '#8E9397' },
+            {text:'Report Description', bold: true ,fontSize: 12, margin: [0, 15, 0, 2]},
+            {text: reportObject.description , bold: false, fontSize: 10, margin: [0, 0, 0, 10]},
             // {text: reportObject.sortRadioValue === 'complaintType' ? 'The following table has been generated Type Wise' : 'The following table has been generated Supervisor Wise' , style: 'subheader' ,margin: [0, 20, 0, 8]},
 
             {
