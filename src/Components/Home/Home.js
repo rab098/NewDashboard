@@ -386,7 +386,7 @@ function Home(props) {
       </div>
 
       <Charts value={chartType} />
-      <Zone />
+        {userData.Role === "ADMIN" && <Zone /> }
       <div className="table-and-piechart">
         {userData.Role === "ADMIN" && <FeedbackStats role={userData.Role} />}
         <ResolveTimeAnalysisStats />

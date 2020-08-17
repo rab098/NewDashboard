@@ -758,6 +758,11 @@ function GenerateReports(props) {
   //     }
   // }, [toDate]);
 
+    useEffect( () => {
+        if(reportData.length === 0)
+            setNoComplaintsFound(true)
+    },[reportData])
+
   function handleNext(index) {
     switch (index) {
       case 0:
@@ -1030,7 +1035,7 @@ function GenerateReports(props) {
               <StepLabel>{label}</StepLabel>
               <StepContent>
                 <Typography>{getStepContent(index)}</Typography>
-                {/*{reportData.length === 0 && <p>No complaints found.</p>}*/}
+                {noComplaintsFound === true && <p>No complaints found.</p>}
 
                 <div className={classes.actionsContainer}>
                   <div>
