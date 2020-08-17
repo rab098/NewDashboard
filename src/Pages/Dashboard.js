@@ -223,7 +223,7 @@ function Dashboard({ match }) {
               err.response.status === 500
             ) {
               console.log(err.response.status);
-              handleServerError(err.response.status);
+              // handleServerError(err.response.status);
             }
           }
 
@@ -294,7 +294,7 @@ function Dashboard({ match }) {
             err.response.status === 500
           ) {
             console.log(err.response.status);
-            handleServerError(err.response.status);
+            // handleServerError(err.response.status);
           }
         }
         console.log("Unable to get permission to notify.", err);
@@ -324,7 +324,7 @@ function Dashboard({ match }) {
               err.response.status === 500
             ) {
               console.log(err.response.status);
-              handleServerError(err.response.status);
+              // handleServerError(err.response.status);
             }
           }
           console.log("Unable to retrieve refreshed token ", err);
