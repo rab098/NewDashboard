@@ -216,7 +216,6 @@ function GenerateReports(props) {
       .catch((err) => {
         if (err.response) {
           if (err.response.status === 401 || err.response.status === 403) {
-            setLoading(false);
             handleLogoutAutomatically();
           } else if (
             err.response.status === 503 ||
