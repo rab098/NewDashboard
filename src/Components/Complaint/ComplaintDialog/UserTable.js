@@ -18,6 +18,7 @@ export default function UserTable(props) {
   const [userData, setUserData] = useState(store.get("userData"));
 
   const [users, setUsers] = useState([]);
+  const [error, setError] = useState(false);
   //const [feedback, setFeedback] = useState([]);
 
   const handleLogoutAutomatically = () => {
@@ -34,6 +35,7 @@ export default function UserTable(props) {
   });
 
   const getUsers = () => {
+    setError(false);
     var finalObj = [];
     var feedbackObj = [];
     axios
@@ -61,6 +63,7 @@ export default function UserTable(props) {
             err.response.status === 503 ||
             err.response.status === 500
           ) {
+            setError(true);
             console.log(err.response.status);
           }
         }
@@ -75,6 +78,7 @@ export default function UserTable(props) {
 
   return (
     <TableContainer component={Paper}>
+      {error && <Box>Error fetching data </Box>}
       {users.length < 1 && <Box>There are no users of this complaint </Box>}
       {users.length > 0 && (
         <Table className={classes.table} aria-label="simple table">
