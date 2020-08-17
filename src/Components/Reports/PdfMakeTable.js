@@ -2,6 +2,8 @@ import pdfMake from 'pdfmake/build/pdfmake';
 import vfsFonts from 'pdfmake/build/vfs_fonts';
 import Moment from "moment";
 import grey from "@material-ui/core/colors/grey";
+import {useState} from "react";
+
 
 
 const _format = (data) => {
@@ -16,6 +18,8 @@ const _format = (data) => {
 }
 
 export default (reportObject) => {
+
+
     const {vfs} = vfsFonts.pdfMake;
     pdfMake.vfs = vfs;
 
@@ -30,26 +34,13 @@ export default (reportObject) => {
     // });
 
 
-    // let bodyData = [
-    //     ['ID', 'TYPE', 'DATE', 'PRIORITY', 'TOWN','SUPERVISOR', 'STATUS'],
-    //     ['123455','ok','no','oh','town','status','date'],
-    //     ['123455','ok','no','oh','town','status','date'],
-    //     ['123455','ok','no','oh','town','status','date'],
-    // ]
+
 
     let bodyData = [['ID', 'TYPE', 'DATE', 'PRIORITY', 'TOWN','SUPERVISOR', 'STATUS'],]
-    // for(let i in reportObject.complaints){
-    //     bodyData.push(reportObject.complaints[i].id)
-    //     bodyData.push(reportObject.complaints[i].type)
-    //     bodyData.push(reportObject.complaints[i].date)
-    //     bodyData.push(reportObject.complaints[i].priority)
-    //     bodyData.push(reportObject.complaints[i].town)
-    //     bodyData.push(reportObject.complaints[i].supervisorName)
-    //     bodyData.push(reportObject.complaints[i].statusType)
-    //
-    // }
+    let bodyDataForSupervisor = [['ID', 'TYPE', 'DATE', 'PRIORITY', 'TOWN', 'STATUS'],]
 
 
+if(reportObject.role === 'ADMIN'){
     reportObject.complaints.forEach(function(sourceRow) {
         let dataRow = [];
 
@@ -58,12 +49,29 @@ export default (reportObject) => {
         dataRow.push(Moment(sourceRow.date).format('DD/MMM/YY'));
         dataRow.push(sourceRow.priority);
         dataRow.push(sourceRow.town);
-        dataRow.push(sourceRow.supervisorName);
+        dataRow.push(sourceRow.supervisorName)
         dataRow.push(sourceRow.statusType)
 
 
         bodyData.push(dataRow)
     });
+}else{
+    reportObject.complaints.forEach(function(sourceRow) {
+        let dataRow = [];
+
+        dataRow.push(sourceRow.id);
+        dataRow.push(sourceRow.type);
+        dataRow.push(Moment(sourceRow.date).format('DD/MMM/YY'));
+        dataRow.push(sourceRow.priority);
+        dataRow.push(sourceRow.town);
+        dataRow.push(sourceRow.statusType)
+
+
+        bodyDataForSupervisor.push(dataRow)
+    });
+
+}
+
 
     console.log(bodyData)
 
@@ -85,7 +93,7 @@ export default (reportObject) => {
                     fontSize: 20,
                     borderTop: true,
                     bold: true,
-                    body: bodyData
+                    body: reportObject.role === 'ADMIN' ? bodyData : bodyDataForSupervisor
                     //     [
                     //     ['ID', 'TYPE', 'DATE', 'PRIORITY', 'TOWN','SUPERVISOR', 'STATUS'],
                     //     bodyData

@@ -121,6 +121,7 @@ function GenerateReports(props) {
     sortRadioValue: "",
     description: "",
     complaints: [],
+    role:''
   });
 
   // const exportPDF = () => {
@@ -215,7 +216,6 @@ function GenerateReports(props) {
       .catch((err) => {
         if (err.response) {
           if (err.response.status === 401 || err.response.status === 403) {
-            setLoading(false);
             handleLogoutAutomatically();
           } else if (
             err.response.status === 503 ||
@@ -758,6 +758,11 @@ function GenerateReports(props) {
   //     }
   // }, [toDate]);
 
+    useEffect( () => {
+        if(reportData.length === 0)
+            setNoComplaintsFound(true)
+    },[reportData])
+
   function handleNext(index) {
     switch (index) {
       case 0:
@@ -907,6 +912,7 @@ function GenerateReports(props) {
           sortRadioValue: radioValueStepTwo,
           description: reportDescription,
           complaints: reportData,
+          role:userData.Role
         });
         setActiveStep((prevActiveStep) => prevActiveStep + 1);
         break;
@@ -1030,7 +1036,7 @@ function GenerateReports(props) {
               <StepLabel>{label}</StepLabel>
               <StepContent>
                 <Typography>{getStepContent(index)}</Typography>
-                {/*{reportData.length === 0 && <p>No complaints found.</p>}*/}
+                {/*{noComplaintsFound === true && <p>No complaints found.</p>}*/}
 
                 <div className={classes.actionsContainer}>
                   <div>

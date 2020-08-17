@@ -94,20 +94,20 @@ function ZoneStats() {
     const demoChart = {
         data: {
             labels: allData.LabelsState,
-            // series: [
-            //   allData.SeriesResolvedState,
-            //   allData.SeriesAssignedState,
-            //   allData.SeriesUnresolvedState,
-            // ],
+            series: [
+              allData.SeriesResolvedState,
+              allData.SeriesAssignedState,
+              allData.SeriesUnresolvedState,
+            ],
 
-            series: userData.Role === "ADMIN" ?
-
-
-                [allData.SeriesResolvedState,
-                    allData.SeriesAssignedState,
-                    allData.SeriesUnresolvedState]
-                :
-                [allData.SeriesResolvedState]
+            // series: userData.Role === "ADMIN" ?
+            //
+            //
+            //     [allData.SeriesResolvedState,
+            //         allData.SeriesAssignedState,
+            //         allData.SeriesUnresolvedState]
+            //     :
+            //     [allData.SeriesResolvedState]
 
         },
         options: {
@@ -202,9 +202,7 @@ function ZoneStats() {
 
             <div className="zone-heading">
                 <p className="zone-text">
-                    {userData.Role === "ADMIN"
-                        ? "Town Wise Complaints"
-                        : "Complaint Type Progress"}
+                     Town Wise Complaints
                 </p>
             </div>
 
