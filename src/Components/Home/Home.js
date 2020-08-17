@@ -138,6 +138,7 @@ function Home(props) {
           console.log("update time", res.data);
           setCounts(res.data.Count);
           setLastUpdated(res.data.LastUpdated);
+            setLoading(false)
         })
         .catch((err) => {
           if (err.response) {
