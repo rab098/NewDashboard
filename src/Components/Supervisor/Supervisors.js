@@ -813,13 +813,13 @@ export default function Supervisors() {
                 </Box>
               </Grid> */}
 
-              <Grid item xs={12} sm={6} md={6} lg={6}>
+              <Grid item xs={12} sm={12} md={6} lg={6}>
                 <Box component="span">
                   {" "}
                   <AddForm town={towns} onAdd={handleSetNewRow} />
                 </Box>
               </Grid>
-              <Grid item xs={12} sm={6} md={6} lg={6}>
+              <Grid item xs={12} sm={12} md={6} lg={6}>
                 <Box
                   flexGrow={1}
                   style={{ float: "right" }}
