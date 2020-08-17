@@ -121,6 +121,7 @@ function GenerateReports(props) {
     sortRadioValue: "",
     description: "",
     complaints: [],
+    role:''
   });
 
   // const exportPDF = () => {
@@ -912,6 +913,7 @@ function GenerateReports(props) {
           sortRadioValue: radioValueStepTwo,
           description: reportDescription,
           complaints: reportData,
+          role:userData.Role
         });
         setActiveStep((prevActiveStep) => prevActiveStep + 1);
         break;
@@ -1035,7 +1037,7 @@ function GenerateReports(props) {
               <StepLabel>{label}</StepLabel>
               <StepContent>
                 <Typography>{getStepContent(index)}</Typography>
-                {noComplaintsFound === true && <p>No complaints found.</p>}
+                {/*{noComplaintsFound === true && <p>No complaints found.</p>}*/}
 
                 <div className={classes.actionsContainer}>
                   <div>
