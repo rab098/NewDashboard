@@ -850,6 +850,11 @@ function GenerateReports(props) {
           }
         }
 
+        //HERE I WANTED TO PUT A CHECK IF THE reportData.length is 0 then display an error that sorry there are no complaints and
+        //  the user cant proceed further. but the problem is that yahan reportData ki state der se set hoti hai isliye agr filter hoke
+        //   uski lenght 0 ho bhi jati hai tou idhr nhi ho paye gi, useEffect ke andr hogi. lekin ab mjhe samajh nhi arha ke useeffect ke andr kiske
+        //   basis pe check lagao. Also ye kaam har step mei krna hai, jahan jahan filter horha hai
+
         setActiveStep((prevActiveStep) => prevActiveStep + 1);
 
         setTypeCheckboxCount(0);
