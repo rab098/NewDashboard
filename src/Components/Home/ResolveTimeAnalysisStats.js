@@ -71,7 +71,9 @@ function ResolveTimeAnalysisStats() {
             err.response.status === 503 ||
             err.response.status === 500
           ) {
-            console.log(err.response.status);
+            // console.log(err.response.status);
+            setResolveTimeCheck(1);
+
           }
         }
         console.error(err);

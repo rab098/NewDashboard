@@ -44,6 +44,8 @@ import {makeStyles} from "@material-ui/core/styles";
 import Checkbox from "@material-ui/core/Checkbox";
 import FormGroup from "@material-ui/core/FormGroup";
 import html2canvas from "html2canvas";
+import Backdrop from "@material-ui/core/Backdrop";
+import {ImpulseSpinner} from "react-spinners-kit";
 
 // const ref = React.createRef();
 
@@ -68,6 +70,10 @@ const styles = {
     step: {
         color: "#008080",
     },
+    backdrop: {
+        zIndex: 1,
+        color: "#fff",
+    },
 };
 
 const useStyles = makeStyles(styles);
@@ -76,51 +82,31 @@ function GenerateReports(props) {
     const classes = useStyles();
 
     const [userData, setUserData] = useState(store.get("userData"));
-
+    const [loading, setLoading] = useState(true);
     const [firstDate, setFirstDate] = useState(null);
     const [lastDate, setLastDate] = useState(null);
-
     const [fromDate, setFromDate] = useState(null);
     const [toDate, setToDate] = useState(null);
     const [oneDate, setOneDate] = useState(null);
-
     const [enableToDatePicker, setEnableToDatePicker] = useState(true);
-
     const [activeStep, setActiveStep] = useState(0);
-
     const [nextButton, setNextButton] = useState(true);
-
     const [typeCheckboxCount, setTypeCheckboxCount] = useState(0)
     const [typeValue, setTypeValue] = useState([])
-
-
     const [townsCheckboxCount, setTownsCheckboxCount] = useState(0)
     const [townsValue, setTownsValue] = useState([])
-
-
     const [supervisorCheckboxCount, setSupervisorCheckboxCount] = useState(0)
     const [supervisorValue, setSupervisorValue] = useState([])
-
-
     const [mainData, setMainData] = useState([]);
     const [rawData, setRawData] = useState([]);
-
-
     const [reportData, setReportData] = useState([]);
-
+    const [noComplaintsFound, setNoComplaintsFound] = useState(false);
     const [radioValue, setRadioValue] = useState("one");
-
     const [hideOne, setHideOne] = useState(false);
-
     const [radioValueStepTwo, setRadioValueStepTwo] = useState("complaintType");
-
     const [radioValueSupervisor, setRadioValueSupervisor] = useState("unresolved");
-
     const [reportDescription, setReportDescription] = useState("");
-
-
     const [sortedData, setSortedData] = useState([]);
-
     const [hideType, setHideType] = useState(false);
     const [hideTown, setHideTown] = useState(false);
     const [hideSupervisor, setHideSupervisor] = useState(false);
@@ -224,20 +210,23 @@ function GenerateReports(props) {
                 // }
                 setMainData(mainObj);
                 setReportData(mainObj)
+                setLoading(false)
             })
             .catch((err) => {
                 if (err.response) {
                     if (err.response.status === 401 || err.response.status === 403) {
+                        setLoading(false)
                         handleLogoutAutomatically();
                     } else if (
                         err.response.status === 503 ||
                         err.response.status === 500
                     ) {
-                        console.log(err.response.status);
+                        setLoading(false)
+                        console.log('REDIRECT HERE!!!');
                     }
                 }
 
-                console.log("complaints not coming", err.response);
+                // console.log("complaints not coming", err.response);
             });
     };
 
@@ -383,6 +372,7 @@ function GenerateReports(props) {
                                 </MuiPickersUtilsProvider>
                             </div>
                         )}
+
                     </div>
                 );
             case 1:
@@ -699,14 +689,12 @@ function GenerateReports(props) {
 
     useEffect(() => {
 
-        if(userData.Role === 'ADMIN'){
+        if (userData.Role === 'ADMIN') {
             if (typeCheckboxCount === 0 && activeStep === 1) {
                 setNextButton(true)
             } else if (typeCheckboxCount !== 0 && activeStep === 1)
                 setNextButton(false)
         }
-
-
 
 
     }, [typeCheckboxCount, activeStep])
@@ -724,7 +712,7 @@ function GenerateReports(props) {
 
     useEffect(() => {
 
-        if(userData.Role === 'ADMIN') {
+        if (userData.Role === 'ADMIN') {
 
             if (supervisorCheckboxCount === 0 && activeStep === 1) {
                 setNextButton(true)
@@ -799,6 +787,7 @@ function GenerateReports(props) {
         switch (index) {
             case 0:
 
+
                 if (radioValue === 'one') {
                     if (oneDate !== null) {
                         setReportData(
@@ -837,19 +826,14 @@ function GenerateReports(props) {
                                     );
                                 }
                             ))
+
+
                     }
                 } else {
                     if (fromDate !== null && toDate !== null) {
                         setReportData(
                             mainData.filter((obj) => {
-                                // console.log("db date : ",Moment(obj.date).format("DD MMM yyyy"))
 
-                                // return Moment(obj.date).format("DD MMM yyyy") >= Moment(fromDate).format("DD MMM yyyy") && Moment(obj.date).format("DD MMM yyyy") <= Moment(toDate).format("DD MMM yyyy")
-                                // return (
-                                //     new Date(obj.date.substring(0, 19)).getTime() >=
-                                //     fromDate.getTime() &&
-                                //     new Date(obj.date.substring(0, 19)).getTime() <= toDate.getTime()
-                                // );
 
                                 return new Date(obj.date.substring(0, 19)).getTime() >= new Date(fromDate.getFullYear(), fromDate.getMonth(), fromDate.getDate(), 0, 0, 0).getTime()
                                     && new Date(obj.date.substring(0, 19)).getTime() <= new Date(toDate.getFullYear(), toDate.getMonth(), toDate.getDate(), 23, 59, 0).getTime()
@@ -857,11 +841,9 @@ function GenerateReports(props) {
                             })
                         );
 
-                        // console.log("from and to date: ", fromDate + toDate);
 
                         setRawData(
                             mainData.filter((obj) => {
-                                // console.log("db date : ",Moment(obj.date).format("DD MMM yyyy"))
 
                                 // return Moment(obj.date).format("DD MMM yyyy") >= Moment(fromDate).format("DD MMM yyyy") && Moment(obj.date).format("DD MMM yyyy") <= Moment(toDate).format("DD MMM yyyy")
                                 return (
@@ -871,18 +853,17 @@ function GenerateReports(props) {
                                 );
                             })
                         )
+
+
                     }
                 }
-                console.log("its done yo!");
+
+
                 setActiveStep((prevActiveStep) => prevActiveStep + 1);
 
-
-                // setNextButton(true)
-                // if(userData.Role === 'ADMIN'){
-                    setTypeCheckboxCount(0)
-                    setTownsCheckboxCount(0)
-                    setSupervisorCheckboxCount(0)
-                // }
+                setTypeCheckboxCount(0)
+                setTownsCheckboxCount(0)
+                setSupervisorCheckboxCount(0)
 
 
                 break;
@@ -1052,13 +1033,19 @@ function GenerateReports(props) {
     return (
         <div>
 
-            {reportData.length === 0 ?
-                <div>
-                    <h5 style={{display: 'flex', justifyContent: 'center'}}>Reports cannot be generated if there are no
-                        complaints.</h5>
-                </div> :
+            {/*{reportData.length === 0 ?*/}
+            {/*    <div>*/}
+            {/*        <h5 style={{display: 'flex', justifyContent: 'center'}}>Reports cannot be generated if there are no*/}
+            {/*            complaints.</h5>*/}
+            {/*    </div> :*/}
+
+
+
+
 
                 <div>
+
+
                     <Stepper
                         className={classes.stepperBg}
                         activeStep={activeStep}
@@ -1069,6 +1056,8 @@ function GenerateReports(props) {
                                 <StepLabel>{label}</StepLabel>
                                 <StepContent>
                                     <Typography>{getStepContent(index)}</Typography>
+                                    {/*{reportData.length === 0 && <p>No complaints found.</p>}*/}
+
                                     <div className={classes.actionsContainer}>
                                         <div>
                                             <Button
@@ -1102,7 +1091,16 @@ function GenerateReports(props) {
                         </Paper>
                     )}
                 </div>
-            }
+
+
+            <Backdrop className={classes.backdrop} open={loading}>
+                <ImpulseSpinner size={90} color="#008081" />
+            </Backdrop>
+
+
+
+
+            {/*}*/}
 
 
             {/*<div>*/}
@@ -1131,7 +1129,7 @@ function GenerateReports(props) {
 
             {/*</div>*/}
         </div>
-    );
+    )
 }
 
 export default GenerateReports;

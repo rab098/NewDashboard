@@ -63,7 +63,8 @@ function FeedbackStats(props) {
             err.response.status === 503 ||
             err.response.status === 500
           ) {
-            console.log(err.response.status);
+            setCheckFeedback(1);
+
           }
         }
         console.error(err);
