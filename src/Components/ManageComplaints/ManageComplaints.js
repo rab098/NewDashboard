@@ -70,7 +70,6 @@ export default function ManageComplaints(props) {
   const [loading, setLoading] = useState(true);
   const handleChange = (event, newValue) => {
     setValue(newValue);
-    props.handleError(503);
   };
 
   const handleChangeIndex = (index) => {

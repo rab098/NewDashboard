@@ -28,6 +28,7 @@ import TableRow from "@material-ui/core/TableRow";
 import TableSortLabel from "@material-ui/core/TableSortLabel";
 import { ImpulseSpinner } from "react-spinners-kit";
 import Backdrop from "@material-ui/core/Backdrop";
+import AllSelectFilters from "../Complaint/AllSelectFilters";
 
 import Paper from "@material-ui/core/Paper";
 
@@ -36,6 +37,7 @@ import { useState, useEffect } from "react";
 import Button from "@material-ui/core/Button";
 
 import { Scrollbars } from "react-custom-scrollbars";
+import FilterDrawer from "./FilterDrawer";
 
 let store = require("store");
 
@@ -535,15 +537,25 @@ export default function Complaints(props) {
           <Paper className="filter elevationPaper">
             <Grid item xs={12} sm={12} md={12} lg={12}>
               <div style={{ minHeight: "50px" }}>
-                <Box
-                  textAlign="left"
-                  color="#008080"
-                  fontWeight="600"
-                  fontSize="18"
-                  component="span"
-                >
-                  Filters
-                </Box>
+                {window.innerWidth > 600 ? (
+                  <Box
+                    textAlign="left"
+                    color="#008080"
+                    fontWeight="600"
+                    fontSize="18"
+                    component="span"
+                  >
+                    Filters
+                  </Box>
+                ) : (
+                  <FilterDrawer
+                    key={filter.length}
+                    filter={filter}
+                    orignalData={orignalData}
+                    filterValue={filterTable}
+                    userData={userData}
+                  />
+                )}
                 <Box style={{ float: "right" }}>
                   <FormControl className={classes.formControl}>
                     <Select
@@ -585,22 +597,24 @@ export default function Complaints(props) {
                   {active ? "All Complaints" : "Only Active Complaints"}
                 </Button> */}
 
-                  <Button
-                    disabled={clear}
-                    className="clearButton"
-                    onClick={() => {
-                      setFilter({
-                        statusType: [],
-                        type: [],
-                        priority: [],
-                        town: [],
-                        supervisorName: [],
-                        otherStatus: [],
-                      });
-                    }}
-                  >
-                    Clear All
-                  </Button>
+                  {window.innerWidth > 600 && (
+                    <Button
+                      disabled={clear}
+                      className="clearButton"
+                      onClick={() => {
+                        setFilter({
+                          statusType: [],
+                          type: [],
+                          priority: [],
+                          town: [],
+                          supervisorName: [],
+                          otherStatus: [],
+                        });
+                      }}
+                    >
+                      Clear All
+                    </Button>
+                  )}
                 </Box>
               </div>
             </Grid>
@@ -610,9 +624,18 @@ export default function Complaints(props) {
               sm={9}
               md={12}
               lg={12}
-              style={{ display: window.innerWidth > 600 ? "block" : "none" }}
+              // style={{ display: window.innerWidth > 600 ? "block" : "none" }}
             >
-              <SelectFilter
+              {window.innerWidth > 600 && (
+                <AllSelectFilters
+                  key={filter.length}
+                  filter={filter}
+                  orignalData={orignalData}
+                  filterValue={filterTable}
+                  userData={userData}
+                />
+              )}
+              {/* <SelectFilter
                 key={filter["statusType"][0]}
                 orignalData={orignalData}
                 label="Status"
@@ -667,7 +690,7 @@ export default function Complaints(props) {
                   key={filter["otherStatus"][0]}
                   filterValue={filterTable}
                 />
-              )}
+              )} */}
 
               {/* <DateFilter /> */}
             </Grid>
