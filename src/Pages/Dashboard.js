@@ -606,7 +606,9 @@ function Dashboard({ match }) {
                   <Route
                     path={`${match.path}/reports`}
                     exact
-                    component={GenerateReports}
+                    render={() => (
+                      <GenerateReports handleError={handleServerError} />
+                    )}
                   />
                   <Route
                     path={`${match.path}/profile`}
