@@ -61,7 +61,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function ManageComplaints() {
+export default function ManageComplaints(props) {
   const classes = useStyles();
   const theme = useTheme();
 
@@ -70,6 +70,7 @@ export default function ManageComplaints() {
   const [loading, setLoading] = useState(true);
   const handleChange = (event, newValue) => {
     setValue(newValue);
+    props.handleError(503);
   };
 
   const handleChangeIndex = (index) => {
@@ -112,6 +113,7 @@ export default function ManageComplaints() {
         >
           {/* <Scrollbars style={{ minWidth: 100, minHeight: 510 }}> */}
           <ComplaintTypes
+            handleError={props.handleError}
             token={userData.accessToken}
             loading={toggleLoading}
           />
@@ -124,7 +126,11 @@ export default function ManageComplaints() {
           dir={theme.direction}
         >
           {/* <Scrollbars style={{ minWidth: 100, minHeight: 510 }}> */}
-          <FeedbackTags token={userData.accessToken} loading={toggleLoading} />
+          <FeedbackTags
+            token={userData.accessToken}
+            handleError={props.handleError}
+            loading={toggleLoading}
+          />
           {/* </Scrollbars> */}
         </TabPanel>
         <TabPanel
@@ -135,7 +141,11 @@ export default function ManageComplaints() {
         >
           {" "}
           {/* <Scrollbars style={{ minWidth: 100, minHeight: 510 }}> */}
-          <Rejection token={userData.accessToken} loading={toggleLoading} />
+          <Rejection
+            token={userData.accessToken}
+            handleError={props.handleError}
+            loading={toggleLoading}
+          />
           {/* </Scrollbars> */}
         </TabPanel>
       </SwipeableViews>

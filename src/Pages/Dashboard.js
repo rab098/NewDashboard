@@ -631,6 +631,7 @@ function Dashboard({ match }) {
                     exact
                     component={ManageComplaints}
                     role={userData.Role}
+                    handleError={handleServerError}
                   />
                 </Switch>
               </Scrollbars>

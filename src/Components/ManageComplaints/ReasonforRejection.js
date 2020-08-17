@@ -135,6 +135,7 @@ export default function Rejection(props) {
             err.response.status === 500
           ) {
             console.log(err.response.status);
+            props.handleError(err.response.status);
           }
         }
         console.log("error agaya" + err);
