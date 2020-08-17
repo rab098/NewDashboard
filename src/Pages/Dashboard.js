@@ -591,11 +591,12 @@ function Dashboard({ match }) {
                     exact
                     render={() => <Home handleError={handleServerError} />}
                   />
-
                   <Route
                     path={`${match.path}/complaints`}
                     exact
-                    component={Complaints}
+                    render={(props) => (
+                      <Complaints {...props} handleError={handleServerError} />
+                    )}
                   />
                   <AdminRoute
                     path={`${match.path}/supervisors`}

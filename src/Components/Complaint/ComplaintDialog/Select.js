@@ -7,6 +7,7 @@ import Select from "@material-ui/core/Select";
 import InputLabel from "@material-ui/core/InputLabel";
 import MenuItem from "@material-ui/core/MenuItem";
 import Status from "../Status";
+import Box from "@material-ui/core/Box";
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -38,6 +39,7 @@ export default function SelectStatus(props) {
 
   const [status, setStatus] = useState([]);
   const [values, setValues] = useState(value);
+  const [error, setError] = useState(false);
 
   const handleLogoutAutomatically = () => {
     store.remove("userData");
@@ -46,6 +48,7 @@ export default function SelectStatus(props) {
     window.location = "/";
   };
   const getStatus = () => {
+    setError(false);
     var finalObj = [];
     axios
       .get("https://m2r31169.herokuapp.com/api/getStatus?Role=" + role, {
@@ -69,6 +72,7 @@ export default function SelectStatus(props) {
             err.response.status === 503 ||
             err.response.status === 500
           ) {
+            setError(true);
             console.log(err.response.status);
           }
         }
@@ -122,6 +126,9 @@ export default function SelectStatus(props) {
             </MenuItem>
           ))}
       </Select>
+      <Box style={{ display: error ? "block" : "none" }}>
+        {"Error loading data"}
+      </Box>
     </FormControl>
   );
 }
