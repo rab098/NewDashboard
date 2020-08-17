@@ -4,6 +4,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import ChartistGraph from "react-chartist";
 import Box from "@material-ui/core/Box";
 
+import CircularProgress from "@material-ui/core/CircularProgress";
 import { Grid, styled, FormControl, Select, MenuItem } from "@material-ui/core";
 import "../../ComponentsCss/Supervisor.css";
 let store = require("store");
@@ -18,6 +19,7 @@ function ResolveTime(props) {
     greaterThanTwentyFour: 0,
   });
 
+  const [loading, setLoading] = useState(true);
   const [resolveTimeCheck, setResolveTimeCheck] = useState(0);
 
   const [userData, setUserData] = useState(store.get("userData"));
@@ -43,8 +45,6 @@ function ResolveTime(props) {
         }
       )
       .then((res) => {
-        console.log("resolveTime coming", res.data);
-
         if (
           res.data._1_to_9 !== null &&
           res.data._10_to_16 !== null &&
@@ -57,6 +57,7 @@ function ResolveTime(props) {
             high: res.data._17_to_24,
             greaterThanTwentyFour: res.data.geraterThan24,
           });
+          setLoading(false);
         } else {
           setResolveTimeCheck(1);
           setResolveTime({
@@ -65,6 +66,7 @@ function ResolveTime(props) {
             high: 0,
             greaterThanTwentyFour: 0,
           });
+          setLoading(false);
         }
       })
       .catch((err) => {
@@ -75,6 +77,7 @@ function ResolveTime(props) {
             err.response.status === 503 ||
             err.response.status === 500
           ) {
+            setLoading(false);
             console.log(err.response.status);
           } else if (err.response.status === 400) {
             setResolveTimeCheck(1);
@@ -84,6 +87,7 @@ function ResolveTime(props) {
               high: 0,
               greaterThanTwentyFour: 0,
             });
+            setLoading(false);
           }
         }
         console.error(err);
@@ -124,16 +128,27 @@ function ResolveTime(props) {
 
       {resolveTimeCheck === 0 ? (
         <ChartistGraph
+          style={{ display: loading ? "none" : "block" }}
           data={piechart.data}
           type="Pie"
           options={piechart.options}
           style={{ padding: "10px" }}
         />
       ) : (
-        <div className="no-resolve-time-heading">
+        <div
+          className="no-resolve-time-heading"
+          style={{ display: loading ? "none" : "block" }}
+        >
           <p className="resolve-text">No Complain Resolved</p>
         </div>
       )}
+      <CircularProgress
+        style={{
+          display: loading ? "block" : "none",
+          color: "teal",
+          margin: " auto",
+        }}
+      />
 
       <div style={{ textAlign: "center", borderTop: "1px solid #99999957" }}>
         {" "}

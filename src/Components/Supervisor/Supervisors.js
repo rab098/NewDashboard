@@ -22,20 +22,6 @@ import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import Paper from "@material-ui/core/Paper";
 import Checkbox from "@material-ui/core/Checkbox";
-import FilterListIcon from "@material-ui/icons/FilterList";
-import AddBoxTwoToneIcon from "@material-ui/icons/AddBoxTwoTone";
-import DoneOutlineTwoToneIcon from "@material-ui/icons/DoneOutlineTwoTone";
-import EditTwoToneIcon from "@material-ui/icons/EditTwoTone";
-import DeleteTwoToneIcon from "@material-ui/icons/DeleteTwoTone";
-import EditIcon from "@material-ui/icons/Edit";
-import DeleteIcon from "@material-ui/icons/Delete";
-import Button from "@material-ui/core/Button";
-import TextField from "@material-ui/core/TextField";
-import Dialog from "@material-ui/core/Dialog";
-import DialogActions from "@material-ui/core/DialogActions";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogContentText from "@material-ui/core/DialogContentText";
-import DialogTitle from "@material-ui/core/DialogTitle";
 import Box from "@material-ui/core/Box";
 import DoneIcon from "@material-ui/icons/Done";
 import SupervisorAccountRoundedIcon from "@material-ui/icons/SupervisorAccountRounded";
@@ -60,6 +46,7 @@ import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
 import Collapse from "@material-ui/core/Collapse";
 import { IconButton } from "@material-ui/core";
 import CancelIcon from "@material-ui/icons/Cancel";
+import DeleteDialog from "./DeleteDialog.js";
 import ResolveTime from "./ResolveTime.js";
 import axios from "axios";
 
@@ -101,12 +88,6 @@ function stableSort(array, comparator) {
 // ];
 const headCells = [
   {
-    id: "performance",
-    numeric: true,
-    disablePadding: false,
-    label: "Weekly Performance",
-  },
-  {
     id: "email",
     numeric: false,
     disablePadding: false,
@@ -142,20 +123,29 @@ function EnhancedTableHead(props) {
           borderBottom: "10px solid #f3f3f3",
         }}
       >
-        <TableCell></TableCell>
+        <TableCell
+          style={{
+            paddingLeft: "16px",
+            paddingRight: "3px",
+          }}
+        ></TableCell>
         <TableCell
           // colSpan={2}
           key="name"
           align="left"
           padding="none"
           sortDirection={orderBy === "name" ? order : false}
+          style={{
+            paddingLeft: "2px",
+            paddingRight: "7px",
+          }}
         >
           <TableSortLabel
             active={orderBy === "name"}
             direction={orderBy === "name" ? order : "asc"}
             onClick={createSortHandler("name")}
           >
-            Name
+            NAME
             {/* {console.log(orderBy === _headCell.id)} */}
             {orderBy === "name" ? (
               <span className={classes.visuallyHidden}>
@@ -165,7 +155,14 @@ function EnhancedTableHead(props) {
           </TableSortLabel>
         </TableCell>
         <Tooltip title="Resolved Complaints">
-          <TableCell key="statistics" align="left">
+          <TableCell
+            key="statistics"
+            align="center"
+            style={{
+              paddingLeft: "7px",
+              paddingRight: "7px",
+            }}
+          >
             <DoneIcon
               style={{
                 color: "#66bb6a",
@@ -176,7 +173,14 @@ function EnhancedTableHead(props) {
           </TableCell>
         </Tooltip>
         <Tooltip title="Active Complaints">
-          <TableCell key="statistics" align="left">
+          <TableCell
+            key="statistics"
+            align="center"
+            style={{
+              paddingLeft: "7px",
+              paddingRight: "7px",
+            }}
+          >
             <HourglassFullIcon
               style={{
                 color: "#ab47bc",
@@ -187,7 +191,14 @@ function EnhancedTableHead(props) {
           </TableCell>
         </Tooltip>
         <Tooltip title="Inactive Complaints">
-          <TableCell key="statistics">
+          <TableCell
+            align="center"
+            key="statistics"
+            style={{
+              paddingLeft: "7px",
+              paddingRight: "7px",
+            }}
+          >
             <ClearIcon
               style={{
                 color: "#ef5350",
@@ -198,7 +209,14 @@ function EnhancedTableHead(props) {
           </TableCell>
         </Tooltip>
         <Tooltip title="Rejected Complaints">
-          <TableCell key="statistics" align="left">
+          <TableCell
+            key="statistics"
+            align="center"
+            style={{
+              paddingLeft: "7px",
+              paddingRight: "7px",
+            }}
+          >
             <PriorityHighIcon
               style={{
                 color: "#ffa726",
@@ -209,8 +227,53 @@ function EnhancedTableHead(props) {
           </TableCell>
         </Tooltip>
 
+        <TableCell
+          // colSpan={2}
+          key="performance"
+          align="center"
+          padding="none"
+          sortDirection={orderBy === "performance" ? order : false}
+          style={{ paddingLeft: "7px", paddingRight: "13px" }}
+        >
+          <div
+            style={{
+              whiteSpace: " pre-wrap",
+              padding: "0px",
+              margin: "0 10% 0 10%",
+              lineHeight: "110%",
+              textAlign: "center",
+            }}
+          >
+            <TableSortLabel
+              style={{ margin: "0px" }}
+              active={orderBy === "performance"}
+              direction={orderBy === "performance" ? order : "asc"}
+              onClick={createSortHandler("performance")}
+            >
+              <p>
+                PERFORMANCE
+                <br />
+                <span style={{ fontSize: "10px" }}>
+                  ComplaintsResolved/week
+                </span>
+              </p>
+
+              {/* {console.log(orderBy === _headCell.id)} */}
+              {orderBy === "performance" ? (
+                <span className={classes.visuallyHidden}>
+                  {order === "desc" ? "sorted descending" : "sorted ascending"}
+                </span>
+              ) : null}
+            </TableSortLabel>
+          </div>
+        </TableCell>
+
         {headCells.map((headCell) => (
           <TableCell
+            style={{
+              paddingLeft: "7px",
+              paddingRight: "7px",
+            }}
             key={headCell.id}
             align="justify"
             padding={headCell.disablePadding ? "none" : "default"}
@@ -222,7 +285,7 @@ function EnhancedTableHead(props) {
               onClick={createSortHandler(headCell.id)}
             >
               {/* .toUpperCase() */}
-              {headCell.label}
+              {headCell.label.toUpperCase()}
               {/* {console.log(orderBy === headCell.id)} */}
               {orderBy === headCell.id ? (
                 <span className={classes.visuallyHidden}>
@@ -232,9 +295,24 @@ function EnhancedTableHead(props) {
             </TableSortLabel>
           </TableCell>
         ))}
-        <TableCell></TableCell>
-        <TableCell></TableCell>
-        <TableCell></TableCell>
+        <TableCell
+          style={{
+            paddingLeft: "0px",
+            paddingRight: "1px",
+          }}
+        ></TableCell>
+        <TableCell
+          style={{
+            paddingLeft: "0px",
+            paddingRight: "1px",
+          }}
+        ></TableCell>
+        <TableCell
+          style={{
+            paddingLeft: "0px",
+            paddingRight: "16px",
+          }}
+        ></TableCell>
       </TableRow>
     </TableHead>
   );
@@ -345,7 +423,7 @@ function Row(props) {
           scope="row"
           style={{
             paddingLeft: "16px",
-            paddingRight: "4px",
+            paddingRight: "3px",
           }}
         >
           <Avatar
@@ -361,22 +439,86 @@ function Row(props) {
           align="left"
           style={{
             paddingLeft: "2px",
-            paddingRight: "16px",
+            paddingRight: "7px",
           }}
         >
           {row.name}
         </TableCell>
-        <TableCell align="center">{row.Resolved}</TableCell>
-        <TableCell align="center">{row.Active}</TableCell>
-        <TableCell align="center">{row.Unresolved}</TableCell>
-        <TableCell align="center">{row.Rejected}</TableCell>
-        <TableCell align="center">70%</TableCell>
-        <TableCell align="left">{row.email}</TableCell>
-        <TableCell align="left">{row.phoneNumber}</TableCell>
-        <TableCell align="left">{row.town}</TableCell>
+        <TableCell
+          align="center"
+          style={{
+            paddingLeft: "7px",
+            paddingRight: "7px",
+          }}
+        >
+          {row.Resolved}
+        </TableCell>
+        <TableCell
+          align="center"
+          style={{
+            paddingLeft: "7px",
+            paddingRight: "7px",
+          }}
+        >
+          {row.Active}
+        </TableCell>
+        <TableCell
+          align="center"
+          style={{
+            paddingLeft: "7px",
+            paddingRight: "7px",
+          }}
+        >
+          {row.Unresolved}
+        </TableCell>
+        <TableCell
+          align="center"
+          style={{
+            paddingLeft: "7px",
+            paddingRight: "7px",
+          }}
+        >
+          {row.Rejected}
+        </TableCell>
+        <TableCell
+          align="center"
+          style={{
+            paddingLeft: "7px",
+            paddingRight: "13px",
+          }}
+        >
+          {row.performance}
+        </TableCell>
         <TableCell
           align="left"
-          style={{ paddingLeft: "0px", paddingRight: "0px" }}
+          style={{
+            paddingLeft: "7px",
+            paddingRight: "7px",
+          }}
+        >
+          {row.email}
+        </TableCell>
+        <TableCell
+          align="left"
+          style={{
+            paddingLeft: "7px",
+            paddingRight: "7px",
+          }}
+        >
+          {row.phoneNumber}
+        </TableCell>
+        <TableCell
+          align="left"
+          style={{
+            paddingLeft: "7px",
+            paddingRight: "0px",
+          }}
+        >
+          {row.town}
+        </TableCell>
+        <TableCell
+          align="left"
+          style={{ paddingLeft: "0px", paddingRight: "1px" }}
         >
           <EditDialog
             town={towns}
@@ -388,10 +530,11 @@ function Row(props) {
           align="left"
           style={{
             paddingLeft: "0px",
-            paddingRight: "0px",
+            paddingRight: "1px",
           }}
         >
-          <IconButton style={{ backgroundColor: "transparent" }}>
+          <DeleteDialog superId={row.supervisorId} onDelete={handleDelete} />
+          {/* <IconButton style={{ backgroundColor: "transparent" }}>
             <DeleteIcon
               onClick={handleDelete(row.supervisorId)}
               style={{
@@ -401,7 +544,7 @@ function Row(props) {
                 border: 0,
               }}
             />
-          </IconButton>
+          </IconButton> */}
         </TableCell>
         <TableCell
           align="left"
@@ -511,8 +654,10 @@ export default function Supervisors() {
     setUserData({});
     window.location = "/";
   };
-  const handleDelete = (value) => () => {
-    setLoading(true);
+  function handleDelete(value) {
+    console.log("value aiaaaaaa " + value);
+
+    // setLoading(true);
     let body = { id: value };
     axios
       .post("https://m2r31169.herokuapp.com/api/deleteSupervisor", body, {
@@ -526,7 +671,7 @@ export default function Supervisors() {
 
           setRows(newList);
 
-          setLoading(false);
+          // setLoading(false);
         }
 
         // setTown(finalObj1);
@@ -545,7 +690,7 @@ export default function Supervisors() {
           }
         }
       });
-  };
+  }
 
   async function fetchTowns() {
     const townObj = [];
@@ -667,13 +812,13 @@ export default function Supervisors() {
                 </Box>
               </Grid> */}
 
-              <Grid item xs={12} sm={4} md={6} lg={6}>
+              <Grid item xs={12} sm={6} md={6} lg={6}>
                 <Box component="span">
                   {" "}
                   <AddForm town={towns} onAdd={handleSetNewRow} />
                 </Box>
               </Grid>
-              <Grid item xs={12} sm={8} md={6} lg={6}>
+              <Grid item xs={12} sm={6} md={6} lg={6}>
                 <Box
                   flexGrow={1}
                   style={{ float: "right" }}

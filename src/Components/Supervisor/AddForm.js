@@ -31,6 +31,11 @@ import AddBoxIcon from "@material-ui/icons/AddBox";
 import MenuItem from "@material-ui/core/MenuItem";
 import Select from "@material-ui/core/Select";
 import Backdrop from "@material-ui/core/Backdrop";
+
+import CancelIcon from "@material-ui/icons/Cancel";
+
+import { Scrollbars } from "react-custom-scrollbars";
+import CircularProgress from "@material-ui/core/CircularProgress";
 // import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
 import "../../ComponentsCss/Complaints.css";
 import "../../ComponentsCss/Supervisor.css";
@@ -144,7 +149,7 @@ export default function AddForm(props) {
   };
 
   const handleNameBlur = (event) => {
-    let letters = /^[A-Za-z]+$/;
+    let letters = /^[a-zA-Z ]*$/;
     if (form.name !== "" && !form.name.match(letters)) {
       setForm({
         ...form,
@@ -391,174 +396,196 @@ export default function AddForm(props) {
             >
               Add Details
             </Box>{" "}
+            <Box
+              // className="box1 detail"
+              // textAlign="right"
+              // padding="none"
+              // margin="2px"
+              // component="span"
+              style={{ float: "right" }}
+            >
+              <IconButton
+                onClick={handleClose}
+                aria-label="close"
+                style={{
+                  padding: "0px",
+                  marginRight: "7px",
+                  backgroundColor: "transparent",
+                }}
+              >
+                <CancelIcon style={{ color: "teal" }} />
+              </IconButton>
+            </Box>
           </div>
         </Paper>
-        <DialogContent>
-          <div className={classes.margin}>
-            <form>
-              <Grid
-                container
-                spacing={2}
-                // align="right"
-                justify="flex-start"
-              >
-                <Grid item xs={12} sm={12} md={6} lg={6}>
-                  <TextField
-                    error={form.errorName}
-                    helperText={form.helperTextName}
-                    label="Name"
-                    id="name"
-                    name={"name"}
-                    value={form.name}
-                    onChange={changeHandler}
-                    onBlur={handleNameBlur}
-                    onFocus={() => {
-                      setForm({
-                        ...form,
-                        helperTextMain: "",
-                        helperTextName: "",
-                        errorName: false,
-                      });
-                    }}
-                    style={{ width: "93%" }}
-                    autoFocus
-                  />{" "}
-                </Grid>{" "}
-                <Grid item xs={12} sm={12} md={6} lg={6}>
-                  <TextField
-                    id="username"
-                    error={form.errorUser}
-                    helperText={form.helperTextUserName}
-                    label="Username"
-                    value={form.username}
-                    name={"username"}
-                    onChange={changeHandler}
-                    onBlur={handleUserNameBlur}
-                    onFocus={() => {
-                      setForm({
-                        ...form,
-                        helperTextMain: "",
-                        helperTextUserName: "",
-                        errorUser: false,
-                      });
-                    }}
-                    style={{ width: "93%" }}
-                  />
-                </Grid>
-                <Grid item xs={12} sm={12} md={6} lg={6}>
-                  <TextField
-                    id="email"
-                    label="Email"
-                    name={"email"}
-                    value={form.email}
-                    error={form.errorEmail}
-                    helperText={form.helperTextEmail}
-                    onChange={changeHandler}
-                    onBlur={handleEmailBlur}
-                    onFocus={() => {
-                      setForm({
-                        ...form,
-                        helperTextMain: "",
-                        helperTextEmail: "",
-                        errorEmail: false,
-                      });
-                    }}
-                    style={{ width: "93%" }}
-                  />
-                </Grid>
-                <Grid item xs={12} sm={12} md={6} lg={6}>
-                  <TextField
-                    id="phonenumber"
-                    label="Phone number"
-                    name={"phoneNumber"}
-                    value={form.phoneNumber}
-                    inputProps={{ maxLength: 11 }}
-                    error={form.errorPhoneNumber}
-                    helperText={form.helperTextPhoneNumber}
-                    onChange={changeHandler}
-                    onBlur={handlePhoneNumberBlur}
-                    onFocus={() => {
-                      setForm({
-                        ...form,
-                        helperTextMain: "",
-                        helperTextPhoneNumber: "",
-                        errorPhoneNumber: false,
-                      });
-                    }}
-                    style={{ width: "93%" }}
-                  />
-                </Grid>{" "}
-                <Grid item xs={12} sm={12} md={6} lg={6}>
-                  <FormControl style={{ width: "93%" }}>
-                    <InputLabel
-                      id="demo-simple-select-label"
-                      variant="standard"
-                    >
-                      Town
-                    </InputLabel>
-                    <Select
-                      labelId="demo-simple-select-label"
-                      id="demo-simple-select"
-                      name="town"
-                      value={form.town}
+        <Scrollbars style={{ minWidth: 100, minHeight: 300 }}>
+          <DialogContent>
+            <div className={classes.margin}>
+              <form>
+                <Grid
+                  container
+                  spacing={2}
+                  // align="right"
+                  justify="flex-start"
+                >
+                  <Grid item xs={12} sm={12} md={6} lg={6}>
+                    <TextField
+                      error={form.errorName}
+                      helperText={form.helperTextName}
+                      label="Name"
+                      id="name"
+                      name={"name"}
+                      value={form.name}
+                      onChange={changeHandler}
+                      onBlur={handleNameBlur}
                       onFocus={() => {
                         setForm({
                           ...form,
                           helperTextMain: "",
+                          helperTextName: "",
+                          errorName: false,
                         });
                       }}
+                      style={{ width: "93%" }}
+                      autoFocus
+                    />{" "}
+                  </Grid>{" "}
+                  <Grid item xs={12} sm={12} md={6} lg={6}>
+                    <TextField
+                      id="username"
+                      error={form.errorUser}
+                      helperText={form.helperTextUserName}
+                      label="Username"
+                      value={form.username}
+                      name={"username"}
                       onChange={changeHandler}
-                    >
-                      {list}
-                    </Select>
-                  </FormControl>
-                </Grid>
-                <Grid item xs={12} sm={12} md={6} lg={6}>
-                  {" "}
-                  <FormControl style={{ width: "93%" }}>
-                    <InputLabel htmlFor="standard-adornment-password">
-                      Password
-                    </InputLabel>
-                    <Input
-                      id="password"
-                      name="password"
-                      value={form.password}
-                      type={form.showPassword ? "text" : "password"}
+                      onBlur={handleUserNameBlur}
                       onFocus={() => {
                         setForm({
                           ...form,
                           helperTextMain: "",
+                          helperTextUserName: "",
+                          errorUser: false,
                         });
                       }}
-                      // error={form.errorPassword}
-                      // helperText={form.helperTextPassword}
-                      onChange={changeHandler}
-                      // onBlur={handlePasswordBlur}
-                      endAdornment={
-                        <InputAdornment position="end">
-                          <IconButton
-                            style={{
-                              color: "#008080",
-                            }}
-                            aria-label="toggle password visibility"
-                            onClick={handleClickShowPassword}
-                            onMouseDown={handleMouseDownPassword}
-                          >
-                            {form.showPassword ? (
-                              <Visibility />
-                            ) : (
-                              <VisibilityOff />
-                            )}
-                          </IconButton>
-                        </InputAdornment>
-                      }
+                      style={{ width: "93%" }}
                     />
-                  </FormControl>
+                  </Grid>
+                  <Grid item xs={12} sm={12} md={6} lg={6}>
+                    <TextField
+                      id="email"
+                      label="Email"
+                      name={"email"}
+                      value={form.email}
+                      error={form.errorEmail}
+                      helperText={form.helperTextEmail}
+                      onChange={changeHandler}
+                      onBlur={handleEmailBlur}
+                      onFocus={() => {
+                        setForm({
+                          ...form,
+                          helperTextMain: "",
+                          helperTextEmail: "",
+                          errorEmail: false,
+                        });
+                      }}
+                      style={{ width: "93%" }}
+                    />
+                  </Grid>
+                  <Grid item xs={12} sm={12} md={6} lg={6}>
+                    <TextField
+                      id="phonenumber"
+                      label="Phone number"
+                      name={"phoneNumber"}
+                      value={form.phoneNumber}
+                      inputProps={{ maxLength: 11 }}
+                      error={form.errorPhoneNumber}
+                      helperText={form.helperTextPhoneNumber}
+                      onChange={changeHandler}
+                      onBlur={handlePhoneNumberBlur}
+                      onFocus={() => {
+                        setForm({
+                          ...form,
+                          helperTextMain: "",
+                          helperTextPhoneNumber: "",
+                          errorPhoneNumber: false,
+                        });
+                      }}
+                      style={{ width: "93%" }}
+                    />
+                  </Grid>{" "}
+                  <Grid item xs={12} sm={12} md={6} lg={6}>
+                    <FormControl style={{ width: "93%" }}>
+                      <InputLabel
+                        id="demo-simple-select-label"
+                        variant="standard"
+                      >
+                        Town
+                      </InputLabel>
+                      <Select
+                        labelId="demo-simple-select-label"
+                        id="demo-simple-select"
+                        name="town"
+                        value={form.town}
+                        onFocus={() => {
+                          setForm({
+                            ...form,
+                            helperTextMain: "",
+                          });
+                        }}
+                        onChange={changeHandler}
+                      >
+                        {list}
+                      </Select>
+                    </FormControl>
+                  </Grid>
+                  <Grid item xs={12} sm={12} md={6} lg={6}>
+                    {" "}
+                    <FormControl style={{ width: "93%" }}>
+                      <InputLabel htmlFor="standard-adornment-password">
+                        Password
+                      </InputLabel>
+                      <Input
+                        id="password"
+                        name="password"
+                        value={form.password}
+                        type={form.showPassword ? "text" : "password"}
+                        onFocus={() => {
+                          setForm({
+                            ...form,
+                            helperTextMain: "",
+                          });
+                        }}
+                        // error={form.errorPassword}
+                        // helperText={form.helperTextPassword}
+                        onChange={changeHandler}
+                        // onBlur={handlePasswordBlur}
+                        endAdornment={
+                          <InputAdornment position="end">
+                            <IconButton
+                              style={{
+                                color: "#008080",
+                              }}
+                              aria-label="toggle password visibility"
+                              onClick={handleClickShowPassword}
+                              onMouseDown={handleMouseDownPassword}
+                            >
+                              {form.showPassword ? (
+                                <Visibility />
+                              ) : (
+                                <VisibilityOff />
+                              )}
+                            </IconButton>
+                          </InputAdornment>
+                        }
+                      />
+                    </FormControl>
+                  </Grid>
                 </Grid>
-              </Grid>
-            </form>{" "}
-          </div>
-        </DialogContent>{" "}
+              </form>{" "}
+            </div>
+          </DialogContent>{" "}
+        </Scrollbars>{" "}
         <DialogActions>
           {" "}
           <Grid
@@ -582,15 +609,16 @@ export default function AddForm(props) {
             </Grid>{" "}
           </Grid>{" "}
           <Button
+            style={{ display: loading ? "none" : "block" }}
             type="submit"
             className={classes.myButton}
             onClick={handleClick}
           >
             Submit
           </Button>{" "}
-          <Backdrop className={classes.backdrop} open={loading}>
-            <ImpulseSpinner size={90} color="#008081" loading={loading} />
-          </Backdrop>
+          <CircularProgress
+            style={{ display: loading ? "block" : "none", color: "teal" }}
+          />
         </DialogActions>
       </Dialog>
     </div>

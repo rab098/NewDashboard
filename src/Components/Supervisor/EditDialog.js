@@ -11,6 +11,9 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import Dialog from "@material-ui/core/Dialog";
 import EditIcon from "@material-ui/icons/Edit";
 
+import CancelIcon from "@material-ui/icons/Cancel";
+
+import CircularProgress from "@material-ui/core/CircularProgress";
 import DialogActions from "@material-ui/core/DialogActions";
 import Paper from "@material-ui/core/Paper";
 import Box from "@material-ui/core/Box";
@@ -171,7 +174,7 @@ export default function EditDialog(props) {
         onClose={handleClose}
         aria-labelledby="form-dialog-title"
       >
-        <Scrollbars style={{ minWidth: 300, minHeight: 500 }}>
+        <Scrollbars style={{ minWidth: 300, minHeight: 400 }}>
           <Paper
             className="filter elevationPaper"
             fullWidth
@@ -195,6 +198,26 @@ export default function EditDialog(props) {
             >
               Select Town
             </Box>{" "}
+            <Box
+              // className="box1 detail"
+              // textAlign="right"
+              // padding="none"
+              // margin="2px"
+              // component="span"
+              style={{ float: "right" }}
+            >
+              <IconButton
+                onClick={handleClose}
+                aria-label="close"
+                style={{
+                  padding: "0px",
+                  marginRight: "7px",
+                  backgroundColor: "transparent",
+                }}
+              >
+                <CancelIcon style={{ color: "teal" }} />
+              </IconButton>
+            </Box>
           </Paper>
           <List component="nav" aria-label="main mailbox folders">
             {props.town.map((t) => (
@@ -212,6 +235,9 @@ export default function EditDialog(props) {
           </List>
           <DialogActions>
             <Button
+              style={{
+                display: loading ? "none" : "block",
+              }}
               onClick={() => {
                 handleUpdate(selectedIndex);
               }}
@@ -219,9 +245,12 @@ export default function EditDialog(props) {
             >
               Update
             </Button>{" "}
-            <Backdrop className={classes.backdrop} open={loading}>
+            <CircularProgress
+              style={{ display: loading ? "block" : "none", color: "teal" }}
+            />
+            {/* <Backdrop className={classes.backdrop} open={loading}>
               <ImpulseSpinner size={90} color="#008081" loading={loading} />
-            </Backdrop>
+            </Backdrop> */}
           </DialogActions>{" "}
         </Scrollbars>{" "}
       </Dialog>
