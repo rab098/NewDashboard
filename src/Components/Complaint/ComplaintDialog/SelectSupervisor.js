@@ -6,6 +6,7 @@ import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
 import InputLabel from "@material-ui/core/InputLabel";
 import MenuItem from "@material-ui/core/MenuItem";
+import Box from "@material-ui/core/Box";
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -22,6 +23,7 @@ export default function SelectSupervisor(props) {
   const classes = useStyles();
 
   const [hasError, setErrors] = useState(false);
+  const [error, setError] = useState(false);
   let store = require("store");
   const [userData, setUserData] = useState(store.get("userData"));
 
@@ -34,6 +36,7 @@ export default function SelectSupervisor(props) {
     window.location = "/";
   };
   const getStatus = () => {
+    setError(false);
     var finalObj = [];
     // var finalObj1 = [];
     axios
@@ -61,6 +64,7 @@ export default function SelectSupervisor(props) {
             err.response.status === 503 ||
             err.response.status === 500
           ) {
+            setError(true);
             console.log(err.response.status);
           }
         }
@@ -97,6 +101,9 @@ export default function SelectSupervisor(props) {
           </MenuItem>
         ))}
       </Select>
+      <Box style={{ display: error ? "block" : "none" }}>
+        {"Error loading data"}
+      </Box>
     </FormControl>
   );
 }

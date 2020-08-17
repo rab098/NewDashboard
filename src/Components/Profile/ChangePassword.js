@@ -98,6 +98,7 @@ export default function ChangePassword(props) {
             err.response.status === 500
           ) {
             console.log(err.response.status);
+            alert("Something went wrong. Please try again later");
           } else if (err.response.status === 400) {
             setError("Incorrect existing password");
             console.log("error" + err);

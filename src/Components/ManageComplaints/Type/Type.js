@@ -114,6 +114,7 @@ export default function Type(props) {
             err.response.status === 500
           ) {
             console.log(err.response.status);
+            alert("Something went wrong. Please try again later");
           }
         }
         if (err.response) {
@@ -157,8 +158,19 @@ export default function Type(props) {
         console.log("post hogayi" + res.data);
         doneEnable();
       })
-      .catch((error) => {
-        console.log("error agaya" + error);
+      .catch((err) => {
+        console.log("error agaya" + err);
+        if (err.response) {
+          if (err.response.status === 401 || err.response.status === 403) {
+            handleLogoutAutomatically();
+          } else if (
+            err.response.status === 503 ||
+            err.response.status === 500
+          ) {
+            console.log(err.response.status);
+            alert("Something went wrong. Please try again later");
+          }
+        }
       });
   };
 

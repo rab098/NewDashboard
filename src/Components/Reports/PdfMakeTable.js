@@ -1,6 +1,9 @@
 import pdfMake from 'pdfmake/build/pdfmake';
 import vfsFonts from 'pdfmake/build/vfs_fonts';
 import Moment from "moment";
+import grey from "@material-ui/core/colors/grey";
+import {useState} from "react";
+
 
 
 const _format = (data) => {
@@ -15,6 +18,8 @@ const _format = (data) => {
 }
 
 export default (reportObject) => {
+
+
     const {vfs} = vfsFonts.pdfMake;
     pdfMake.vfs = vfs;
 
@@ -29,40 +34,44 @@ export default (reportObject) => {
     // });
 
 
-    // let bodyData = [
-    //     ['ID', 'TYPE', 'DATE', 'PRIORITY', 'TOWN','SUPERVISOR', 'STATUS'],
-    //     ['123455','ok','no','oh','town','status','date'],
-    //     ['123455','ok','no','oh','town','status','date'],
-    //     ['123455','ok','no','oh','town','status','date'],
-    // ]
+
 
     let bodyData = [['ID', 'TYPE', 'DATE', 'PRIORITY', 'TOWN','SUPERVISOR', 'STATUS'],]
-    // for(let i in reportObject.complaints){
-    //     bodyData.push(reportObject.complaints[i].id)
-    //     bodyData.push(reportObject.complaints[i].type)
-    //     bodyData.push(reportObject.complaints[i].date)
-    //     bodyData.push(reportObject.complaints[i].priority)
-    //     bodyData.push(reportObject.complaints[i].town)
-    //     bodyData.push(reportObject.complaints[i].supervisorName)
-    //     bodyData.push(reportObject.complaints[i].statusType)
-    //
-    // }
+    let bodyDataForSupervisor = [['ID', 'TYPE', 'DATE', 'PRIORITY', 'TOWN', 'STATUS'],]
 
 
+if(reportObject.role === 'ADMIN'){
     reportObject.complaints.forEach(function(sourceRow) {
         let dataRow = [];
 
         dataRow.push(sourceRow.id);
         dataRow.push(sourceRow.type);
-        dataRow.push(Moment(sourceRow.date).format('DD/MM/YY'));
+        dataRow.push(Moment(sourceRow.date).format('DD/MMM/YY'));
         dataRow.push(sourceRow.priority);
         dataRow.push(sourceRow.town);
-        dataRow.push(sourceRow.supervisorName);
+        dataRow.push(sourceRow.supervisorName)
         dataRow.push(sourceRow.statusType)
 
 
         bodyData.push(dataRow)
     });
+}else{
+    reportObject.complaints.forEach(function(sourceRow) {
+        let dataRow = [];
+
+        dataRow.push(sourceRow.id);
+        dataRow.push(sourceRow.type);
+        dataRow.push(Moment(sourceRow.date).format('DD/MMM/YY'));
+        dataRow.push(sourceRow.priority);
+        dataRow.push(sourceRow.town);
+        dataRow.push(sourceRow.statusType)
+
+
+        bodyDataForSupervisor.push(dataRow)
+    });
+
+}
+
 
     console.log(bodyData)
 
@@ -71,9 +80,11 @@ export default (reportObject) => {
         pageSize: 'A4',
         pageOrientation: 'portrait',
         content: [
-            {text: 'Sindh Solid Waste Management', bold: true, style: 'header', fontSize: 25,margin: [0, 20, 0, 8] },
-            {text: reportObject.dateRadioValue === 'one' ? 'Report generated for ' + Moment(reportObject.dateOne).format('DD/MMM/YYYY') : 'Report generated from  ' + Moment(reportObject.dateFrom).format('DD/MMM/YYYY') + '  till  ' + Moment(reportObject.dateTo).format('DD/MMM/YYYY'), italics:true , fontSize:10, margin: [0, 5, 0, 5] },
-            {text: reportObject.description},
+            {text: 'Sindh Solid Waste Management', bold: true, style: 'header', fontSize: 25,margin: [0, 10, 0, 5] },
+            {text: reportObject.dateRadioValue === 'one' ? 'Report generated for ' + Moment(reportObject.dateOne).format('DD MMM YYYY') : 'Report generated from  ' + Moment(reportObject.dateFrom).format('DD/MMM/YYYY') + '  till  ' + Moment(reportObject.dateTo).format('DD/MMM/YYYY'), italics:true , fontSize:9, margin: [0, 0, 0, 5], color: '#8E9397' },
+            // {text: 'Report generated on ' + Moment().format('DD MMM YYYY'), italics:true , fontSize:9, margin: [0, 0, 0, 5], color: '#8E9397' },
+            {text:'Report Description', bold: true ,fontSize: 12, margin: [0, 15, 0, 2]},
+            {text: reportObject.description , bold: false, fontSize: 10, margin: [0, 0, 0, 10]},
             // {text: reportObject.sortRadioValue === 'complaintType' ? 'The following table has been generated Type Wise' : 'The following table has been generated Supervisor Wise' , style: 'subheader' ,margin: [0, 20, 0, 8]},
 
             {
@@ -82,7 +93,7 @@ export default (reportObject) => {
                     fontSize: 20,
                     borderTop: true,
                     bold: true,
-                    body: bodyData
+                    body: reportObject.role === 'ADMIN' ? bodyData : bodyDataForSupervisor
                     //     [
                     //     ['ID', 'TYPE', 'DATE', 'PRIORITY', 'TOWN','SUPERVISOR', 'STATUS'],
                     //     bodyData

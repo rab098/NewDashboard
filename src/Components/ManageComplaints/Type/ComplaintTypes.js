@@ -52,6 +52,7 @@ export default function ComplaintTypes(props) {
             err.response.status === 500
           ) {
             console.log(err.response.status);
+            props.handleError(err.response.status);
           }
         }
         console.log(err);

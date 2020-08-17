@@ -7,14 +7,23 @@ import {
   Redirect,
 } from "react-router-dom";
 
-const AdminRoute = ({ role, component: Component, ...options }) => {
+const AdminRoute = ({
+  role,
+  handleError,
+  component: Component,
+  ...options
+}) => {
   //   const finalComponent = role == "Admin" ? component : Home;
 
   return (
     <Route
       {...options}
       render={() =>
-        role === "ADMIN" ? <Component /> : <Redirect to="/dashboard/home" />
+        role === "ADMIN" ? (
+          <Component handleError={handleError} />
+        ) : (
+          <Redirect to="/dashboard/home" />
+        )
       }
     />
   );

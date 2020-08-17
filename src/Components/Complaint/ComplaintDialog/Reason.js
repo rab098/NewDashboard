@@ -6,6 +6,7 @@ import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
 import InputLabel from "@material-ui/core/InputLabel";
 import MenuItem from "@material-ui/core/MenuItem";
+import Box from "@material-ui/core/Box";
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -21,11 +22,13 @@ export default function Reason(props) {
   const [userData, setUserData] = useState(store.get("userData"));
 
   const [hasError, setErrors] = useState(false);
+  const [error, setError] = useState(false);
 
   const [reasons, setReason] = useState([]);
   const [values, setValues] = useState(value);
 
   const getReasons = () => {
+    setError(false);
     var finalObj = [];
     axios
       .get("https://m2r31169.herokuapp.com/api/getRejectTags")
@@ -45,6 +48,7 @@ export default function Reason(props) {
             err.response.status === 503 ||
             err.response.status === 500
           ) {
+            setError(true);
             console.log(err.response.status);
           }
         }
@@ -88,6 +92,9 @@ export default function Reason(props) {
           </MenuItem>
         ))}
       </Select>
+      <Box style={{ display: error ? "block" : "none" }}>
+        {"Error loading data"}
+      </Box>
     </FormControl>
   );
 }

@@ -76,6 +76,7 @@ export default function FeedbackTags(props) {
             err.response.status === 500
           ) {
             console.log(err.response.status);
+            alert("Something went wrong. Please try again later");
           }
         }
         console.log("error agaya" + err);
@@ -111,6 +112,7 @@ export default function FeedbackTags(props) {
               err.response.status === 500
             ) {
               console.log(err.response.status);
+              alert("Something went wrong. Please try again later");
             }
           }
           console.log("error agaya" + err);
@@ -145,6 +147,7 @@ export default function FeedbackTags(props) {
             err.response.status === 500
           ) {
             console.log(err.response.status);
+            props.handleError(err.response.status);
           }
         }
         console.log("error agaya" + err);

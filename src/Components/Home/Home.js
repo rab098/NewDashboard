@@ -18,6 +18,8 @@ import { makeStyles } from "@material-ui/core/styles";
 import { grayColor } from "../../assets/jss/material-dashboard-react";
 import "../../assets/css/charts-and-graphs.css";
 import "../../ComponentsCss/Home.css";
+import Backdrop from "@material-ui/core/Backdrop";
+import {ImpulseSpinner} from "react-spinners-kit";
 
 let store = require("store");
 
@@ -32,6 +34,10 @@ const styles = {
     fontSize: "12px",
     lineHeight: "22px",
   },
+    backdrop: {
+        zIndex: 1,
+        color: "#fff",
+    },
 };
 
 const useStyles = makeStyles(styles);
@@ -45,8 +51,10 @@ function Home(props) {
   // });
 
   const [userData, setUserData] = useState(store.get("userData"));
+  const [loading, setLoading] = useState(true);
 
-  const [grid, setGrid] = useState(5);
+
+    const [grid, setGrid] = useState(5);
 
   console.log("store?????", userData);
 
@@ -115,10 +123,10 @@ function Home(props) {
     }
   };
 
-  const getTime = () => {
+  const getHomeData = () => {
     if (userData.accessToken !== null) {
       axios
-        .get("https://m2r31169.herokuapp.com/api/getLastUpdatedTime", {
+        .get("https://m2r31169.herokuapp.com/api/getTotalSupervisorsAndComplaintsCountAndLastUpdatedTime", {
           headers: headers,
         })
         .then((res) => {
@@ -128,7 +136,9 @@ function Home(props) {
           // else
 
           console.log("update time", res.data);
-          setLastUpdated(res.data.lastUpdated);
+          setCounts(res.data.Count);
+          setLastUpdated(res.data.LastUpdated);
+            setLoading(false)
         })
         .catch((err) => {
           if (err.response) {
@@ -139,6 +149,7 @@ function Home(props) {
               err.response.status === 500
             ) {
               console.log(err.response.status);
+              setLoading(false)
               props.handleError(err.response.status);
             }
           }
@@ -147,47 +158,46 @@ function Home(props) {
     }
   };
 
-  const getCount = () => {
-    if (userData.accessToken !== null) {
-      axios
-        .get(
-          "https://m2r31169.herokuapp.com/api/totalSuervisorsAndComplaintsCount",
-          { headers: headers }
-        )
-        .then((res) => {
-          console.log(res.data);
-
-          setCounts(res.data);
-
-          // setCount({
-          //     totalComplaints: res.data[0].Count,
-          //     resolvedComplaints: res.data[1].Count,
-          //     unresolvedComplaints: res.data[2].Count,
-          //     assignedComplaints: res.data[3].Count,
-          //     rejectedComplaints: res.data[4].Count,
-          //     activeComplaints: res.data[5].Count,
-          //     supervisors: res.data[6].Count,
-          // });
-        })
-        .catch((err) => {
-          if (err.response) {
-            if (err.response.status === 401 || err.response.status === 403) {
-              handleLogoutAutomatically();
-            } else if (
-              err.response.status === 503 ||
-              err.response.status === 500
-            ) {
-              console.log(err.response.status);
-            }
-          }
-          console.error(err);
-        });
-    }
-  };
+  // const getCount = () => {
+  //   if (userData.accessToken !== null) {
+  //     axios
+  //       .get(
+  //         "https://m2r31169.herokuapp.com/api/totalSuervisorsAndComplaintsCount",
+  //         { headers: headers }
+  //       )
+  //       .then((res) => {
+  //         console.log(res.data);
+  //
+  //         setCounts(res.data);
+  //
+  //         // setCount({
+  //         //     totalComplaints: res.data[0].Count,
+  //         //     resolvedComplaints: res.data[1].Count,
+  //         //     unresolvedComplaints: res.data[2].Count,
+  //         //     assignedComplaints: res.data[3].Count,
+  //         //     rejectedComplaints: res.data[4].Count,
+  //         //     activeComplaints: res.data[5].Count,
+  //         //     supervisors: res.data[6].Count,
+  //         // });
+  //       })
+  //       .catch((err) => {
+  //         if (err.response) {
+  //           if (err.response.status === 401 || err.response.status === 403) {
+  //             handleLogoutAutomatically();
+  //           } else if (
+  //             err.response.status === 503 ||
+  //             err.response.status === 500
+  //           ) {
+  //             console.log(err.response.status);
+  //           }
+  //         }
+  //         console.error(err);
+  //       });
+  //   }
+  // };
 
   useEffect(() => {
-    getCount();
-    getTime();
+      getHomeData()
   }, []);
 
   return (
@@ -386,11 +396,16 @@ function Home(props) {
       </div>
 
       <Charts value={chartType} />
-      <Zone />
+        {userData.Role === "ADMIN" && <Zone /> }
       <div className="table-and-piechart">
         {userData.Role === "ADMIN" && <FeedbackStats role={userData.Role} />}
         <ResolveTimeAnalysisStats />
       </div>
+
+        <Backdrop className={classes.backdrop} open={loading}>
+            <ImpulseSpinner size={90} color="#008081" />
+        </Backdrop>
+
     </div>
 
     //old home layout

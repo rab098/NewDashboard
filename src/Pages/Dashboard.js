@@ -223,7 +223,7 @@ function Dashboard({ match }) {
               err.response.status === 500
             ) {
               console.log(err.response.status);
-              handleServerError(err.response.status);
+              // handleServerError(err.response.status);
             }
           }
 
@@ -294,7 +294,7 @@ function Dashboard({ match }) {
             err.response.status === 500
           ) {
             console.log(err.response.status);
-            handleServerError(err.response.status);
+            // handleServerError(err.response.status);
           }
         }
         console.log("Unable to get permission to notify.", err);
@@ -324,7 +324,7 @@ function Dashboard({ match }) {
               err.response.status === 500
             ) {
               console.log(err.response.status);
-              handleServerError(err.response.status);
+              // handleServerError(err.response.status);
             }
           }
           console.log("Unable to retrieve refreshed token ", err);
@@ -591,11 +591,12 @@ function Dashboard({ match }) {
                     exact
                     render={() => <Home handleError={handleServerError} />}
                   />
-
                   <Route
                     path={`${match.path}/complaints`}
                     exact
-                    component={Complaints}
+                    render={(props) => (
+                      <Complaints {...props} handleError={handleServerError} />
+                    )}
                   />
                   <AdminRoute
                     path={`${match.path}/supervisors`}
@@ -606,7 +607,9 @@ function Dashboard({ match }) {
                   <Route
                     path={`${match.path}/reports`}
                     exact
-                    component={GenerateReports}
+                    render={() => (
+                      <GenerateReports handleError={handleServerError} />
+                    )}
                   />
                   <Route
                     path={`${match.path}/profile`}
@@ -628,6 +631,7 @@ function Dashboard({ match }) {
                     exact
                     component={ManageComplaints}
                     role={userData.Role}
+                    handleError={handleServerError}
                   />
                 </Switch>
               </Scrollbars>
