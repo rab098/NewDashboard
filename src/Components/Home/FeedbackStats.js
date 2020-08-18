@@ -223,7 +223,7 @@ function FeedbackStats(props) {
     <div
         style={{marginLeft:'auto', marginRight:2, fontWeight:'bold', fontSize:'0.75rem', color:'#008080'}}
     >
-       <p style={{padding:'none'}}> Total Feedbacks : {feedback.TotalCount}</p>
+       <p style={{padding:'none', marginTop:14}}> Total Feedbacks : {feedback.TotalCount}</p>
     </div>
 
 </div>
