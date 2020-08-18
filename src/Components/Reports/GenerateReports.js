@@ -82,6 +82,7 @@ function GenerateReports(props) {
 
     const [userData, setUserData] = useState(store.get("userData"));
     const [noComplaintsFound, setNoComplaintsFound] = useState(false);
+    const [nextButtonState, setNextButtonState] = useState(false);
     const [loading, setLoading] = useState(true);
     const [firstDate, setFirstDate] = useState(null);
     const [lastDate, setLastDate] = useState(null);
@@ -592,7 +593,9 @@ function GenerateReports(props) {
     };
 
     const handleRadioChangeSupervisor = (event) => {
-        setRadioValueStepTwo(event.target.value);
+        setRadioValueSupervisor(event.target.value);
+        setReportData(rawData);
+
     };
 
     useEffect(() => {
@@ -763,13 +766,18 @@ function GenerateReports(props) {
             setNoComplaintsFound(true)
         } else {
             setNoComplaintsFound(false)
+            setActiveStep((prevActiveStep) => prevActiveStep + 1);
+            if (activeStep === 1)
+                setNextButton(true)
 
         }
 
 
-    }, [reportData])
+    }, [nextButtonState])
 
     function handleNext(index) {
+
+        setNextButtonState(prev => !prev)
         switch (index) {
             case 0:
                 if (radioValue === "one") {
@@ -857,7 +865,6 @@ function GenerateReports(props) {
                 }
 
 
-                setActiveStep((prevActiveStep) => prevActiveStep + 1);
 
                 setTypeCheckboxCount(0);
                 setTownsCheckboxCount(0);
@@ -905,8 +912,7 @@ function GenerateReports(props) {
                     }
                 }
 
-                setActiveStep((prevActiveStep) => prevActiveStep + 1);
-                setNextButton(true);
+                // setNextButton(true);
 
                 break;
             case 2:
@@ -921,7 +927,7 @@ function GenerateReports(props) {
                     complaints: reportData,
                     role: userData.Role
                 });
-                setActiveStep((prevActiveStep) => prevActiveStep + 1);
+                // setActiveStep((prevActiveStep) => prevActiveStep + 1);
                 break;
             case 3:
                 _exportPdfTable();
@@ -993,6 +999,12 @@ function GenerateReports(props) {
 
     const handleReset = () => {
         setActiveStep(0);
+        setReportData(mainData)
+        setFromDate(null)
+        setToDate(null)
+        setOneDate(null)
+        setReportDescription("")
+        setNextButton(true)
     };
 
     const TextFieldComponent = (props) => {
@@ -1073,7 +1085,7 @@ function GenerateReports(props) {
                 </Stepper>
                 {activeStep === steps.length && (
                     <Paper square elevation={0} className={classes.resetContainer}>
-                        <Typography>All steps completed - you&apos;re finished</Typography>
+                        <Typography>Your report has been generated.</Typography>
                         <Button onClick={handleReset} className={classes.button}>
                             Reset
                         </Button>
