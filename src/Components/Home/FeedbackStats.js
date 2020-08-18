@@ -145,9 +145,6 @@ function FeedbackStats(props) {
             }
         >
 
-          <div className="">
-            <p className="resolve-text">Total Feedbacks : {feedback.TotalCount}</p>
-          </div>
 
 
             {checkFeedback === 0 ? (
@@ -157,6 +154,7 @@ function FeedbackStats(props) {
                     options={piechart.options}
                     style={{padding: "10px"}}
                 />
+
             ) : (
                 <div className="no-resolve-time-heading">
                     <p className="resolve-text">Not available</p>
@@ -172,11 +170,16 @@ function FeedbackStats(props) {
             <div className="feedback-heading">
                 <p className="feedback-text">Feedback Summary</p>
 
+<div style={{display:'flex', flexDirection:'row'}}>
+
+
+    <div>
+
                 <Box
                     textAlign="left"
                     color="#43a047"
-                    fontWeight="bold"
                     component="span"
+                    fontWeight="bold"
                     fontSize="3rem"
                 >
                     .
@@ -214,6 +217,16 @@ function FeedbackStats(props) {
                     {" "}
                     Negative
                 </Box>
+
+    </div>
+
+    <div
+        style={{justifyContent:'end'}}
+    >
+        Total Feedbacks : {feedback.TotalCount}
+    </div>
+
+</div>
             </div>
         </div>
     );
