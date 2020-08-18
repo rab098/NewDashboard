@@ -114,7 +114,7 @@ export default function SelectStatus(props) {
           .filter((statusName) =>
             status.find((x) => x.id === value).statusType == "Assigned" &&
             otherStatus == "Resolved"
-              ? statusName.statusType != "Rejected"
+              ? statusName.statusType == "Resolved"
               : otherStatus != "Resolved" && role == "ADMIN"
               ? statusName.statusType != "Resolved"
               : true

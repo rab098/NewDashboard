@@ -762,7 +762,7 @@ export default function Complaints(props) {
                                   <ErrorOutlineOutlinedIcon
                                     style={{ fontSize: "20px" }}
                                   />
-                                  {"  Please verify this complaint"}
+                                  {"Please verify"}
                                 </Box>
                               ) : (
                                 ""
