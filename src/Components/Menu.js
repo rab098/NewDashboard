@@ -181,7 +181,7 @@ function Menu(props) {
           </MenuItem>
         </Link>
       )}
-      {props.role === "SUPERVISOR" && (
+      {/* {props.role === "SUPERVISOR" && (
         <Link to={"/dashboard/employees"}>
           <MenuItem
             className={
@@ -196,7 +196,7 @@ function Menu(props) {
             <p>Employees</p>
           </MenuItem>
         </Link>
-      )}
+      )} */}
       <Link to={"/dashboard/reports"}>
         <MenuItem
           className={

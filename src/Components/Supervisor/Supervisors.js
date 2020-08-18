@@ -607,7 +607,7 @@ Row.propTypes = {
   handleDelete: PropTypes.func.isRequired,
 };
 
-export default function Supervisors() {
+export default function Supervisors(props) {
   const classes = useStyles();
   const [order, setOrder] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState("calories");
@@ -744,6 +744,7 @@ export default function Supervisors() {
           }
           if (err.response.status === 503 || err.response.status === 500) {
             console.log(err.response.status);
+            props.handleError(err.response.status);
           }
         }
       });
