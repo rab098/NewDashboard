@@ -603,6 +603,7 @@ function Dashboard({ match }) {
                     exact
                     component={Supervisors}
                     role={userData.Role}
+                    handleError={handleServerError}
                   />
                   <Route
                     path={`${match.path}/reports`}
@@ -621,11 +622,11 @@ function Dashboard({ match }) {
                       />
                     )}
                   />
-                  <Route
+                  {/* <Route
                     path={`${match.path}/employees`}
                     exact
                     component={Employees}
-                  />
+                  /> */}
                   <AdminRoute
                     path={`${match.path}/manage`}
                     exact
