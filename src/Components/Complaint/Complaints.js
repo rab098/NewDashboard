@@ -696,7 +696,7 @@ export default function Complaints(props) {
             </Grid>
           </Paper>
 
-          <Scrollbars style={{ minWidth: 150, minHeight: 400 }}>
+          <Scrollbars style={{ minWidth: 150, minHeight: 420 }}>
             <Paper className="elevationPaper">
               <TableContainer className="tableContainer">
                 <Table

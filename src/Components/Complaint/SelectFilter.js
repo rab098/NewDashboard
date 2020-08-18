@@ -104,15 +104,18 @@ export default function SelectFilter(props) {
         )}
         MenuProps={MenuProps}
       >
-        {status.map((statusName) => (
-          <MenuItem
-            key={statusName}
-            value={statusName}
-            style={getStyles(statusName, values, theme)}
-          >
-            {statusName}
-          </MenuItem>
-        ))}
+        {status.map(
+          (statusName) =>
+            statusName != null && (
+              <MenuItem
+                key={statusName}
+                value={statusName}
+                style={getStyles(statusName, values, theme)}
+              >
+                {statusName}
+              </MenuItem>
+            )
+        )}
       </Select>
     </FormControl>
   );
