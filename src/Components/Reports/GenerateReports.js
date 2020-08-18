@@ -287,10 +287,11 @@ function GenerateReports(props) {
             case 0:
                 return (
                     <div>
-                        <p>
-                            You can choose to generate a one day report or multiple days
-                            report.
-                        </p>
+                            <p>
+                                You can choose to generate a one day report or multiple days
+                                report.
+                            </p>
+
                         <RadioGroup
                             row
                             aria-label="position"

@@ -11,10 +11,10 @@ let Chartist = require("chartist");
 
 function ResolveTimeAnalysisStats() {
   const [resolveTime, setResolveTime] = useState({
-    less: 70,
-    medium: 20,
-    high: 5,
-    greaterThanTwentyFour: 5,
+    _0_2days: 70,
+    _3_4days: 20,
+    _5_6days: 5,
+    moreThan6days: 5
   });
 
   const [resolveTimeCheck, setResolveTimeCheck] = useState(0);
@@ -42,24 +42,19 @@ function ResolveTimeAnalysisStats() {
         console.log("resolveTime coming", res.data);
 
         if (
-          res.data._1_to_9 !== null &&
-          res.data._10_to_16 !== null &&
-          res.data._17_to_24 !== null &&
-          res.data.geraterThan24 !== null
+          res.data._0_2days !== null &&
+          res.data._3_4days !== null &&
+          res.data._5_6days !== null &&
+          res.data.moreThan6days !== null
         ) {
-          setResolveTime({
-            less: res.data._1_to_9,
-            medium: res.data._10_to_16,
-            high: res.data._17_to_24,
-            greaterThanTwentyFour: res.data.geraterThan24,
-          });
+          setResolveTime(res.data);
         } else {
           setResolveTimeCheck(1);
           setResolveTime({
-            less: 0,
-            medium: 0,
-            high: 0,
-            greaterThanTwentyFour: 0,
+            _0_2days: 0,
+            _3_4days: 0,
+            _5_6days: 0,
+            moreThan6days: 0
           });
         }
       })
@@ -83,10 +78,10 @@ function ResolveTimeAnalysisStats() {
   const piechart = {
     data: {
       series: [
-        resolveTime.high,
-        resolveTime.less,
-        resolveTime.medium,
-        resolveTime.greaterThanTwentyFour,
+        resolveTime._5_6days,
+        resolveTime._0_2days,
+        resolveTime._3_4days,
+        resolveTime.moreThan6days,
       ],
     },
     options: {

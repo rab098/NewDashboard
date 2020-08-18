@@ -37,6 +37,7 @@ const styles = {
     backdrop: {
         zIndex: 1,
         color: "#fff",
+        height:'100%'
     },
 };
 
