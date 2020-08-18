@@ -132,7 +132,7 @@ function ResolveTimeAnalysisStats() {
           fontSize="0.75rem"
         >
           {" "}
-          1 to 9 hours
+          2 days
         </Box>
         <Box
           textAlign="left"
@@ -152,7 +152,7 @@ function ResolveTimeAnalysisStats() {
           fontSize="0.75rem"
         >
           {" "}
-          10 to 16 hours
+          4 days
         </Box>
         <Box
           textAlign="left"
@@ -172,7 +172,7 @@ function ResolveTimeAnalysisStats() {
           fontSize="0.75rem"
         >
           {" "}
-          17 to 24 hours
+          6 days
         </Box>
 
         <Box
@@ -193,7 +193,7 @@ function ResolveTimeAnalysisStats() {
           fontSize="0.75rem"
         >
           {" "}
-          more than 24 hours
+          more than 6 days
         </Box>
       </div>
     </div>
