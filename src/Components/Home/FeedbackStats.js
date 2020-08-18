@@ -221,9 +221,9 @@ function FeedbackStats(props) {
     </div>
 
     <div
-        style={{justifyContent:'end'}}
+        style={{marginLeft:'auto', marginRight:2, fontWeight:'bold', fontSize:'0.75rem', color:'#008080'}}
     >
-        Total Feedbacks : {feedback.TotalCount}
+       <p style={{padding:'none'}}> Total Feedbacks : {feedback.TotalCount}</p>
     </div>
 
 </div>
