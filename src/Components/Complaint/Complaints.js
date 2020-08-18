@@ -5,7 +5,7 @@ import ErrorOutlineOutlinedIcon from "@material-ui/icons/ErrorOutlineOutlined";
 
 import Moment from "moment";
 
-import SelectFilter from "./SelectFilter";
+import SelectFilter from "./Filters/SelectFilter";
 import ComplaintDialog from "./ComplaintDialog/ComplaintDialog";
 import AssignmentDialog from "./Assignment/AssignmentDialog";
 
@@ -28,7 +28,7 @@ import TableRow from "@material-ui/core/TableRow";
 import TableSortLabel from "@material-ui/core/TableSortLabel";
 import { ImpulseSpinner } from "react-spinners-kit";
 import Backdrop from "@material-ui/core/Backdrop";
-import AllSelectFilters from "../Complaint/AllSelectFilters";
+import AllSelectFilters from "./Filters/AllSelectFilters";
 
 import Paper from "@material-ui/core/Paper";
 
@@ -37,7 +37,7 @@ import { useState, useEffect } from "react";
 import Button from "@material-ui/core/Button";
 
 import { Scrollbars } from "react-custom-scrollbars";
-import FilterDrawer from "./FilterDrawer";
+import FilterDrawer from "./Filters/FilterDrawer";
 
 let store = require("store");
 
