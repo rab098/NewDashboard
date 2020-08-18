@@ -119,11 +119,11 @@ right: 50px;
     background-color: #f3f3f3;
     box-shadow: 6px 6px 10px 0 rgba(112, 112, 112, 0.16);
     border-radius: 30px;
-    margin: 0 20px 20px 20px ;
+    margin: 0 10px 10px 10px ;
     display: grid;
     grid-template-rows: 50px auto;
     grid-row-gap: 10px;
-    padding: 20px;
+    padding: 10px;
     height: 100%;
   }
 
