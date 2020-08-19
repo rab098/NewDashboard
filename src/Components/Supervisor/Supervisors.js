@@ -1,17 +1,14 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
-import clsx from "clsx";
 import "../../ComponentsCss/Complaints.css";
 import "../../ComponentsCss/Supervisor.css";
-import { lighten, makeStyles } from "@material-ui/core/styles";
+import makeStyles from "@material-ui/core/styles";
 import Input from "@material-ui/core/Input";
-import InputLabel from "@material-ui/core/InputLabel";
 import InputAdornment from "@material-ui/core/InputAdornment";
 
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
-import MoreHorizIcon from "@material-ui/icons/MoreHoriz";
 import TableCell from "@material-ui/core/TableCell";
 import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
@@ -78,14 +75,6 @@ function stableSort(array, comparator) {
   return stabilizedThis.map((el) => el[0]);
 }
 
-// const _headCell = [
-//   {
-//     id: "name",
-//     numeric: true,
-//     disablePadding: false,
-//     label: "Name",
-//   },
-// ];
 const headCells = [
   {
     id: "email",
@@ -103,15 +92,7 @@ const headCells = [
 ];
 
 function EnhancedTableHead(props) {
-  const {
-    classes,
-    onSelectAllClick,
-    order,
-    orderBy,
-    numSelected,
-    rowCount,
-    onRequestSort,
-  } = props;
+  const { classes, order, orderBy, onRequestSort } = props;
   const createSortHandler = (property) => (event) => {
     onRequestSort(event, property);
   };
@@ -146,7 +127,6 @@ function EnhancedTableHead(props) {
             onClick={createSortHandler("name")}
           >
             NAME
-            {/* {console.log(orderBy === _headCell.id)} */}
             {orderBy === "name" ? (
               <span className={classes.visuallyHidden}>
                 {order === "desc" ? "sorted descending" : "sorted ascending"}
@@ -258,7 +238,6 @@ function EnhancedTableHead(props) {
                 </span>
               </p>
 
-              {/* {console.log(orderBy === _headCell.id)} */}
               {orderBy === "performance" ? (
                 <span className={classes.visuallyHidden}>
                   {order === "desc" ? "sorted descending" : "sorted ascending"}
@@ -284,9 +263,7 @@ function EnhancedTableHead(props) {
               direction={orderBy === headCell.id ? order : "asc"}
               onClick={createSortHandler(headCell.id)}
             >
-              {/* .toUpperCase() */}
               {headCell.label.toUpperCase()}
-              {/* {console.log(orderBy === headCell.id)} */}
               {orderBy === headCell.id ? (
                 <span className={classes.visuallyHidden}>
                   {order === "desc" ? "sorted descending" : "sorted ascending"}
@@ -340,9 +317,7 @@ const useStyles = makeStyles((theme) => ({
     width: "100%",
     marginBottom: theme.spacing(2),
   },
-  // table: {
-  //   minWidth: 750,
-  // },
+
   visuallyHidden: {
     border: 0,
     clip: "rect(0 0 0 0)",
@@ -362,15 +337,6 @@ const useStyles = makeStyles((theme) => ({
     zIndex: 1,
     color: "#fff",
   },
-  // searchIcon: {
-  //   padding: theme.spacing(0, 2),
-  //   height: "100%",
-  //   position: "absolute",
-  //   pointerEvents: "none",
-  //   display: "flex",
-  //   alignItems: "center",
-  //   justifyContent: "center",
-  // },
 
   margin: {
     margin: theme.spacing(1),
@@ -534,17 +500,6 @@ function Row(props) {
           }}
         >
           <DeleteDialog superId={row.supervisorId} onDelete={handleDelete} />
-          {/* <IconButton style={{ backgroundColor: "transparent" }}>
-            <DeleteIcon
-              onClick={handleDelete(row.supervisorId)}
-              style={{
-                color: "#008080",
-                fontSize: "20px",
-                padding: 0,
-                border: 0,
-              }}
-            />
-          </IconButton> */}
         </TableCell>
         <TableCell
           align="left"
@@ -700,10 +655,8 @@ export default function Supervisors(props) {
         if (res.data.Towns[i] !== "Select Town...") {
           townObj.push(res.data.Towns[i]);
         }
-        // finalObj1.push(res.data.supervisors[i].town);
       }
       setTowns(townObj);
-      // setTown(finalObj1);
     });
   }
 
@@ -750,7 +703,6 @@ export default function Supervisors(props) {
       });
   }
   function handleSetNewRow(value) {
-    //    setRows([...rows, value]);
     setRows((o) => [...o, value]);
   }
   function handleUpdatedTown(previous, value) {
@@ -766,9 +718,6 @@ export default function Supervisors(props) {
     fetchData();
   }, []);
 
-  // const handleChangeDense = (event) => {
-  //   setDense(event.target.checked);
-  // };
   const handleClear = () => {
     setSearch("");
   };
@@ -801,19 +750,6 @@ export default function Supervisors(props) {
             }}
           >
             <Grid container>
-              {/* <Grid item xs={12} sm={12} md={12} lg={12}>
-                <Box
-                  className="box1"
-                  textAlign="left"
-                  color="#008080"
-                  fontWeight="600"
-                  fontSize="18px"
-                  component="span"
-                >
-                  Supervisors{" "}
-                </Box>
-              </Grid> */}
-
               <Grid item xs={12} sm={12} md={6} lg={6}>
                 <Box component="span">
                   {" "}
@@ -862,22 +798,17 @@ export default function Supervisors(props) {
               </Grid>
             </Grid>
           </Paper>
-          {/* 
-          <Scrollbars style={{ minWidth: 100, minHeight: 370 }}> */}
           <Paper className="elevationPaper1">
             <TableContainer className="tableContainer">
               <Table
                 aria-labelledby="tableTitle"
-                // size={dense ? "small" : "medium"}
                 size="small"
                 aria-label="enhanced table"
               >
                 <EnhancedTableHead
                   classes={classes}
-                  //numSelected={selected.length}
                   order={order}
                   orderBy={orderBy}
-                  //onSelectAllClick={handleSelectAllClick}
                   onRequestSort={handleRequestSort}
                   rowCount={rows.length}
                 />
@@ -902,109 +833,12 @@ export default function Supervisors(props) {
                           handleDelete={handleDelete}
                         />
                       );
-                      // return (
-                      // <TableRow
-                      //   className="tableRow"
-                      //   hover
-                      //   role="checkbox"
-                      //   tabIndex={-1}
-                      //   key={row.supervisorId}
-                      // >
-                      //     <TableCell
-                      //       component="th"
-                      //       id={labelId}
-                      //       scope="row"
-                      //       style={{
-                      //         paddingLeft: "16px",
-                      //         paddingRight: "4px",
-                      //       }}
-                      //     >
-                      //       <Avatar
-                      //         className="gridd"
-                      //         alt="Remy Sharp"
-                      //         src={row.image}
-                      //         className={classes._theme}
-                      //       >
-                      //         {res}
-                      //       </Avatar>{" "}
-                      //     </TableCell>
-                      //     <TableCell
-                      //       align="left"
-                      //       style={{
-                      //         paddingLeft: "2px",
-                      //         paddingRight: "16px",
-                      //       }}
-                      //     >
-                      //       {row.name}
-                      //     </TableCell>
-                      //     <TableCell align="center">{row.Resolved}</TableCell>
-                      //     <TableCell align="center">{row.Active}</TableCell>
-                      //     <TableCell align="center">{row.Unresolved}</TableCell>
-                      //     <TableCell align="center">{row.Rejected}</TableCell>
-                      //     <TableCell align="left">{row.email}</TableCell>
-                      //     <TableCell align="left">{row.phoneNumber}</TableCell>
-                      //     <TableCell align="left">{row.town}</TableCell>
-                      //     <TableCell
-                      //       align="left"
-                      //       style={{
-                      //         paddingLeft: "3px",
-                      //         paddingRight: "3px",
-                      //       }}
-                      //     >
-                      //       <EditDialog
-                      //         town={towns}
-                      //         rowData={row}
-                      //         onUpdate={handleUpdatedTown}
-                      //       ></EditDialog>{" "}
-                      //     </TableCell>{" "}
-                      //     <TableCell
-                      //       align="left"
-                      //       style={{
-                      //         paddingLeft: "3px",
-                      //         paddingRight: "16px",
-                      //       }}
-                      //     >
-                      //       <IconButton
-                      //         style={{ backgroundColor: "transparent" }}
-                      //       >
-                      //         <DeleteIcon
-                      //           onClick={handleDelete(row.supervisorId)}
-                      //           style={{
-                      //             color: "#008080",
-                      //             fontSize: "20px",
-                      //             padding: 0,
-                      //             border: 0,
-                      //           }}
-                      //         />
-                      //       </IconButton>
-                      //     </TableCell>
-                      //     <TableCell
-                      //       align="left"
-                      //       style={{
-                      //         paddingLeft: "3px",
-                      //         paddingRight: "3px",
-                      //       }}
-                      //     >
-                      //       {" "}
-                      //     </TableCell>
-                      //   </TableRow>
-                      // );
                     })}
                 </TableBody>
               </Table>
             </TableContainer>
           </Paper>
-          {/* </Scrollbars> */}
-          {/* <Paper
-            className="filter elevationPaper"
-            style={{
-              position: "-webkit-sticky",
-              position: "sticky",
-              top: "300px",
-              bottom: 0,
-              zIndex: 1,
-            }}
-          > */}
+
           <TablePagination
             style={{}}
             rowsPerPageOptions={[10, 15, 30]}
@@ -1015,15 +849,12 @@ export default function Supervisors(props) {
             onChangePage={handleChangePage}
             onChangeRowsPerPage={handleChangeRowsPerPage}
           />
-          {/* </Paper> */}
         </Grid>{" "}
       </Grid>
 
       <Backdrop key={rows.length} className={classes.backdrop} open={loading}>
         <ImpulseSpinner size={90} color="#008081" loading={loading} />
       </Backdrop>
-
-      {/* {Object.keys(assignSupervisor).length > 0 && ( */}
     </div>
   );
 }
