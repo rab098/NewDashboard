@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { makeStyles } from "@material-ui/core/styles";
 import ChartistGraph from "react-chartist";
 import Box from "@material-ui/core/Box";
 import "../../ComponentsCss/resolveTimeAnalysis.css";
@@ -66,7 +65,6 @@ function ResolveTimeAnalysisStats() {
             err.response.status === 503 ||
             err.response.status === 500
           ) {
-            // console.log(err.response.status);
             setResolveTimeCheck(1);
 
           }
