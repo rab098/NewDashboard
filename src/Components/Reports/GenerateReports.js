@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from "react";
+import React, {useState, useEffect, useRef} from "react";
 import "../../assets/css/reportsCss.css";
 
 import "../../ComponentsCss/GenerateReports.css";
@@ -80,7 +80,10 @@ const useStyles = makeStyles(styles);
 function GenerateReports(props) {
     const classes = useStyles();
 
+    const renderCount = useRef(0)
+
     const [userData, setUserData] = useState(store.get("userData"));
+    const [none,setNone]= useState(false)
     const [noComplaintsFound, setNoComplaintsFound] = useState(false);
     const [nextButtonState, setNextButtonState] = useState(false);
     const [loading, setLoading] = useState(true);
@@ -263,6 +266,12 @@ function GenerateReports(props) {
         // setComplaintFilter("active");
     }, [userData]);
 
+    useEffect(() => {
+        if (reportData.length === 0){
+            setNone(true)
+        }else setNone(false)
+    },[reportData])
+
     const handleLogoutAutomatically = () => {
         store.remove("userData");
         store.clearAll();
@@ -298,18 +307,21 @@ function GenerateReports(props) {
                             name="position"
                             defaultValue={radioValue}
                             onChange={handleRadioChange}
+
                         >
                             <FormControlLabel
                                 value="one"
                                 control={<Radio color="primary"/>}
                                 label="One day"
                                 labelPlacement="end"
+                                disabled={none}
                             />
                             <FormControlLabel
                                 value="multiple"
                                 control={<Radio color="primary"/>}
                                 label="Multiple Days"
                                 labelPlacement="end"
+                                disabled={none}
                             />
                         </RadioGroup>
 
@@ -323,6 +335,7 @@ function GenerateReports(props) {
                                         label="From"
                                         format="dd MMM yyyy"
                                         error={false}
+                                        disabled={none}
                                         minDate={firstDate}
                                         maxDate={Moment(lastDate).add(-1, "days")}
                                         value={fromDate}
@@ -763,15 +776,22 @@ function GenerateReports(props) {
     // }, [toDate]);
 
     useEffect(() => {
-        if (reportData.length === 0) {
-            setNoComplaintsFound(true)
-        } else {
-            setNoComplaintsFound(false)
-            setActiveStep((prevActiveStep) => prevActiveStep + 1);
-            if (activeStep === 1)
-                setNextButton(true)
+        renderCount.current = renderCount.current + 1
+    })
 
+    useEffect(() => {
+        if(renderCount.current >= 10){
+            if (reportData.length === 0) {
+                setNoComplaintsFound(true)
+            } else {
+                setNoComplaintsFound(false)
+                setActiveStep((prevActiveStep) => prevActiveStep + 1);
+                if (activeStep === 1)
+                    setNextButton(true)
+
+            }
         }
+
 
 
     }, [nextButtonState])
@@ -1039,11 +1059,10 @@ function GenerateReports(props) {
 
     return (
         <div>
-            {/*{reportData.length === 0 ?*/}
-            {/*    <div>*/}
-            {/*        <h5 style={{display: 'flex', justifyContent: 'center'}}>Reports cannot be generated if there are no*/}
-            {/*            complaints.</h5>*/}
-            {/*    </div> :*/}
+                <div>
+                    <p style={{fontSize: 14, fontWeight:'bold', marginLeft:10}}>* Reports can only be generated if there are
+                        complaints.</p>
+                </div>
 
             <div>
                 <Stepper
@@ -1056,7 +1075,8 @@ function GenerateReports(props) {
                             <StepLabel>{label}</StepLabel>
                             <StepContent>
                                 <Typography>{getStepContent(index)}</Typography>
-                                {noComplaintsFound === true ? <p>No complaints found.</p> : null}
+                                {noComplaintsFound === true ? <p style={{color:'red'}}>No complaints found.</p> : null}
+                                {/*<p>Render count is {renderCount.current}</p>*/}
 
                                 <div className={classes.actionsContainer}>
                                     <div>
