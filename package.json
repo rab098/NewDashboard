@@ -14,7 +14,6 @@
     "@testing-library/user-event": "^7.2.1",
     "address": "^1.1.2",
     "animate.css": "^3.7.2",
-    "auth0-js": "^9.13.2",
     "axios": "^0.19.2",
     "bv-react-data-report": "^2.0.1",
     "chartist": "^0.10.1",
