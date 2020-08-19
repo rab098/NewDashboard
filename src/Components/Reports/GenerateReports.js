@@ -1,6 +1,5 @@
 import React, {useState, useEffect, useRef} from "react";
 import "../../assets/css/reportsCss.css";
-
 import "../../ComponentsCss/GenerateReports.css";
 import PdfMakeTable from "./PdfMakeTable";
 import TextField from "@material-ui/core/TextField";
