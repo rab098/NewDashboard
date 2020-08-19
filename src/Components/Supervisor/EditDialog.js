@@ -2,10 +2,8 @@ import React from "react";
 import PropTypes from "prop-types";
 import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
-import Avatar from "@material-ui/core/Avatar";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
-import ListItemAvatar from "@material-ui/core/ListItemAvatar";
 import ListItemText from "@material-ui/core/ListItemText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import Dialog from "@material-ui/core/Dialog";
@@ -43,56 +41,6 @@ const useStyles = makeStyles((theme) => ({
     color: "#fff",
   },
 }));
-// function SimpleDialog(props) {
-//   const { onClose, selectedValue, open } = props;
-//   const _town = props.towns;
-//   const handleClose = () => {
-//     onClose(selectedValue);
-//   };
-
-//   const handleListItemClick = (value) => {
-//     onClose(value);
-//   };
-
-//   return (
-//     <Dialog
-//       onClose={handleClose}
-//       aria-labelledby="simple-dialog-title"
-//       open={open}
-//     >
-//       <DialogTitle
-//         id="simple-dialog-title"
-//         style={{
-//           fontSize: "14px",
-//           padding: "8px 60px",
-//           textDecoration: "none",
-//           boxShadow: "0px 8px 10px -5px rgba(124,133,133,1)",
-//           borderBottom: "3px solid #008080",
-//           borderRadius: "4px",
-//         }}
-//       >
-//         Select Town
-//       </DialogTitle>
-//       <Scrollbars style={{ minWidth: 100, minHeight: 400, zIndex: 1 }}>
-//         <List>
-//           {_town.map((t) => (
-//             <ListItem
-//               button
-//               onClick={() => handleListItemClick(t)}
-//               key={t}
-//               style={{
-//                 textDecoration: "none",
-//                 boxShadow: "0px 0px 8px -5px rgba(124,133,133,1)",
-//               }}
-//             >
-//               <ListItemText primary={t} />
-//             </ListItem>
-//           ))}
-//         </List>{" "}
-//       </Scrollbars>
-//     </Dialog>
-//   );
-// }
 
 export default function EditDialog(props) {
   const [open, setOpen] = React.useState(false);
@@ -199,14 +147,7 @@ export default function EditDialog(props) {
             >
               Select Town
             </Box>{" "}
-            <Box
-              // className="box1 detail"
-              // textAlign="right"
-              // padding="none"
-              // margin="2px"
-              // component="span"
-              style={{ float: "right" }}
-            >
+            <Box style={{ float: "right" }}>
               <IconButton
                 onClick={handleClose}
                 aria-label="close"
@@ -249,9 +190,6 @@ export default function EditDialog(props) {
             <CircularProgress
               style={{ display: loading ? "block" : "none", color: "teal" }}
             />
-            {/* <Backdrop className={classes.backdrop} open={loading}>
-              <ImpulseSpinner size={90} color="#008081" loading={loading} />
-            </Backdrop> */}
           </DialogActions>{" "}
         </Scrollbars>{" "}
       </Dialog>

@@ -23,7 +23,6 @@ export default function DeleteDialog(props) {
   };
 
   const handleSent = () => {
-    console.log("yeieiei" + props.superId);
     props.onDelete(props.superId);
     setOpen(false);
   };

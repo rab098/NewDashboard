@@ -1,6 +1,5 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import { ImpulseSpinner } from "react-spinners-kit";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import Dialog from "@material-ui/core/Dialog";
@@ -8,10 +7,6 @@ import DialogActions from "@material-ui/core/DialogActions";
 
 import Tooltip from "@material-ui/core/Tooltip";
 import DialogContent from "@material-ui/core/DialogContent";
-import DialogContentText from "@material-ui/core/DialogContentText";
-import DialogTitle from "@material-ui/core/DialogTitle";
-import AddBoxTwoToneIcon from "@material-ui/icons/AddBoxTwoTone";
-import AccountCircle from "@material-ui/icons/AccountCircle";
 import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import axios from "axios";
@@ -112,10 +107,6 @@ export default function AddForm(props) {
     setOpen(false);
   };
 
-  // const handleChange = (prop) => (event) => {
-  //   setValues({ ...values, [prop]: event.target.value });
-  // };
-
   const handleClickShowPassword = () => {
     setForm({ ...form, showPassword: !form.showPassword });
   };
@@ -205,31 +196,6 @@ export default function AddForm(props) {
     window.location = "/";
   };
 
-  // const handleOnFocus = (text, err) => {
-  //   setForm({
-  //     ...form,
-  //     text: "",
-  //     err: false,
-  //     helperTextMain: "",
-  //   });
-  // };
-  // const handlePasswordBlur = (event) => {
-  //   let letters = /^[0-9a-zA-Z]+$/;
-  //   if (!form.username.match(letters)) {
-  //     setForm({
-  //       ...form,
-  //       helperTextUserName: "Please use alphanumerics.",
-  //       errorUser: true,
-  //     });
-  //   } else {
-  //     setForm({
-  //       ...form,
-  //       helperTextUserName: "",
-  //       errorUser: false,
-  //     });
-  //   }
-  // };
-
   const list = props.town.map((r) => {
     return <MenuItem value={r}>{r}</MenuItem>;
   });
@@ -239,11 +205,7 @@ export default function AddForm(props) {
     const str = form.phoneNumber;
     const n = 10;
     const newP = "+92" + str.slice(-n);
-    // console.log(newP);
 
-    /*
-      Output: 2015
-    */
     setLoading(true);
     const userObject = {
       name: form.name,
@@ -253,7 +215,6 @@ export default function AddForm(props) {
       phoneNumber: newP,
       role: "SUPERVISOR",
       town: form.town,
-      //mac: _macAddress,
     };
 
     if (
@@ -319,13 +280,7 @@ export default function AddForm(props) {
               console.log(err.response.status);
               alert("Something went wrong. Please try again later");
             }
-            // if (err.response.status === 401 || err.response.status === 403) {
-            //   handleLogoutAutomatically();
-            // }
           }
-
-          // console.log("complaints nahi arhi", err.response);
-          // setErrors(err);
         });
     }
   }
@@ -333,24 +288,6 @@ export default function AddForm(props) {
   return (
     <div>
       {" "}
-      {/* <Button
-        type="submit"
-        className="addbutton"
-        style={{
-          background: " #008080 ",
-          border: 0,
-          color: "white",
-          fontVariant: "normal",
-          justifyContent: "center",
-          textDecoration: "none",
-
-          margin: "18px 16px  0 10px",
-          fontSize: "14 px ",
-        }}
-        onClick={handleClickOpen}
-      >
-        Add Supervisor
-      </Button> */}
       <Tooltip title="Add Supervisor">
         <AddBoxIcon
           className="addbutton"
@@ -397,14 +334,7 @@ export default function AddForm(props) {
             >
               Add Details
             </Box>{" "}
-            <Box
-              // className="box1 detail"
-              // textAlign="right"
-              // padding="none"
-              // margin="2px"
-              // component="span"
-              style={{ float: "right" }}
-            >
+            <Box style={{ float: "right" }}>
               <IconButton
                 onClick={handleClose}
                 aria-label="close"
@@ -557,10 +487,7 @@ export default function AddForm(props) {
                             helperTextMain: "",
                           });
                         }}
-                        // error={form.errorPassword}
-                        // helperText={form.helperTextPassword}
                         onChange={changeHandler}
-                        // onBlur={handlePasswordBlur}
                         endAdornment={
                           <InputAdornment position="end">
                             <IconButton
