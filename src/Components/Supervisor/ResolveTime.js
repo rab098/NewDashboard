@@ -13,10 +13,10 @@ let Chartist = require("chartist");
 
 function ResolveTime(props) {
   const [resolveTime, setResolveTime] = useState({
-    less: 0,
-    medium: 0,
-    high: 0,
-    greaterThanTwentyFour: 0,
+    _0_2days: 70,
+    _3_4days: 20,
+    _5_6days: 5,
+    moreThan6days: 5
   });
 
   const [loading, setLoading] = useState(true);
@@ -46,25 +46,21 @@ function ResolveTime(props) {
       )
       .then((res) => {
         if (
-          res.data._1_to_9 !== null &&
-          res.data._10_to_16 !== null &&
-          res.data._17_to_24 !== null &&
-          res.data.geraterThan24 !== null
+            res.data._0_2days !== null &&
+            res.data._3_4days !== null &&
+            res.data._5_6days !== null &&
+            res.data.moreThan6days !== null
         ) {
-          setResolveTime({
-            less: res.data._1_to_9,
-            medium: res.data._10_to_16,
-            high: res.data._17_to_24,
-            greaterThanTwentyFour: res.data.geraterThan24,
-          });
+          setResolveTime(res.data);
+
           setLoading(false);
         } else {
           setResolveTimeCheck(1);
           setResolveTime({
-            less: 0,
-            medium: 0,
-            high: 0,
-            greaterThanTwentyFour: 0,
+            _0_2days: 0,
+            _3_4days: 0,
+            _5_6days: 0,
+            moreThan6days: 0
           });
           setLoading(false);
         }
@@ -82,10 +78,10 @@ function ResolveTime(props) {
           } else if (err.response.status === 400) {
             setResolveTimeCheck(1);
             setResolveTime({
-              less: 0,
-              medium: 0,
-              high: 0,
-              greaterThanTwentyFour: 0,
+              _0_2days: 0,
+              _3_4days: 0,
+              _5_6days: 0,
+              moreThan6days: 0
             });
             setLoading(false);
           }
@@ -97,10 +93,10 @@ function ResolveTime(props) {
   const piechart = {
     data: {
       series: [
-        resolveTime.high,
-        resolveTime.less,
-        resolveTime.medium,
-        resolveTime.greaterThanTwentyFour,
+        resolveTime._5_6days,
+        resolveTime._0_2days,
+        resolveTime._3_4days,
+        resolveTime.moreThan6days,
       ],
     },
     options: {
@@ -169,7 +165,7 @@ function ResolveTime(props) {
           fontSize="0.75rem"
         >
           {" "}
-          1 to 9 hours
+          2 days
         </Box>
         <Box
           textAlign="left"
@@ -189,7 +185,7 @@ function ResolveTime(props) {
           fontSize="0.75rem"
         >
           {" "}
-          10 to 16 hours
+          4 days
         </Box>
         <Box
           textAlign="left"
@@ -209,7 +205,7 @@ function ResolveTime(props) {
           fontSize="0.75rem"
         >
           {" "}
-          17 to 24 hours
+          6 days
         </Box>
         <Box
           textAlign="left"
@@ -229,7 +225,7 @@ function ResolveTime(props) {
           fontSize="0.75rem"
         >
           {" "}
-          more than 24 hours
+          more than 6 days
         </Box>
       </div>
     </div>
