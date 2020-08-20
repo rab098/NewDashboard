@@ -197,8 +197,6 @@ function GenerateReports(props) {
                         : res.data[i].adminStatus;
                     mainObj.push(tmpObj);
 
-                    // mainObj[i] = res.data[i]
-                    // Moment(res.data[i].complain.createdAt).format("DD MMM yyyy")
                 }
 
                 console.log("what data is coming of complaints?", mainObj);
@@ -207,11 +205,7 @@ function GenerateReports(props) {
                 setLastDate(datesObj[datesObj.length - 1]);
                 setToDate(lastDate);
 
-                // if (userData.Role === 'ADMIN') {
-                //     setReportData(mainObj);
-                // } else {
-                //     setReportData(mainObj.filter((obj) => obj.supervisorName === userData.userData.username))
-                // }
+
                 setMainData(mainObj);
                 setReportData(mainObj);
                 setLoading(false);
@@ -230,39 +224,14 @@ function GenerateReports(props) {
                     }
                 }
 
-                // console.log("complaints not coming", err.response);
             });
     };
 
-    // const getSupervisor = () => {
-    //     axios
-    //         .get(`https://m2r31169.herokuapp.com/api/getSuperVisor_Town`, {
-    //             headers: headers,
-    //         })
-    //         .then((res) => {
-    //             console.log("supervisor and town coming!", res.data);
-    //         })
-    //         .catch((err) => {
-    //             if (err.response) {
-    //                 if (err.response.status === 401 || err.response.status === 403) {
-    //                     handleLogoutAutomatically();
-    //                 } else if (
-    //                     err.response.status === 503 ||
-    //                     err.response.status === 500
-    //                 ) {
-    //                     console.log(err.response.status);
-    //                 }
-    //             }
-    //
-    //             console.log("supervisor and towns not coming", err.response);
-    //         });
-    // };
+
 
     useEffect(() => {
-        // console.log("userData" + JSON.stringify(userData));
         getComplaints();
-        // getSupervisor();
-        // setComplaintFilter("active");
+
     }, [userData]);
 
     useEffect(() => {
@@ -290,7 +259,7 @@ function GenerateReports(props) {
     }
 
     function getStepContent(stepIndex) {
-        // setStepIndexNew(stepIndex)
+
         switch (stepIndex) {
             case 0:
                 return (
@@ -566,7 +535,7 @@ function GenerateReports(props) {
     };
 
     const handleRadioChange = (event) => {
-        // setNextButton(true);
+
         setRadioValue(event.target.value);
         setOneDate(null);
         setFromDate(null);
@@ -638,16 +607,15 @@ function GenerateReports(props) {
 
         if (event.target.checked) {
             setTypeCheckboxCount((prevState) => prevState + 1);
-            // typeValuesArray[indexVal] = event.target.name
+
             setTypeValue([...typeValue, event.target.name]);
         } else {
             setTypeCheckboxCount((prevState) => prevState - 1);
-            // index = typeValuesArray.indexOf(event.target.name)
-            // typeValuesArray.splice(indexVal, 1)
+
             setTypeValue(typeValue.filter((v) => v !== event.target.name));
         }
 
-        // setTypeValue([...typeValue,typeValuesArray])
+
     };
 
     console.log("type value is = ", typeValue);
@@ -683,8 +651,7 @@ function GenerateReports(props) {
         }
     };
 
-    // console.log("town value is = ",townsValue)
-    // console.log("supervisor value is = ",supervisorValue)
+
 
     useEffect(() => {
         if (userData.Role === "ADMIN") {
@@ -822,11 +789,7 @@ function GenerateReports(props) {
 
                         setRawData(
                             mainData.filter((obj) => {
-                                // console.log("db date : ",Moment(obj.date).format("DD MMM yyyy"))
 
-                                // const format = 'llll'
-                                //
-                                // return Moment(obj.date, format).unix() >= Moment(oneDate, format).unix()
                                 console.log(
                                     "db date :",
                                     Moment(obj.date).format().substr(0, 10)
@@ -835,7 +798,7 @@ function GenerateReports(props) {
                                     "selected onDate :",
                                     Moment(oneDate).format().substr(0, 10)
                                 );
-                                // return new Date(obj.date.substring(0, 14)).getTime() === oneDate.getTime()
+
                                 return (
                                     Moment(obj.date).format().substr(0, 10) ===
                                     Moment(oneDate).format().substr(0, 10)
@@ -872,7 +835,6 @@ function GenerateReports(props) {
 
                         setRawData(
                             mainData.filter((obj) => {
-                                // return Moment(obj.date).format("DD MMM yyyy") >= Moment(fromDate).format("DD MMM yyyy") && Moment(obj.date).format("DD MMM yyyy") <= Moment(toDate).format("DD MMM yyyy")
                                 return (
                                     new Date(obj.date.substring(0, 19)).getTime() >=
                                     fromDate.getTime() &&
@@ -932,7 +894,6 @@ function GenerateReports(props) {
                     }
                 }
 
-                // setNextButton(true);
 
                 break;
             case 2:
@@ -995,7 +956,7 @@ function GenerateReports(props) {
         }
     }, [reportData, radioValueStepTwo]);
 
-    // console.log("reportData?", reportData);
+
 
     const handleBack = (index) => {
         switch (index) {
@@ -1117,33 +1078,7 @@ function GenerateReports(props) {
                 <ImpulseSpinner size={90} color="#008081"/>
             </Backdrop>
 
-            {/*}*/}
 
-            {/*<div>*/}
-            {/*    <Button*/}
-            {/*        disabled={activeStep === 0}*/}
-            {/*        onClick={handleBack}*/}
-
-            {/*    >*/}
-            {/*        Back*/}
-            {/*    </Button>*/}
-            {/*    <Button variant="contained" color="primary" onClick={handleNext}>*/}
-            {/*        {activeStep === steps.length - 1 ? 'Finish' : 'Next'}*/}
-            {/*    </Button>*/}
-            {/*</div>*/}
-
-            {/*<div className="report-filter-main-pdf">*/}
-            {/*    <header >*/}
-            {/*        <h1 >Report Heading</h1>*/}
-            {/*        <p>                    Date: Day-Month-Year*/}
-            {/*        </p>*/}
-            {/*    </header>*/}
-            {/*    <h6>Report Description</h6>*/}
-            {/*    <p>*/}
-            {/*        Content goes here*/}
-            {/*    </p>*/}
-
-            {/*</div>*/}
         </div>
     );
 }

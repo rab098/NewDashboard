@@ -373,74 +373,8 @@ function Home(props) {
 
     </div>
 
-    //old home layout
-    // <div>
-    //
-    //         <Grid container className={classes.paperContainer}>
-    //             <Grid item className={classes.gridItem} xs={2}>
-    //
-    //                 <Paper>
-    //                     Total Complaints
-    //                 </Paper>
-    //             </Grid>
-    //         </Grid>
-    //         <Grid container className={classes.gridContainer}>
-    //             <Grid item className={classes.gridItem} xs={4}>
-    //                 <Card className={classes.cardChart}>
-    //                     <ChartistGraph
-    //                         className="ct-chart-background-daily-complaints"
-    //                         data={dailySalesChart.data}
-    //                         type="Line"
-    //                         options={dailySalesChart.options}
-    //                         listener={dailySalesChart.animation}
-    //                     />
-    //                     <div className={classes.line}>
-    //                         <p>Daily Complaints</p>
-    //                     </div>
-    //                     <div className={classes.stats}>
-    //                         <AccessTimeIcon fontSize={"small"}/> updated 4 minutes ago
-    //                     </div>
-    //                 </Card>
-    //             </Grid>
-    //             <Grid item className={classes.gridItem} xs={4}>
-    //                 <Card className={classes.cardChart} color="danger">
-    //                     <ChartistGraph
-    //                         className="ct-chart-background-monthly-complaints"
-    //                         data={emailsSubscriptionChart.data}
-    //                         type="Bar"
-    //                         options={emailsSubscriptionChart.options}
-    //                         responsiveOptions={emailsSubscriptionChart.responsiveOptions}
-    //                         listener={emailsSubscriptionChart.animation}
-    //                     />
-    //                     <div className={classes.line}>
-    //                         <p>Monthly Complaints</p>
-    //                     </div>
-    //                     <div className={classes.stats}>
-    //                         <AccessTimeIcon fontSize={"small"}/> updated 4 minutes ago
-    //                     </div>
-    //                 </Card>
-    //             </Grid>
-    //             <Grid item className={classes.gridItem} xs={4}>
-    //                 <Card className={classes.cardChart}>
-    //                     <ChartistGraph
-    //                         className="ct-chart-background-resolved-complaints"
-    //                         data={completedTasksChart.data}
-    //                         type="Line"
-    //                         options={completedTasksChart.options}
-    //                         listener={completedTasksChart.animation}
-    //                     />
-    //                     <div className={classes.line}>
-    //                         <p>Resolved Complaints</p>
-    //                     </div>
-    //                     <div className={classes.stats}>
-    //                         <AccessTimeIcon fontSize={"small"}/> updated 4 minutes ago
-    //                     </div>
-    //                 </Card>
-    //             </Grid>
-    //         </Grid>
-    // </div>
+
   );
 }
 
 export default React.memo(Home);
-// export default Home
