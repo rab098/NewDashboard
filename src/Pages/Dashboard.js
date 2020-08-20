@@ -170,7 +170,7 @@ function Dashboard({ match }) {
   useEffect(() => {
     setServerError(false);
     console.log(window.location.pathname.split("/").pop(), "loccccc");
-    handleServerError("503");
+    // handleServerError("503");
   }, []);
 
   const headers = {
@@ -587,11 +587,21 @@ function Dashboard({ match }) {
                   />
                   {/* {/<Route path={"/"} exact component={Dashboard} />/}
                         {/<Route path={`${match.path}/home`} exact component={Home} />/} */}
+
+
+                  {/*<Route*/}
+                  {/*  path={`${match.path}/home`}*/}
+                  {/*  exact*/}
+                  {/*  render={(props) => (<Home {...props} handleError={handleServerError} />)}*/}
+                  {/*/>*/}
+
                   <Route
-                    path={`${match.path}/home`}
-                    exact
-                    render={() => <Home handleError={handleServerError} />}
+                      path={`${match.path}/home`}
+                      exact
+                      render={() => (<Home />)}
                   />
+
+
                   <Route
                     path={`${match.path}/complaints`}
                     exact

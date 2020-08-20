@@ -106,6 +106,13 @@ function Home(props) {
     Pending: 0,
   });
 
+    const [serverError, setServerError] = useState(false);
+
+    const handleServerError = (error) => {
+        setServerError(error);
+    };
+
+
   const handleChange = (event) => {
     event.preventDefault();
 
@@ -131,10 +138,7 @@ function Home(props) {
           headers: headers,
         })
         .then((res) => {
-          // if(res.status === 401){
-          //     window.location = `/`
-          // }
-          // else
+
 
           console.log("update time", res.data);
           setCounts(res.data.Count);
@@ -151,7 +155,7 @@ function Home(props) {
             ) {
               console.log(err.response.status);
               setLoading(false)
-              props.handleError(err.response.status);
+              // props.handleError(err.response.status);
             }
           }
           console.error(err);
@@ -159,53 +163,13 @@ function Home(props) {
     }
   };
 
-  // const getCount = () => {
-  //   if (userData.accessToken !== null) {
-  //     axios
-  //       .get(
-  //         "https://m2r31169.herokuapp.com/api/totalSuervisorsAndComplaintsCount",
-  //         { headers: headers }
-  //       )
-  //       .then((res) => {
-  //         console.log(res.data);
-  //
-  //         setCounts(res.data);
-  //
-  //         // setCount({
-  //         //     totalComplaints: res.data[0].Count,
-  //         //     resolvedComplaints: res.data[1].Count,
-  //         //     unresolvedComplaints: res.data[2].Count,
-  //         //     assignedComplaints: res.data[3].Count,
-  //         //     rejectedComplaints: res.data[4].Count,
-  //         //     activeComplaints: res.data[5].Count,
-  //         //     supervisors: res.data[6].Count,
-  //         // });
-  //       })
-  //       .catch((err) => {
-  //         if (err.response) {
-  //           if (err.response.status === 401 || err.response.status === 403) {
-  //             handleLogoutAutomatically();
-  //           } else if (
-  //             err.response.status === 503 ||
-  //             err.response.status === 500
-  //           ) {
-  //             console.log(err.response.status);
-  //           }
-  //         }
-  //         console.error(err);
-  //       });
-  //   }
-  // };
 
   useEffect(() => {
       getHomeData()
   }, []);
 
   return (
-    //new home layout
-    // style={{
-    //                 gridTemplateColumns: `repeat(${grid},1fr)`
-    //             }}
+
     <div className="home-grid">
       <div className="counts">
         <div className="total-complaints">
