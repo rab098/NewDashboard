@@ -1,20 +1,6 @@
 import pdfMake from 'pdfmake/build/pdfmake';
 import vfsFonts from 'pdfmake/build/vfs_fonts';
 import Moment from "moment";
-import grey from "@material-ui/core/colors/grey";
-import {useState} from "react";
-
-
-const _format = (data) => {
-    return data.map(item => {
-        return ([
-            {text: item.name},
-            {text: item.username},
-            {text: item.email},
-            {text: item.phone},
-        ]);
-    });
-}
 
 export default (reportObject) => {
 

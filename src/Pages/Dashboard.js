@@ -13,11 +13,9 @@ import ManageComplaints from "../Components/ManageComplaints/ManageComplaints";
 import Notification from "../Components/Notification";
 import ErrorPage from "../Pages/Error";
 import {
-    BrowserRouter as Router,
     Switch,
     Route,
     Redirect,
-    Link,
 } from "react-router-dom";
 import Moment from "moment";
 import {makeStyles} from "@material-ui/core/styles";
@@ -117,7 +115,6 @@ const styles = {
 const useStyles = makeStyles(styles);
 
 function Dashboard({match}) {
-    const a = Moment(); // today
     const [notifications, setNotifications] = useState({});
 
     const [dropdownNotifs, setDropDownNotifs] = useState([]);
@@ -125,7 +122,6 @@ function Dashboard({match}) {
 
     const [notifCount, setNotifCount] = useState(0);
 
-    const [notifState, setNotifState] = useState("closed");
 
     window.addEventListener("storage", function (e) {
         if (e.key === "logoutEvent") {

@@ -6,7 +6,6 @@ import "../../ComponentsCss/resolveTimeAnalysis.css";
 
 let store = require("store");
 
-let Chartist = require("chartist");
 
 function ResolveTimeAnalysisStats() {
     const [resolveTime, setResolveTime] = useState({

@@ -4,7 +4,6 @@ import "../../ComponentsCss/FeedbackStats.css";
 import ChartistGraph from "react-chartist";
 import Box from "@material-ui/core/Box";
 
-let Chartist = require("chartist");
 let store = require("store");
 
 function FeedbackStats(props) {

@@ -25,7 +25,6 @@ import Typography from "@material-ui/core/Typography";
 import {makeStyles} from "@material-ui/core/styles";
 import Checkbox from "@material-ui/core/Checkbox";
 import FormGroup from "@material-ui/core/FormGroup";
-import html2canvas from "html2canvas";
 import Backdrop from "@material-ui/core/Backdrop";
 import {ImpulseSpinner} from "react-spinners-kit";
 
