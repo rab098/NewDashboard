@@ -2,7 +2,6 @@ import React, {useState, useEffect} from "react";
 import axios from "axios";
 import {makeStyles} from "@material-ui/core/styles";
 import ChartistGraph from "react-chartist";
-import UpdateIcon from "@material-ui/icons/Update";
 
 let Chartist = require("chartist");
 let store = require("store");
@@ -51,10 +50,10 @@ function Charts(props) {
     });
 
     const handleLogoutAutomatically = () => {
-        // store.remove("userData");
-        // store.clearAll();
-        // setUserData({});
-        // window.location = "/";
+        store.remove("userData");
+        store.clearAll();
+        setUserData({});
+        window.location = "/";
     };
 
     useEffect(() => {
@@ -86,8 +85,7 @@ function Charts(props) {
                         labelForYearly: res.data.yearly.map((a) => a.year),
                     });
 
-                    // maxValue = Math.max.apply(null,allData.totalCountResultMonthly)
-                    // console.log(maxValue)
+
                     console.log(res.data);
                 })
                 .catch((err) => {
@@ -106,8 +104,6 @@ function Charts(props) {
         }
     }, []);
 
-    // let maxValue = Math.max(resolvedResultMonthly)
-    // console.log(maxValue)
     const [allData, setData] = useState({
         labelForYearly: [],
         totalCountResultDaily: [],
@@ -143,7 +139,6 @@ function Charts(props) {
                 highestValueYearly:
                     Math.max.apply(null, allData.totalCountResultYearly) + 10,
             });
-            // console.log(ValueDaily)
             console.log("highest value arhi hai", highestValue.highestValueDaily);
         } else if (props.value === "Resolved") {
             setWhichType({
@@ -366,7 +361,6 @@ function Charts(props) {
             },
         },
     };
-
 
 
     return (

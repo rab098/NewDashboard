@@ -1,10 +1,8 @@
 import React, {useState, useEffect} from "react";
 import axios from "axios";
-import {makeStyles} from "@material-ui/core/styles";
 import "../../ComponentsCss/FeedbackStats.css";
 import ChartistGraph from "react-chartist";
 import Box from "@material-ui/core/Box";
-import Paper from "@material-ui/core/Paper";
 
 let Chartist = require("chartist");
 let store = require("store");
@@ -20,12 +18,11 @@ function FeedbackStats(props) {
     const [checkFeedback, setCheckFeedback] = useState(0);
 
     const [feedback, setFeedback] = useState(
-            {
-                postive: 80,
-                negative: 20,
-                TotalCount: 0
-            }
-
+        {
+            postive: 80,
+            negative: 20,
+            TotalCount: 0
+        }
     );
 
     const handleLogoutAutomatically = () => {
@@ -72,17 +69,17 @@ function FeedbackStats(props) {
             });
     }, []);
 
-  console.log("feedbacks coming", feedback);
+    console.log("feedbacks coming", feedback);
 
 
-  const piechart = {
+    const piechart = {
         data: {
             series: [feedback.negative, feedback.postive],
         },
         options: {
             labelInterpolationFnc: function (value) {
-              if (value === 0) return "";
-              else return value + "%";
+                if (value === 0) return "";
+                else return value + "%";
             },
         },
     };
@@ -94,7 +91,6 @@ function FeedbackStats(props) {
                 props.role === "ADMIN" ? "feedback-main" : "feedback-main-hidden"
             }
         >
-
 
 
             {checkFeedback === 0 ? (
@@ -120,63 +116,69 @@ function FeedbackStats(props) {
             <div className="feedback-heading">
                 <p className="feedback-text">Feedback Summary</p>
 
-<div style={{display:'flex', flexDirection:'row'}}>
+                <div style={{display: 'flex', flexDirection: 'row'}}>
 
 
-    <div>
+                    <div>
 
-                <Box
-                    textAlign="left"
-                    color="#43a047"
-                    component="span"
-                    fontWeight="bold"
-                    fontSize="3rem"
-                >
-                    .
-                </Box>
+                        <Box
+                            textAlign="left"
+                            color="#43a047"
+                            component="span"
+                            fontWeight="bold"
+                            fontSize="3rem"
+                        >
+                            .
+                        </Box>
 
-                <Box
-                    textAlign="left"
-                    color="#008080"
-                    fontWeight="600"
-                    component="span"
-                    fontSize="0.75rem"
-                >
-                    {" "}
-                    Positive
-                </Box>
+                        <Box
+                            textAlign="left"
+                            color="#008080"
+                            fontWeight="600"
+                            component="span"
+                            fontSize="0.75rem"
+                        >
+                            {" "}
+                            Positive
+                        </Box>
 
-                <Box
-                    textAlign="left"
-                    color="#fb8c00"
-                    fontWeight="bold"
-                    component="span"
-                    fontSize="3rem"
-                    marginLeft={1}
-                >
-                    .
-                </Box>
+                        <Box
+                            textAlign="left"
+                            color="#fb8c00"
+                            fontWeight="bold"
+                            component="span"
+                            fontSize="3rem"
+                            marginLeft={1}
+                        >
+                            .
+                        </Box>
 
-                <Box
-                    textAlign="left"
-                    color="#008080"
-                    fontWeight="600"
-                    component="span"
-                    fontSize="0.75rem"
-                >
-                    {" "}
-                    Negative
-                </Box>
+                        <Box
+                            textAlign="left"
+                            color="#008080"
+                            fontWeight="600"
+                            component="span"
+                            fontSize="0.75rem"
+                        >
+                            {" "}
+                            Negative
+                        </Box>
 
-    </div>
+                    </div>
 
-    <div
-        style={{marginLeft:'auto', marginRight:2, fontWeight:'bold', fontSize:'0.75rem', color:'#008080'}}
-    >
-       <p style={{padding:'none', marginTop:14}}> Total Feedbacks : {feedback.TotalCount}</p>
-    </div>
+                    <div
+                        style={{
+                            marginLeft: 'auto',
+                            marginRight: 2,
+                            fontWeight: 'bold',
+                            fontSize: '0.75rem',
+                            color: '#008080'
+                        }}
+                    >
+                        <p style={{padding: 'none', marginTop: 14}}> Total Feedbacks : {feedback.TotalCount}</p>
+                    </div>
 
-</div>
+                </div>
             </div>
         </div>
     );

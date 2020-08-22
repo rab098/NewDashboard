@@ -15,26 +15,10 @@ import Radio from "@material-ui/core/Radio";
 import RadioGroup from "@material-ui/core/RadioGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import FormControl from "@material-ui/core/FormControl";
-import FormLabel from "@material-ui/core/FormLabel";
-
-// import MomentUtils from '@date-io/moment';
-
 import {
     MuiPickersUtilsProvider,
     KeyboardDatePicker,
 } from "@material-ui/pickers";
-
-// import jsPDF from 'jspdf';
-// import html2canvas from 'html2canvas';
-import {
-    PDFDocument,
-    PDFText,
-    PDFTable,
-    PDFTableRow,
-    PDFTableColumn,
-    PDFColumns,
-    PDFColumn,
-} from "react-pdfmake";
 import axios from "axios";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
@@ -46,6 +30,9 @@ import Backdrop from "@material-ui/core/Backdrop";
 import {ImpulseSpinner} from "react-spinners-kit";
 
 // const ref = React.createRef();
+// import jsPDF from 'jspdf';
+// import html2canvas from 'html2canvas';
+import FormLabel from "@material-ui/core/FormLabel";
 
 let store = require("store");
 
@@ -80,9 +67,8 @@ function GenerateReports(props) {
     const classes = useStyles();
 
     const renderCount = useRef(0)
-
     const [userData, setUserData] = useState(store.get("userData"));
-    const [none,setNone]= useState(false)
+    const [none, setNone] = useState(false)
     const [noComplaintsFound, setNoComplaintsFound] = useState(false);
     const [nextButtonState, setNextButtonState] = useState(false);
     const [loading, setLoading] = useState(true);
@@ -106,9 +92,7 @@ function GenerateReports(props) {
     const [radioValue, setRadioValue] = useState("one");
     const [hideOne, setHideOne] = useState(false);
     const [radioValueStepTwo, setRadioValueStepTwo] = useState("complaintType");
-    const [radioValueSupervisor, setRadioValueSupervisor] = useState(
-        "unresolved"
-    );
+    const [radioValueSupervisor, setRadioValueSupervisor] = useState("unresolved");
     const [reportDescription, setReportDescription] = useState("");
     const [sortedData, setSortedData] = useState([]);
     const [hideType, setHideType] = useState(false);
@@ -228,17 +212,16 @@ function GenerateReports(props) {
     };
 
 
-
     useEffect(() => {
         getComplaints();
 
     }, [userData]);
 
     useEffect(() => {
-        if (reportData.length === 0){
+        if (reportData.length === 0) {
             setNone(true)
-        }else setNone(false)
-    },[reportData])
+        } else setNone(false)
+    }, [reportData])
 
     const handleLogoutAutomatically = () => {
         store.remove("userData");
@@ -264,10 +247,10 @@ function GenerateReports(props) {
             case 0:
                 return (
                     <div>
-                            <p>
-                                You can choose to generate a one day report or multiple days
-                                report.
-                            </p>
+                        <p>
+                            You can choose to generate a one day report or multiple days
+                            report.
+                        </p>
 
                         <RadioGroup
                             row
@@ -503,11 +486,7 @@ function GenerateReports(props) {
                 return (
                     <div>
                         <p>Click on the button to generate your report.</p>
-                        {/*<div className="report-filter">*/}
-                        {/*    <button className='report-pdf-button' onClick={_exportPdfTable}>*/}
-                        {/*        Download Report*/}
-                        {/*    </button>*/}
-                        {/*</div>*/}
+
                         {/*<button className='report-pdf-button' onClick={exportPDF}>Download PDF</button>*/}
                     </div>
                 );
@@ -515,16 +494,6 @@ function GenerateReports(props) {
                 return "Unknown stepIndex";
         }
     }
-
-    // useEffect( () => {
-    //     if(userData.Role === 'SUPERVISOR'){
-    //         setReportData(
-    //             reportData.filter( (obj) => {
-    //                 return obj.Role === 'SUPERVISOR'
-    //             })
-    //         )
-    //     }
-    // },[userData.Role])
 
     const handleDescriptionChange = (event) => {
         // setNextButton(true);
@@ -599,11 +568,6 @@ function GenerateReports(props) {
     }, [radioValueStepTwo]);
 
     const handleTypeCheckboxChange = (event, index) => {
-        // let typeValuesArray = []
-        // let indexVal = index
-        // setTypeValue([event.target.name])
-
-        // console.log("indexVal" , indexVal)
 
         if (event.target.checked) {
             setTypeCheckboxCount((prevState) => prevState + 1);
@@ -615,10 +579,8 @@ function GenerateReports(props) {
             setTypeValue(typeValue.filter((v) => v !== event.target.name));
         }
 
-
     };
 
-    console.log("type value is = ", typeValue);
 
     // const handleTownsCheckboxChange = (event) => {
     //     // setTownsValue([event.target.name])
@@ -638,7 +600,6 @@ function GenerateReports(props) {
     // }
 
     const handleSupervisorsCheckboxChange = (event) => {
-        // setSupervisorValue([event.target.name])
 
         if (event.target.checked) {
             setSupervisorCheckboxCount((prevState) => prevState + 1);
@@ -650,7 +611,6 @@ function GenerateReports(props) {
             );
         }
     };
-
 
 
     useEffect(() => {
@@ -746,7 +706,7 @@ function GenerateReports(props) {
     })
 
     useEffect(() => {
-        if(renderCount.current >= 10){
+        if (renderCount.current >= 10) {
             if (reportData.length === 0) {
                 setNoComplaintsFound(true)
             } else {
@@ -757,7 +717,6 @@ function GenerateReports(props) {
 
             }
         }
-
 
 
     }, [nextButtonState])
@@ -779,7 +738,7 @@ function GenerateReports(props) {
                                     "selected onDate :",
                                     Moment(oneDate).format().substr(0, 10)
                                 );
-                                // return new Date(obj.date.substring(0, 14)).getTime() === oneDate.getTime()
+
                                 return (
                                     Moment(obj.date).format().substr(0, 10) ===
                                     Moment(oneDate).format().substr(0, 10)
@@ -845,7 +804,6 @@ function GenerateReports(props) {
                         );
                     }
                 }
-
 
 
                 setTypeCheckboxCount(0);
@@ -918,7 +876,6 @@ function GenerateReports(props) {
         }
     }
 
-    // console.log("typeCheckboxCount", typeCheckboxCount)
     console.log("New report data", reportData);
 
     useEffect(() => {
@@ -957,7 +914,6 @@ function GenerateReports(props) {
     }, [reportData, radioValueStepTwo]);
 
 
-
     const handleBack = (index) => {
         switch (index) {
             case 1:
@@ -991,18 +947,8 @@ function GenerateReports(props) {
     const TextFieldComponent = (props) => {
         return <TextField {...props} disabled={true}/>;
     };
-    const [reportType, setReportType] = React.useState("Total Complaints Yearly");
     const [pageSize, setPageSize] = React.useState("A4");
 
-    // const [resume, setResume] = useState({});
-
-    // const handleChange = (event) => {
-    //     setReportType(event.target.value);
-    //
-    //     if (reportType === "Total Complaints Yearly") {
-    //         console.log("display totals report");
-    //     }
-    // };
 
     const handlePageSize = (event) => {
         setPageSize(event.target.value);
@@ -1019,10 +965,11 @@ function GenerateReports(props) {
 
     return (
         <div>
-                <div>
-                    <p style={{fontSize: 14, fontWeight:'bold', marginLeft:10}}>* Reports can only be generated if there are
-                        complaints.</p>
-                </div>
+            <div>
+                <p style={{fontSize: 14, fontWeight: 'bold', marginLeft: 10}}>* Reports can only be generated if there
+                    are
+                    complaints.</p>
+            </div>
 
             <div>
                 <Stepper
@@ -1035,7 +982,7 @@ function GenerateReports(props) {
                             <StepLabel>{label}</StepLabel>
                             <StepContent>
                                 <Typography>{getStepContent(index)}</Typography>
-                                {noComplaintsFound === true ? <p style={{color:'red'}}>No complaints found.</p> : null}
+                                {noComplaintsFound === true ? <p style={{color: 'red'}}>No complaints found.</p> : null}
                                 {/*<p>Render count is {renderCount.current}</p>*/}
 
                                 <div className={classes.actionsContainer}>

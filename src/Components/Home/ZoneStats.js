@@ -1,11 +1,8 @@
 import React, {useState, useEffect} from "react";
 import axios from "axios";
-import {makeStyles} from "@material-ui/core/styles";
 import ChartistGraph from "react-chartist";
-import UpdateIcon from "@material-ui/icons/Update";
 import "../../ComponentsCss/ZoneStats.css";
 import Box from "@material-ui/core/Box";
-import Paper from "@material-ui/core/Paper";
 
 let Chartist = require("chartist");
 let store = require("store");
@@ -95,9 +92,9 @@ function ZoneStats() {
         data: {
             labels: allData.LabelsState,
             series: [
-              allData.SeriesResolvedState,
-              allData.SeriesAssignedState,
-              allData.SeriesUnresolvedState,
+                allData.SeriesResolvedState,
+                allData.SeriesAssignedState,
+                allData.SeriesUnresolvedState,
             ],
 
             // series: userData.Role === "ADMIN" ?
@@ -202,7 +199,7 @@ function ZoneStats() {
 
             <div className="zone-heading">
                 <p className="zone-text">
-                     Town Wise Complaints
+                    Town Wise Complaints
                 </p>
             </div>
 
