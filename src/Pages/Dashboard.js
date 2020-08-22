@@ -569,17 +569,17 @@ function Dashboard({match}) {
                         {/<Route path={`${match.path}/home`} exact component={Home} />/} */}
 
 
-                                    {/*<Route*/}
-                                    {/*  path={`${match.path}/home`}*/}
-                                    {/*  exact*/}
-                                    {/*  render={(props) => (<Home {...props} handleError={handleServerError} />)}*/}
-                                    {/*/>*/}
-
                                     <Route
-                                        path={`${match.path}/home`}
-                                        exact
-                                        render={() => (<Home/>)}
+                                      path={`${match.path}/home`}
+                                      exact
+                                      render={(props) => (<Home {...props} handleError={handleServerError} />)}
                                     />
+
+                                    {/*<Route*/}
+                                    {/*    path={`${match.path}/home`}*/}
+                                    {/*    exact*/}
+                                    {/*    render={() => (<Home/>)}*/}
+                                    {/*/>*/}
 
 
                                     <Route

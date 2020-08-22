@@ -98,11 +98,7 @@ function Home(props) {
         Pending: 0,
     });
 
-    const [serverError, setServerError] = useState(false);
 
-    const handleServerError = (error) => {
-        setServerError(error);
-    };
 
 
     const handleChange = (event) => {
@@ -147,7 +143,7 @@ function Home(props) {
                         ) {
                             console.log(err.response.status);
                             setLoading(false)
-                            // props.handleError(err.response.status);
+                            props.handleError(err.response.status);
                         }
                     }
                     console.error(err);

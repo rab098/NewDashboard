@@ -85,6 +85,8 @@ function ZoneStats() {
 
     let delays2 = 80,
         durations2 = 500;
+    let animated = 0;
+
 
     // // //  zone wise complaints chart
 
@@ -162,16 +164,20 @@ function ZoneStats() {
         ],
         animation: {
             draw: function (data) {
-                if (data.type === "bar") {
-                    data.element.animate({
-                        opacity: {
-                            begin: (data.index + 1) * delays2,
-                            dur: durations2,
-                            from: 0,
-                            to: 1,
-                            easing: "ease",
-                        },
-                    });
+                if (animated <= allData.LabelsState.length) {
+
+                    if (data.type === "bar") {
+                        data.element.animate({
+                            opacity: {
+                                begin: (data.index + 1) * delays2,
+                                dur: durations2,
+                                from: 0,
+                                to: 1,
+                                easing: "ease",
+                            },
+                        });
+                    }
+                    animated++
                 }
             },
         },
