@@ -68,7 +68,7 @@ function FeedbackStats(props) {
             });
     }, []);
 
-    console.log("feedbacks coming", feedback);
+    // console.log("feedbacks coming", feedback);
 
 
     const piechart = {

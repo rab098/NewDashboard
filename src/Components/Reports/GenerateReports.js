@@ -142,7 +142,7 @@ function GenerateReports(props) {
                 }
             )
             .then((res) => {
-                console.log("complaints coming!", res.data);
+                // console.log("complaints coming!", res.data);
                 for (let i in res.data) {
                     datesObj[i] = res.data[i].complain.createdAt;
 
@@ -182,8 +182,8 @@ function GenerateReports(props) {
 
                 }
 
-                console.log("what data is coming of complaints?", mainObj);
-                console.log("dates", datesObj);
+                // console.log("what data is coming of complaints?", mainObj);
+                // console.log("dates", datesObj);
                 setFirstDate(datesObj[0]);
                 setLastDate(datesObj[datesObj.length - 1]);
                 setToDate(lastDate);
@@ -203,7 +203,6 @@ function GenerateReports(props) {
                     ) {
                         setLoading(false);
                         props.handleError(err.response.status);
-                        console.log("REDIRECT HERE!!!");
                     }
                 }
 
@@ -875,7 +874,7 @@ function GenerateReports(props) {
         }
     }
 
-    console.log("New report data", reportData);
+    // console.log("New report data", reportData);
 
     useEffect(() => {
         if (radioValueStepTwo === "complaintType") {

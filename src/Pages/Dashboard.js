@@ -150,7 +150,7 @@ function Dashboard({match}) {
 
     useEffect(() => {
         setServerError(false);
-        console.log(window.location.pathname.split("/").pop(), "loccccc");
+        // console.log(window.location.pathname.split("/").pop(), "loccccc");
         // handleServerError("503");
     }, []);
 
@@ -230,7 +230,7 @@ function Dashboard({match}) {
                 }
             )
             .then((res) => {
-                console.log(res);
+                // console.log(res);
             })
             .catch((err) => {
                 if (err.response) {

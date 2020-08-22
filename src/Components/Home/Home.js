@@ -49,7 +49,7 @@ function Home(props) {
 
     // const [grid, setGrid] = useState(5);
 
-    console.log("store?????", userData);
+    // console.log("store?????", userData);
 
     const headers = {
         "Content-Type": "application/json",
@@ -132,7 +132,7 @@ function Home(props) {
                 .then((res) => {
 
 
-                    console.log("update time", res.data);
+                    // console.log("update time", res.data);
                     setCounts(res.data.Count);
                     setLastUpdated(res.data.LastUpdated);
                     setLoading(false)

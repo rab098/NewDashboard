@@ -86,7 +86,7 @@ function Charts(props) {
                     });
 
 
-                    console.log(res.data);
+                    // console.log(res.data);
                 })
                 .catch((err) => {
                     if (err.response) {
@@ -139,7 +139,7 @@ function Charts(props) {
                 highestValueYearly:
                     Math.max.apply(null, allData.totalCountResultYearly) + 10,
             });
-            console.log("highest value arhi hai", highestValue.highestValueDaily);
+            // console.log("highest value arhi hai", highestValue.highestValueDaily);
         } else if (props.value === "Resolved") {
             setWhichType({
                 seriesDaily: allData.resolvedResultDaily,

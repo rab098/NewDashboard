@@ -37,7 +37,7 @@ function ResolveTimeAnalysisStats() {
                 headers: headers,
             })
             .then((res) => {
-                console.log("resolveTime coming", res.data);
+                // console.log("resolveTime coming", res.data);
 
                 if (
                     res.data._0_2days !== null &&

@@ -44,7 +44,7 @@ function ZoneStats() {
                     headers: headers,
                 })
                 .then((res) => {
-                    console.log("towsn agye", res.data);
+                    // console.log("towsn agye", res.data);
 
                     for (let i in res.data) {
                         Labels[i] = res.data[i].Town;
@@ -62,8 +62,8 @@ function ZoneStats() {
                         HighestCountState: finalHighestCount,
                     });
 
-                    console.log("final labels", Labels);
-                    console.log("highestcount!!", finalHighestCount);
+                    // console.log("final labels", Labels);
+                    // console.log("highestcount!!", finalHighestCount);
                 })
                 .catch((err) => {
                     if (err.response) {
@@ -80,7 +80,7 @@ function ZoneStats() {
                     console.error(err);
                 });
         }
-        console.log("HIGH!!", Math.max.apply(null, allData.HighestCountState));
+        // console.log("HIGH!!", Math.max.apply(null, allData.HighestCountState));
     }, []);
 
     let delays2 = 80,
