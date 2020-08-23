@@ -14,11 +14,26 @@ function ErrorPage(props) {
   }, []);
 
   return (
-    <div className="error">
-      <div className="circle"></div>
-      <div className="centered-text">
-        <p style={{ fontSize: "150px" }}>{props.code}</p>
-        <p style={{ fontSize: "20px" }}>{"Service temporarily unavailable"}</p>
+    <div className="parent error">
+      {/* <div className="circle"></div> */}
+      <div className="child">
+        <p
+          style={{
+            fontSize: window.innerWidth > 600 ? "8rem" : "5rem",
+            color: "black",
+          }}
+        >
+          {props.code}
+        </p>
+
+        <p
+          style={{
+            fontSize: window.innerWidth > 600 ? "3rem" : "1rem",
+            color: "black",
+          }}
+        >
+          {"Service temporarily unavailable"}
+        </p>
       </div>
     </div>
   );

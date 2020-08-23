@@ -2,7 +2,6 @@ import React, {useState, useEffect} from "react";
 import axios from "axios";
 import {makeStyles} from "@material-ui/core/styles";
 import ChartistGraph from "react-chartist";
-import UpdateIcon from "@material-ui/icons/Update";
 
 let Chartist = require("chartist");
 let store = require("store");
@@ -51,10 +50,10 @@ function Charts(props) {
     });
 
     const handleLogoutAutomatically = () => {
-        // store.remove("userData");
-        // store.clearAll();
-        // setUserData({});
-        // window.location = "/";
+        store.remove("userData");
+        store.clearAll();
+        setUserData({});
+        window.location = "/";
     };
 
     useEffect(() => {
@@ -86,9 +85,8 @@ function Charts(props) {
                         labelForYearly: res.data.yearly.map((a) => a.year),
                     });
 
-                    // maxValue = Math.max.apply(null,allData.totalCountResultMonthly)
-                    // console.log(maxValue)
-                    console.log(res.data);
+
+                    // console.log(res.data);
                 })
                 .catch((err) => {
                     if (err.response) {
@@ -106,8 +104,6 @@ function Charts(props) {
         }
     }, []);
 
-    // let maxValue = Math.max(resolvedResultMonthly)
-    // console.log(maxValue)
     const [allData, setData] = useState({
         labelForYearly: [],
         totalCountResultDaily: [],
@@ -143,8 +139,7 @@ function Charts(props) {
                 highestValueYearly:
                     Math.max.apply(null, allData.totalCountResultYearly) + 10,
             });
-            // console.log(ValueDaily)
-            console.log("highest value arhi hai", highestValue.highestValueDaily);
+            // console.log("highest value arhi hai", highestValue.highestValueDaily);
         } else if (props.value === "Resolved") {
             setWhichType({
                 seriesDaily: allData.resolvedResultDaily,
@@ -212,6 +207,10 @@ function Charts(props) {
         durations = 500;
     let delays2 = 80,
         durations2 = 500;
+    let animated = 0;
+    let animatedYearly = 0;
+    let animatedMonthly = 0;
+
 
     // // // dailyComplaintsChart
 
@@ -236,30 +235,34 @@ function Charts(props) {
         // for animation
         animation: {
             draw: function (data) {
-                if (data.type === "line") {
-                    data.element.animate({
-                        d: {
-                            begin: 600,
-                            dur: 700,
-                            from: data.path
-                                .clone()
-                                .scale(1, 0)
-                                .translate(0, data.chartRect.height())
-                                .stringify(),
-                            to: data.path.clone().stringify(),
-                            easing: Chartist.Svg.Easing.easeOutQuint,
-                        },
-                    });
-                } else if (data.type === "point") {
-                    data.element.animate({
-                        opacity: {
-                            begin: (data.index + 1) * delays,
-                            dur: durations,
-                            from: 0,
-                            to: 1,
-                            easing: "ease",
-                        },
-                    });
+                if (animated <= whichType.seriesDaily.length) {
+                    if (data.type === "line") {
+                        data.element.animate({
+                            d: {
+                                begin: 600,
+                                dur: 700,
+                                from: data.path
+                                    .clone()
+                                    .scale(1, 0)
+                                    .translate(0, data.chartRect.height())
+                                    .stringify(),
+                                to: data.path.clone().stringify(),
+                                easing: Chartist.Svg.Easing.easeOutQuint,
+                            },
+                        });
+                    } else if (data.type === "point") {
+                        data.element.animate({
+                            opacity: {
+                                begin: (data.index + 1) * delays,
+                                dur: durations,
+                                from: 0,
+                                to: 1,
+                                easing: "ease",
+                            },
+                        });
+                    }
+                    animated++;
+
                 }
             },
         },
@@ -301,16 +304,20 @@ function Charts(props) {
         ],
         animation: {
             draw: function (data) {
-                if (data.type === "bar") {
-                    data.element.animate({
-                        opacity: {
-                            begin: (data.index + 1) * delays2,
-                            dur: durations2,
-                            from: 0,
-                            to: 1,
-                            easing: "ease",
-                        },
-                    });
+                if (animatedMonthly <= whichType.seriesMonthly.length) {
+
+                    if (data.type === "bar") {
+                        data.element.animate({
+                            opacity: {
+                                begin: (data.index + 1) * delays2,
+                                dur: durations2,
+                                from: 0,
+                                to: 1,
+                                easing: "ease",
+                            },
+                        });
+                    }
+                    animatedMonthly++
                 }
             },
         },
@@ -338,66 +345,39 @@ function Charts(props) {
 
         animation: {
             draw: function (data) {
-                if (data.type === "line") {
-                    data.element.animate({
-                        d: {
-                            begin: 600,
-                            dur: 700,
-                            from: data.path
-                                .clone()
-                                .scale(1, 0)
-                                .translate(0, data.chartRect.height())
-                                .stringify(),
-                            to: data.path.clone().stringify(),
-                            easing: Chartist.Svg.Easing.easeOutQuint,
-                        },
-                    });
-                } else if (data.type === "point") {
-                    data.element.animate({
-                        opacity: {
-                            begin: (data.index + 1) * delays,
-                            dur: durations,
-                            from: 0,
-                            to: 1,
-                            easing: "ease",
-                        },
-                    });
+                if (animatedYearly <= whichType.seriesYearly.length) {
+
+                    if (data.type === "line") {
+                        data.element.animate({
+                            d: {
+                                begin: 600,
+                                dur: 700,
+                                from: data.path
+                                    .clone()
+                                    .scale(1, 0)
+                                    .translate(0, data.chartRect.height())
+                                    .stringify(),
+                                to: data.path.clone().stringify(),
+                                easing: Chartist.Svg.Easing.easeOutQuint,
+                            },
+                        });
+                    } else if (data.type === "point") {
+                        data.element.animate({
+                            opacity: {
+                                begin: (data.index + 1) * delays,
+                                dur: durations,
+                                from: 0,
+                                to: 1,
+                                easing: "ease",
+                            },
+                        });
+                    }
+                    animatedYearly++
                 }
             },
         },
     };
 
-    //     ,
-    // change :{
-    //     create: function (data) {
-    //         if (data.type === "line" || data.type === "area") {
-    //             data.element.animate({
-    //                 d: {
-    //                     begin: 600,
-    //                     dur: 700,
-    //                     from: data.path
-    //                         .clone()
-    //                         .scale(1, 0)
-    //                         .translate(0, data.chartRect.height())
-    //                         .stringify(),
-    //                     to: data.path.clone().stringify(),
-    //                     easing: Chartist.Svg.Easing.easeOutQuint
-    //                 }
-    //             });
-    //         } else if (data.type === "point") {
-    //             data.element.animate({
-    //                 opacity: {
-    //                     begin: (data.index + 1) * delays,
-    //                     dur: durations,
-    //                     from: 0,
-    //                     to: 1,
-    //                     easing: "ease"
-    //                 }
-    //             });
-    //         }
-    //
-    //     }
-    // }
 
     return (
         <div className="graphs">

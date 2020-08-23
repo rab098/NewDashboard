@@ -1,6 +1,5 @@
 import React, {useState, useEffect, useRef} from "react";
 import "../../assets/css/reportsCss.css";
-
 import "../../ComponentsCss/GenerateReports.css";
 import PdfMakeTable from "./PdfMakeTable";
 import TextField from "@material-ui/core/TextField";
@@ -16,37 +15,23 @@ import Radio from "@material-ui/core/Radio";
 import RadioGroup from "@material-ui/core/RadioGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import FormControl from "@material-ui/core/FormControl";
-import FormLabel from "@material-ui/core/FormLabel";
-
-// import MomentUtils from '@date-io/moment';
-
 import {
     MuiPickersUtilsProvider,
     KeyboardDatePicker,
 } from "@material-ui/pickers";
-
-// import jsPDF from 'jspdf';
-// import html2canvas from 'html2canvas';
-import {
-    PDFDocument,
-    PDFText,
-    PDFTable,
-    PDFTableRow,
-    PDFTableColumn,
-    PDFColumns,
-    PDFColumn,
-} from "react-pdfmake";
 import axios from "axios";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import {makeStyles} from "@material-ui/core/styles";
 import Checkbox from "@material-ui/core/Checkbox";
 import FormGroup from "@material-ui/core/FormGroup";
-import html2canvas from "html2canvas";
 import Backdrop from "@material-ui/core/Backdrop";
 import {ImpulseSpinner} from "react-spinners-kit";
 
 // const ref = React.createRef();
+// import jsPDF from 'jspdf';
+// import html2canvas from 'html2canvas';
+import FormLabel from "@material-ui/core/FormLabel";
 
 let store = require("store");
 
@@ -81,9 +66,8 @@ function GenerateReports(props) {
     const classes = useStyles();
 
     const renderCount = useRef(0)
-
     const [userData, setUserData] = useState(store.get("userData"));
-    const [none,setNone]= useState(false)
+    const [none, setNone] = useState(false)
     const [noComplaintsFound, setNoComplaintsFound] = useState(false);
     const [nextButtonState, setNextButtonState] = useState(false);
     const [loading, setLoading] = useState(true);
@@ -107,9 +91,7 @@ function GenerateReports(props) {
     const [radioValue, setRadioValue] = useState("one");
     const [hideOne, setHideOne] = useState(false);
     const [radioValueStepTwo, setRadioValueStepTwo] = useState("complaintType");
-    const [radioValueSupervisor, setRadioValueSupervisor] = useState(
-        "unresolved"
-    );
+    const [radioValueSupervisor, setRadioValueSupervisor] = useState("unresolved");
     const [reportDescription, setReportDescription] = useState("");
     const [sortedData, setSortedData] = useState([]);
     const [hideType, setHideType] = useState(false);
@@ -160,7 +142,7 @@ function GenerateReports(props) {
                 }
             )
             .then((res) => {
-                console.log("complaints coming!", res.data);
+                // console.log("complaints coming!", res.data);
                 for (let i in res.data) {
                     datesObj[i] = res.data[i].complain.createdAt;
 
@@ -198,21 +180,15 @@ function GenerateReports(props) {
                         : res.data[i].adminStatus;
                     mainObj.push(tmpObj);
 
-                    // mainObj[i] = res.data[i]
-                    // Moment(res.data[i].complain.createdAt).format("DD MMM yyyy")
                 }
 
-                console.log("what data is coming of complaints?", mainObj);
-                console.log("dates", datesObj);
+                // console.log("what data is coming of complaints?", mainObj);
+                // console.log("dates", datesObj);
                 setFirstDate(datesObj[0]);
                 setLastDate(datesObj[datesObj.length - 1]);
                 setToDate(lastDate);
 
-                // if (userData.Role === 'ADMIN') {
-                //     setReportData(mainObj);
-                // } else {
-                //     setReportData(mainObj.filter((obj) => obj.supervisorName === userData.userData.username))
-                // }
+
                 setMainData(mainObj);
                 setReportData(mainObj);
                 setLoading(false);
@@ -227,50 +203,23 @@ function GenerateReports(props) {
                     ) {
                         setLoading(false);
                         props.handleError(err.response.status);
-                        console.log("REDIRECT HERE!!!");
                     }
                 }
 
-                // console.log("complaints not coming", err.response);
             });
     };
 
-    // const getSupervisor = () => {
-    //     axios
-    //         .get(`https://m2r31169.herokuapp.com/api/getSuperVisor_Town`, {
-    //             headers: headers,
-    //         })
-    //         .then((res) => {
-    //             console.log("supervisor and town coming!", res.data);
-    //         })
-    //         .catch((err) => {
-    //             if (err.response) {
-    //                 if (err.response.status === 401 || err.response.status === 403) {
-    //                     handleLogoutAutomatically();
-    //                 } else if (
-    //                     err.response.status === 503 ||
-    //                     err.response.status === 500
-    //                 ) {
-    //                     console.log(err.response.status);
-    //                 }
-    //             }
-    //
-    //             console.log("supervisor and towns not coming", err.response);
-    //         });
-    // };
 
     useEffect(() => {
-        // console.log("userData" + JSON.stringify(userData));
         getComplaints();
-        // getSupervisor();
-        // setComplaintFilter("active");
+
     }, [userData]);
 
     useEffect(() => {
-        if (reportData.length === 0){
+        if (reportData.length === 0) {
             setNone(true)
-        }else setNone(false)
-    },[reportData])
+        } else setNone(false)
+    }, [reportData])
 
     const handleLogoutAutomatically = () => {
         store.remove("userData");
@@ -291,15 +240,15 @@ function GenerateReports(props) {
     }
 
     function getStepContent(stepIndex) {
-        // setStepIndexNew(stepIndex)
+
         switch (stepIndex) {
             case 0:
                 return (
                     <div>
-                            <p>
-                                You can choose to generate a one day report or multiple days
-                                report.
-                            </p>
+                        <p>
+                            You can choose to generate a one day report or multiple days
+                            report.
+                        </p>
 
                         <RadioGroup
                             row
@@ -535,11 +484,7 @@ function GenerateReports(props) {
                 return (
                     <div>
                         <p>Click on the button to generate your report.</p>
-                        {/*<div className="report-filter">*/}
-                        {/*    <button className='report-pdf-button' onClick={_exportPdfTable}>*/}
-                        {/*        Download Report*/}
-                        {/*    </button>*/}
-                        {/*</div>*/}
+
                         {/*<button className='report-pdf-button' onClick={exportPDF}>Download PDF</button>*/}
                     </div>
                 );
@@ -547,16 +492,6 @@ function GenerateReports(props) {
                 return "Unknown stepIndex";
         }
     }
-
-    // useEffect( () => {
-    //     if(userData.Role === 'SUPERVISOR'){
-    //         setReportData(
-    //             reportData.filter( (obj) => {
-    //                 return obj.Role === 'SUPERVISOR'
-    //             })
-    //         )
-    //     }
-    // },[userData.Role])
 
     const handleDescriptionChange = (event) => {
         // setNextButton(true);
@@ -567,7 +502,7 @@ function GenerateReports(props) {
     };
 
     const handleRadioChange = (event) => {
-        // setNextButton(true);
+
         setRadioValue(event.target.value);
         setOneDate(null);
         setFromDate(null);
@@ -631,27 +566,19 @@ function GenerateReports(props) {
     }, [radioValueStepTwo]);
 
     const handleTypeCheckboxChange = (event, index) => {
-        // let typeValuesArray = []
-        // let indexVal = index
-        // setTypeValue([event.target.name])
-
-        // console.log("indexVal" , indexVal)
 
         if (event.target.checked) {
             setTypeCheckboxCount((prevState) => prevState + 1);
-            // typeValuesArray[indexVal] = event.target.name
+
             setTypeValue([...typeValue, event.target.name]);
         } else {
             setTypeCheckboxCount((prevState) => prevState - 1);
-            // index = typeValuesArray.indexOf(event.target.name)
-            // typeValuesArray.splice(indexVal, 1)
+
             setTypeValue(typeValue.filter((v) => v !== event.target.name));
         }
 
-        // setTypeValue([...typeValue,typeValuesArray])
     };
 
-    console.log("type value is = ", typeValue);
 
     // const handleTownsCheckboxChange = (event) => {
     //     // setTownsValue([event.target.name])
@@ -671,7 +598,6 @@ function GenerateReports(props) {
     // }
 
     const handleSupervisorsCheckboxChange = (event) => {
-        // setSupervisorValue([event.target.name])
 
         if (event.target.checked) {
             setSupervisorCheckboxCount((prevState) => prevState + 1);
@@ -684,8 +610,6 @@ function GenerateReports(props) {
         }
     };
 
-    // console.log("town value is = ",townsValue)
-    // console.log("supervisor value is = ",supervisorValue)
 
     useEffect(() => {
         if (userData.Role === "ADMIN") {
@@ -780,7 +704,7 @@ function GenerateReports(props) {
     })
 
     useEffect(() => {
-        if(renderCount.current >= 10){
+        if (renderCount.current >= 10) {
             if (reportData.length === 0) {
                 setNoComplaintsFound(true)
             } else {
@@ -791,7 +715,6 @@ function GenerateReports(props) {
 
             }
         }
-
 
 
     }, [nextButtonState])
@@ -813,7 +736,7 @@ function GenerateReports(props) {
                                     "selected onDate :",
                                     Moment(oneDate).format().substr(0, 10)
                                 );
-                                // return new Date(obj.date.substring(0, 14)).getTime() === oneDate.getTime()
+
                                 return (
                                     Moment(obj.date).format().substr(0, 10) ===
                                     Moment(oneDate).format().substr(0, 10)
@@ -823,11 +746,7 @@ function GenerateReports(props) {
 
                         setRawData(
                             mainData.filter((obj) => {
-                                // console.log("db date : ",Moment(obj.date).format("DD MMM yyyy"))
 
-                                // const format = 'llll'
-                                //
-                                // return Moment(obj.date, format).unix() >= Moment(oneDate, format).unix()
                                 console.log(
                                     "db date :",
                                     Moment(obj.date).format().substr(0, 10)
@@ -836,7 +755,7 @@ function GenerateReports(props) {
                                     "selected onDate :",
                                     Moment(oneDate).format().substr(0, 10)
                                 );
-                                // return new Date(obj.date.substring(0, 14)).getTime() === oneDate.getTime()
+
                                 return (
                                     Moment(obj.date).format().substr(0, 10) ===
                                     Moment(oneDate).format().substr(0, 10)
@@ -873,7 +792,6 @@ function GenerateReports(props) {
 
                         setRawData(
                             mainData.filter((obj) => {
-                                // return Moment(obj.date).format("DD MMM yyyy") >= Moment(fromDate).format("DD MMM yyyy") && Moment(obj.date).format("DD MMM yyyy") <= Moment(toDate).format("DD MMM yyyy")
                                 return (
                                     new Date(obj.date.substring(0, 19)).getTime() >=
                                     fromDate.getTime() &&
@@ -884,7 +802,6 @@ function GenerateReports(props) {
                         );
                     }
                 }
-
 
 
                 setTypeCheckboxCount(0);
@@ -933,7 +850,6 @@ function GenerateReports(props) {
                     }
                 }
 
-                // setNextButton(true);
 
                 break;
             case 2:
@@ -958,8 +874,7 @@ function GenerateReports(props) {
         }
     }
 
-    // console.log("typeCheckboxCount", typeCheckboxCount)
-    console.log("New report data", reportData);
+    // console.log("New report data", reportData);
 
     useEffect(() => {
         if (radioValueStepTwo === "complaintType") {
@@ -996,7 +911,6 @@ function GenerateReports(props) {
         }
     }, [reportData, radioValueStepTwo]);
 
-    // console.log("reportData?", reportData);
 
     const handleBack = (index) => {
         switch (index) {
@@ -1031,18 +945,8 @@ function GenerateReports(props) {
     const TextFieldComponent = (props) => {
         return <TextField {...props} disabled={true}/>;
     };
-    const [reportType, setReportType] = React.useState("Total Complaints Yearly");
     const [pageSize, setPageSize] = React.useState("A4");
 
-    // const [resume, setResume] = useState({});
-
-    // const handleChange = (event) => {
-    //     setReportType(event.target.value);
-    //
-    //     if (reportType === "Total Complaints Yearly") {
-    //         console.log("display totals report");
-    //     }
-    // };
 
     const handlePageSize = (event) => {
         setPageSize(event.target.value);
@@ -1059,10 +963,11 @@ function GenerateReports(props) {
 
     return (
         <div>
-                <div>
-                    <p style={{fontSize: 14, fontWeight:'bold', marginLeft:10}}>* Reports can only be generated if there are
-                        complaints.</p>
-                </div>
+            <div>
+                <p style={{fontSize: 14, fontWeight: 'bold', marginLeft: 10}}>* Reports can only be generated if there
+                    are
+                    complaints.</p>
+            </div>
 
             <div>
                 <Stepper
@@ -1075,7 +980,7 @@ function GenerateReports(props) {
                             <StepLabel>{label}</StepLabel>
                             <StepContent>
                                 <Typography>{getStepContent(index)}</Typography>
-                                {noComplaintsFound === true ? <p style={{color:'red'}}>No complaints found.</p> : null}
+                                {noComplaintsFound === true ? <p style={{color: 'red'}}>No complaints found.</p> : null}
                                 {/*<p>Render count is {renderCount.current}</p>*/}
 
                                 <div className={classes.actionsContainer}>
@@ -1118,33 +1023,7 @@ function GenerateReports(props) {
                 <ImpulseSpinner size={90} color="#008081"/>
             </Backdrop>
 
-            {/*}*/}
 
-            {/*<div>*/}
-            {/*    <Button*/}
-            {/*        disabled={activeStep === 0}*/}
-            {/*        onClick={handleBack}*/}
-
-            {/*    >*/}
-            {/*        Back*/}
-            {/*    </Button>*/}
-            {/*    <Button variant="contained" color="primary" onClick={handleNext}>*/}
-            {/*        {activeStep === steps.length - 1 ? 'Finish' : 'Next'}*/}
-            {/*    </Button>*/}
-            {/*</div>*/}
-
-            {/*<div className="report-filter-main-pdf">*/}
-            {/*    <header >*/}
-            {/*        <h1 >Report Heading</h1>*/}
-            {/*        <p>                    Date: Day-Month-Year*/}
-            {/*        </p>*/}
-            {/*    </header>*/}
-            {/*    <h6>Report Description</h6>*/}
-            {/*    <p>*/}
-            {/*        Content goes here*/}
-            {/*    </p>*/}
-
-            {/*</div>*/}
         </div>
     );
 }

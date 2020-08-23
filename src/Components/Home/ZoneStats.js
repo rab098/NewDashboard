@@ -1,11 +1,8 @@
 import React, {useState, useEffect} from "react";
 import axios from "axios";
-import {makeStyles} from "@material-ui/core/styles";
 import ChartistGraph from "react-chartist";
-import UpdateIcon from "@material-ui/icons/Update";
 import "../../ComponentsCss/ZoneStats.css";
 import Box from "@material-ui/core/Box";
-import Paper from "@material-ui/core/Paper";
 
 let Chartist = require("chartist");
 let store = require("store");
@@ -47,7 +44,7 @@ function ZoneStats() {
                     headers: headers,
                 })
                 .then((res) => {
-                    console.log("towsn agye", res.data);
+                    // console.log("towsn agye", res.data);
 
                     for (let i in res.data) {
                         Labels[i] = res.data[i].Town;
@@ -65,8 +62,8 @@ function ZoneStats() {
                         HighestCountState: finalHighestCount,
                     });
 
-                    console.log("final labels", Labels);
-                    console.log("highestcount!!", finalHighestCount);
+                    // console.log("final labels", Labels);
+                    // console.log("highestcount!!", finalHighestCount);
                 })
                 .catch((err) => {
                     if (err.response) {
@@ -83,11 +80,13 @@ function ZoneStats() {
                     console.error(err);
                 });
         }
-        console.log("HIGH!!", Math.max.apply(null, allData.HighestCountState));
+        // console.log("HIGH!!", Math.max.apply(null, allData.HighestCountState));
     }, []);
 
     let delays2 = 80,
         durations2 = 500;
+    let animated = 0;
+
 
     // // //  zone wise complaints chart
 
@@ -95,9 +94,9 @@ function ZoneStats() {
         data: {
             labels: allData.LabelsState,
             series: [
-              allData.SeriesResolvedState,
-              allData.SeriesAssignedState,
-              allData.SeriesUnresolvedState,
+                allData.SeriesResolvedState,
+                allData.SeriesAssignedState,
+                allData.SeriesUnresolvedState,
             ],
 
             // series: userData.Role === "ADMIN" ?
@@ -165,16 +164,20 @@ function ZoneStats() {
         ],
         animation: {
             draw: function (data) {
-                if (data.type === "bar") {
-                    data.element.animate({
-                        opacity: {
-                            begin: (data.index + 1) * delays2,
-                            dur: durations2,
-                            from: 0,
-                            to: 1,
-                            easing: "ease",
-                        },
-                    });
+                if (animated <= allData.LabelsState.length) {
+
+                    if (data.type === "bar") {
+                        data.element.animate({
+                            opacity: {
+                                begin: (data.index + 1) * delays2,
+                                dur: durations2,
+                                from: 0,
+                                to: 1,
+                                easing: "ease",
+                            },
+                        });
+                    }
+                    animated++
                 }
             },
         },
@@ -202,7 +205,7 @@ function ZoneStats() {
 
             <div className="zone-heading">
                 <p className="zone-text">
-                     Town Wise Complaints
+                    Town Wise Complaints
                 </p>
             </div>
 
