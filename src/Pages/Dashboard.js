@@ -64,7 +64,7 @@ const styles = {
         color: "teal",
         position: "absolute",
         marginTop: "5px",
-        zIndex: 9,
+        zIndex: 1200,
         right: "38px",
         height: "100%",
         maxHeight: 200,
