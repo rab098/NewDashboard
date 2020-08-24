@@ -50,7 +50,6 @@
     ]
   },
   "devDependencies": {
-    "@date-io/moment": "^2.8.0",
     "components": "^0.1.0",
     "hooks": "^0.3.2"
   }
