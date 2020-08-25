@@ -433,7 +433,6 @@ export default function Complaints(props) {
 
   //fetch and simplify object
   async function fetchData() {
-    props.handleError("503");
     var finalObj = [];
     axios
       .get("https://m2r31169.herokuapp.com/api/getComplaints", {
