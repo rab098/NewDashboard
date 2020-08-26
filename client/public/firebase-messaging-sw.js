@@ -51,7 +51,8 @@ messaging.setBackgroundMessageHandler(function (payload) {
   const options = {
     title: payload.data.title,
     body: payload.data.message,
-    icon: image,
+    click_action: "https://sswm-administration-dashboard.herokuapp.com/",
+    icon: payload.notification.image
     //    icon: payload.notification.icon,
   };
 
