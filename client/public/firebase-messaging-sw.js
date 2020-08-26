@@ -49,7 +49,6 @@ messaging.setBackgroundMessageHandler(function (payload) {
     payload
   );
 
-  console.log(payload)
   //Customize notification here
   // const title =;
 
