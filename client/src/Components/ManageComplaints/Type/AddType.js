@@ -176,7 +176,7 @@ export default function AddType(props) {
             ValidateAndAddType();
           }}
         >
-          {"Add Complaint Type"}
+          Add Complaint Type
         </Button>
       </CardActions>
     </Card>
