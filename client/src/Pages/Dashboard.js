@@ -151,7 +151,7 @@ function Dashboard({match}) {
     useEffect(() => {
         setServerError(false);
         // console.log(window.location.pathname.split("/").pop(), "loccccc");
-        // handleServerError("503");
+        handleServerError("503");
     }, []);
 
     const headers = {
