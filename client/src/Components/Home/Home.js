@@ -128,7 +128,7 @@ function Home(props) {
                 .then((res) => {
 
 
-                    // console.log("update time", res.data);
+                    console.log("home data", res.data);
                     setCounts(res.data.Count);
                     setLastUpdated(res.data.LastUpdated);
                     setLoading(false)
@@ -154,7 +154,7 @@ function Home(props) {
 
     useEffect(() => {
         getHomeData()
-    }, []);
+    }, [userData.accessToken]);
 
     return (
 
@@ -337,7 +337,7 @@ function Home(props) {
                     <option value="Total Complaints">Total Complaints</option>
                     <option value="Resolved">Resolved</option>
                     <option value="Unresolved">Unresolved</option>
-                    <option value="Assigned">Assigned</option>
+                    {userData.Role === "ADMIN" && <option value="Assigned">Assigned</option>}
                     <option value="Rejected">Rejected</option>
                 </select>
             </div>

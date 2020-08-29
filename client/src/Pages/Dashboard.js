@@ -358,6 +358,8 @@ function Dashboard({ match }) {
     console.log("Message received!!! payload. ", payload);
 
     payload !== null ? setNotifications(payload) : setNotifications({});
+    console.log(payload.data.title)
+
   });
 
   const timeBox = (props) => {
