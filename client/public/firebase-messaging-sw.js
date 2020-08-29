@@ -4,6 +4,7 @@
 import image from "../src/assets/images/app_icon_without_bg.png";
 import {useEffect} from "react";
 import {title} from "../src/assets/jss/material-dashboard-react";
+import * as firebase from "firebase";
 
 importScripts("https://www.gstatic.com/firebasejs/7.14.5/firebase-app.js");
 importScripts(
@@ -25,7 +26,7 @@ if ("serviceWorker" in navigator) {
 // Initialize the Firebase app in the service worker by passing in
 // your app's Firebase config object.
 // https://firebase.google.com/docs/web/setup#config-object
-var firebaseConfig = {
+const firebaseConfig = {
   apiKey: "AIzaSyBYh4kM41BWVUf7tF_RB56QxYK9Ua3CFXI",
   authDomain: "tryfirebaseproject-34025.firebaseapp.com",
   databaseURL: "https://tryfirebaseproject-34025.firebaseio.com",
@@ -53,7 +54,7 @@ messaging.setBackgroundMessageHandler(function (payload) {
   // const title =;
 
     const options = {
-      title: payload.data.title.toString,
+      title: payload.data.title,
       body: payload.data.message,
       click_action: "https://sswm-administration-dashboard.herokuapp.com/",
       icon: "../src/assets/images/app_icon_without_bg.png"
