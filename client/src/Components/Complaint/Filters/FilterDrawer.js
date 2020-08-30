@@ -11,6 +11,7 @@ import ListItemText from "@material-ui/core/ListItemText";
 import InboxIcon from "@material-ui/icons/MoveToInbox";
 import MailIcon from "@material-ui/icons/Mail";
 import AllSelectFilters from "./AllSelectFilters";
+import Box from "@material-ui/core/Box";
 
 const useStyles = makeStyles({
   list: {
@@ -48,6 +49,16 @@ export default function FilterDrawer(props) {
       onClick={toggleDrawer(anchor, false)}
       onKeyDown={toggleDrawer(anchor, false)}
     >
+      <Box
+        textAlign="left"
+        margin={1}
+        color="#008080"
+        fontWeight="600"
+        fontSize="18"
+        component="span"
+      >
+        Filters
+      </Box>
       <AllSelectFilters
         key={filter.length}
         filter={filter}
