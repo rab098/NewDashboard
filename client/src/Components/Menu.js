@@ -13,7 +13,7 @@ import "../ComponentsCss/Menu.css";
 import {Link} from "react-router-dom";
 import image from "../assets/images/app_icon_without_bg.png";
 import {makeStyles} from "@material-ui/core/styles";
-import {grayColor, whiteColor} from "../assets/jss/material-dashboard-react";
+import {blackColor, grayColor, whiteColor} from "../assets/jss/material-dashboard-react";
 import {teal} from "@material-ui/core/colors";
 import MenuIcon from "@material-ui/icons/Menu";
 import Drawer from "@material-ui/core/Drawer";
@@ -26,6 +26,7 @@ const styles = {
     menuList: {
         marginLeft: "10px",
         marginTop: "20px",
+        marginRight: "10px"
     },
     menuNames: {
         paddingRight: "20px",
@@ -60,7 +61,7 @@ const styles = {
     },
     paper: {
         background:
-            "linear-gradient(109.6deg,rgba(5, 85, 84, 1) 11.2%,rgba(64, 224, 208, 1) 91.1%)",
+            "#008081"
     },
     drawerPaper: {
         background: "none",
