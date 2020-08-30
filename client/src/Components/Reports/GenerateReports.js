@@ -215,11 +215,11 @@ function GenerateReports(props) {
 
     }, [userData]);
 
-    useEffect(() => {
-        if (reportData.length === 0) {
-            setNone(true)
-        } else setNone(false)
-    }, [reportData])
+    // useEffect(() => {
+    //     if (reportData.length === 0) {
+    //         setNone(true)
+    //     } else setNone(false)
+    // }, [reportData])
 
     const handleLogoutAutomatically = () => {
         store.remove("userData");
@@ -740,9 +740,9 @@ function GenerateReports(props) {
                                 return (
                                     Moment(obj.date).format().substr(0, 10) ===
                                     Moment(oneDate).format().substr(0, 10)
-                                );
+                                )
                             })
-                        );
+                        )
 
                         setRawData(
                             mainData.filter((obj) => {

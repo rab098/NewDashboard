@@ -144,12 +144,13 @@ export default function ComplaintProgress(props) {
         headers,
       })
       .then((res) => {
+        setLoading(false);
         console.log("post hogayi" + res.data);
         console.log("wwwwww", JSON.stringify(data));
         setSelStatus("");
 
         dialogClose();
-        setLoading(false);
+
         save();
       })
       .catch((err) => {
