@@ -573,7 +573,7 @@ function Dashboard({ match }) {
                     path={`${match.path}/home`}
                     exact
                     render={(props) => (
-                      <Home {...props} handleError={handleServerError} />
+                      <Home {...props} handleError={handleServerError} notifs={notifications} />
                     )}
                   />
 

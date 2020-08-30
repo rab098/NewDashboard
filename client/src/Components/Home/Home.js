@@ -154,7 +154,7 @@ function Home(props) {
 
     useEffect(() => {
         getHomeData()
-    }, [userData.accessToken]);
+    }, [userData.accessToken, props.notifs]);
 
     return (
 
