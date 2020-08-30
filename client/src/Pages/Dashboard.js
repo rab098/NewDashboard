@@ -111,12 +111,13 @@ const styles = {
 const useStyles = makeStyles(styles);
 
 function Dashboard({ match }) {
+  const [userData, setUserData] = useState(store.get("userData"));
   const [notifications, setNotifications] = useState({});
-
   const [dropdownNotifs, setDropDownNotifs] = useState([]);
   const [serverError, setServerError] = useState(false);
-
   const [notifCount, setNotifCount] = useState(0);
+  const [image,setImage] = useState(userData.userData.image)
+  const [open, setOpen] = React.useState(false);
 
   window.addEventListener("storage", function (e) {
     if (e.key === "logoutEvent") {
@@ -131,7 +132,6 @@ function Dashboard({ match }) {
 
   const classes = useStyles();
 
-  const [open, setOpen] = React.useState(false);
 
   const handleClick = (event) => {
     event.preventDefault();
@@ -141,7 +141,10 @@ function Dashboard({ match }) {
     setOpen(false);
   };
 
-  const [userData, setUserData] = useState(store.get("userData"));
+
+  useEffect( () => {
+    setImage(userData.userData.image)
+  },[userData.userData.image])
 
   useEffect(() => {
     setServerError(false);
@@ -210,6 +213,7 @@ function Dashboard({ match }) {
     }
   };
 
+  console.log(userData)
   function sentTokenToServer(Ntoken) {
     //console.log("suserrrrrr?????", userData.accessToken);
 
@@ -541,9 +545,9 @@ function Dashboard({ match }) {
               <Avatar
                 className={classes.myAvatar}
                 src={
-                  Object.keys(userData) > 0 && userData.userData.image !== null
-                    ? "https://m2r31169.herokuapp.com" + userData.userData.image
-                    : avatarImage
+                  Object.keys(userData).length > 0 && (userData.userData.image !== null
+                    ? image
+                    : avatarImage)
                 }
               />
               <p key={userData.length} className="username-padding">

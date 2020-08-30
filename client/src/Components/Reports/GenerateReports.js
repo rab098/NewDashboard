@@ -143,55 +143,63 @@ function GenerateReports(props) {
             )
             .then((res) => {
                 // console.log("complaints coming!", res.data);
-                for (let i in res.data) {
-                    datesObj[i] = res.data[i].complain.createdAt;
+                console.log(res.data)
 
-                    let tmpObj = {};
-                    tmpObj["id"] = res.data[i].complain.id;
-                    tmpObj["description"] = res.data[i].complain.description;
-                    tmpObj["longitude"] = res.data[i].complain.Location.longitude;
-                    tmpObj["latitude"] = res.data[i].complain.Location.latitude;
-                    tmpObj["image"] = res.data[i].complain.image;
-                    tmpObj["afterImage"] = res.data[i].complain.resolvedComplaintImage;
-                    tmpObj["statusType"] = res.data[i].complain.Status.statusType;
-                    tmpObj["statusId"] = res.data[i].complain.Status.id;
-                    tmpObj["date"] = Moment(res.data[i].complain.createdAt).format();
-                    tmpObj["town"] = res.data[i].complain.Location.town.name;
-                    tmpObj["priority"] =
-                        res.data[i].complain.noOfRequests > 5
-                            ? "high"
-                            : res.data[i].complain.noOfRequests > 1
-                            ? "medium"
-                            : "low";
-
-                    tmpObj["reason"] =
-                        res.data[i].complain.Status.statusType === "Rejected"
-                            ? res.data[i].complain.reasonForRejection
-                            : "";
-                    tmpObj["requests"] = res.data[i].complain.noOfRequests;
-
-                    tmpObj["type"] = res.data[i].complain.ComplaintType.typeName;
-                    tmpObj["supervisorId"] = res.data[i].complain.assignedTo;
-
-                    tmpObj["supervisorName"] =
-                        res.data[i].complain.User && res.data[i].complain.User.name;
-                    tmpObj["otherStatus"] = res.data[i].supervisorStatus
-                        ? res.data[i].supervisorStatus
-                        : res.data[i].adminStatus;
-                    mainObj.push(tmpObj);
-
+                if (res.data === null ){
+                    setLoading(false)
+                    console.log("no data")
                 }
+                else {
+                    for (let i in res.data) {
+                        datesObj[i] = res.data[i].complain.createdAt;
 
-                // console.log("what data is coming of complaints?", mainObj);
-                // console.log("dates", datesObj);
-                setFirstDate(datesObj[0]);
-                setLastDate(datesObj[datesObj.length - 1]);
-                setToDate(lastDate);
+                        let tmpObj = {};
+                        tmpObj["id"] = res.data[i].complain.id;
+                        tmpObj["description"] = res.data[i].complain.description;
+                        tmpObj["longitude"] = res.data[i].complain.Location.longitude;
+                        tmpObj["latitude"] = res.data[i].complain.Location.latitude;
+                        tmpObj["image"] = res.data[i].complain.image;
+                        tmpObj["afterImage"] = res.data[i].complain.resolvedComplaintImage;
+                        tmpObj["statusType"] = res.data[i].complain.Status.statusType;
+                        tmpObj["statusId"] = res.data[i].complain.Status.id;
+                        tmpObj["date"] = Moment(res.data[i].complain.createdAt).format();
+                        tmpObj["town"] = res.data[i].complain.Location.town.name;
+                        tmpObj["priority"] =
+                            res.data[i].complain.noOfRequests > 5
+                                ? "high"
+                                : res.data[i].complain.noOfRequests > 1
+                                ? "medium"
+                                : "low";
+
+                        tmpObj["reason"] =
+                            res.data[i].complain.Status.statusType === "Rejected"
+                                ? res.data[i].complain.reasonForRejection
+                                : "";
+                        tmpObj["requests"] = res.data[i].complain.noOfRequests;
+
+                        tmpObj["type"] = res.data[i].complain.ComplaintType.typeName;
+                        tmpObj["supervisorId"] = res.data[i].complain.assignedTo;
+
+                        tmpObj["supervisorName"] =
+                            res.data[i].complain.User && res.data[i].complain.User.name;
+                        tmpObj["otherStatus"] = res.data[i].supervisorStatus
+                            ? res.data[i].supervisorStatus
+                            : res.data[i].adminStatus;
+                        mainObj.push(tmpObj);
+
+                    }
+
+                    // console.log("what data is coming of complaints?", mainObj);
+                    // console.log("dates", datesObj);
+                    setFirstDate(datesObj[0]);
+                    setLastDate(datesObj[datesObj.length - 1]);
+                    setToDate(lastDate);
 
 
-                setMainData(mainObj);
-                setReportData(mainObj);
-                setLoading(false);
+                    setMainData(mainObj);
+                    setReportData(mainObj);
+                    setLoading(false);
+                }
             })
             .catch((err) => {
                 if (err.response) {
