@@ -54,7 +54,7 @@ messaging.setBackgroundMessageHandler(function (payload) {
   // const title =;
 
   const notificationTitle = payload.data.title
-    const notificationOptions  = {
+    const options  = {
       // title: payload.data.title,
       body: payload.data.message,
       click_action: "https://sswm-administration-dashboard.herokuapp.com/",
@@ -63,7 +63,7 @@ messaging.setBackgroundMessageHandler(function (payload) {
     };
     return self.registration.showNotification(
         notificationTitle,
-        notificationOptions
+        options
     );
 
 });
