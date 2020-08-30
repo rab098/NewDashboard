@@ -597,24 +597,22 @@ export default function Complaints(props) {
                   {active ? "All Complaints" : "Only Active Complaints"}
                 </Button> */}
 
-                  {window.innerWidth > 600 && (
-                    <Button
-                      disabled={clear}
-                      className="clearButton"
-                      onClick={() => {
-                        setFilter({
-                          statusType: [],
-                          type: [],
-                          priority: [],
-                          town: [],
-                          supervisorName: [],
-                          otherStatus: [],
-                        });
-                      }}
-                    >
-                      Clear All
-                    </Button>
-                  )}
+                  <Button
+                    disabled={clear}
+                    className="clearButton"
+                    onClick={() => {
+                      setFilter({
+                        statusType: [],
+                        type: [],
+                        priority: [],
+                        town: [],
+                        supervisorName: [],
+                        otherStatus: [],
+                      });
+                    }}
+                  >
+                    Clear Filters
+                  </Button>
                 </Box>
               </div>
             </Grid>
