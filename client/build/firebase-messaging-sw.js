@@ -2,14 +2,14 @@
 // Note that you can only use Firebase Messaging here, other Firebase libraries
 // are not available in the service worker.
 import image from "../src/assets/images/app_icon_without_bg.png";
-import {useEffect} from "react";
-import {title} from "../src/assets/jss/material-dashboard-react";
+import { useEffect } from "react";
+import { title } from "../src/assets/jss/material-dashboard-react";
+// import * as firebase from "firebase";
 
 importScripts("https://www.gstatic.com/firebasejs/7.14.5/firebase-app.js");
 importScripts(
   "https://www.gstatic.com/firebasejs/7.14.5/firebase-messaging.js"
 );
-
 
 if ("serviceWorker" in navigator) {
   navigator.serviceWorker
@@ -25,7 +25,7 @@ if ("serviceWorker" in navigator) {
 // Initialize the Firebase app in the service worker by passing in
 // your app's Firebase config object.
 // https://firebase.google.com/docs/web/setup#config-object
-var firebaseConfig = {
+const firebaseConfig = {
   apiKey: "AIzaSyBYh4kM41BWVUf7tF_RB56QxYK9Ua3CFXI",
   authDomain: "tryfirebaseproject-34025.firebaseapp.com",
   databaseURL: "https://tryfirebaseproject-34025.firebaseio.com",
@@ -44,33 +44,25 @@ const messaging = firebase.messaging();
 //   `messaging.setBackgroundMessageHandler` handler.
 
 messaging.setBackgroundMessageHandler(function (payload) {
-  console.log(
-    "[firebase-messaging-sw.js] Received background message ",
-    payload
-  );
+  console.log("Received background message ", payload);
 
   //Customize notification here
   // const title =;
 
-    const options = {
-      title: payload.data.title,
-      body: payload.data.message,
-      click_action: "https://sswm-administration-dashboard.herokuapp.com/",
-      icon: "../src/assets/images/app_icon_without_bg.png"
-      //    icon: payload.notification.icon,
-    };
-    console.log(options.title)
-    return self.registration.showNotification(
-        options.title,
-        options.body,
-        options.icon
-    );
-
-
-
-
+  const notificationTitle = payload.data.title;
+  const notificationOptions = {
+    // title: payload.data.title,
+    body: payload.data.message,
+    click_action: "https://sswm-administration-dashboard.herokuapp.com/",
+    icon:
+      "https://res.cloudinary.com/dqtwwjmht/image/upload/v1597132441/jzomwpcgd2by0c1ta3tz.png",
+    // icon: payload.notification.icon,
+  };
+  return self.registration.showNotification(
+    notificationTitle,
+    notificationOptions
+  );
 });
-
 
 self.addEventListener("notificationclick", function (event) {
   console.log(event);

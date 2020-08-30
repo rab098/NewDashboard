@@ -545,7 +545,12 @@ export default function AddForm(props) {
             Submit
           </Button>{" "}
           <CircularProgress
-            style={{ display: loading ? "block" : "none", color: "teal" }}
+            style={{
+              display: loading ? "block" : "none",
+              color: "teal",
+              marginRight: "15px",
+              marginBottom: "7px",
+            }}
           />
         </DialogActions>
       </Dialog>

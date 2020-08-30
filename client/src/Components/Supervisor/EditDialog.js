@@ -165,7 +165,8 @@ export default function EditDialog(props) {
             {props.town.map((t) => (
               <ListItem
                 style={{
-                  boxShadow: " 0 1px 4px 0 rgba(0, 0, 0, 0.19)",
+                  // boxShadow: " 0 1px 4px 0 rgba(0, 0, 0, 0.19)",
+                  borderBottom: "1px solid rgba(0, 0, 0, 0.19)",
                 }}
                 button
                 selected={selectedIndex === t}
