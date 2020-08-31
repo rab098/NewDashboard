@@ -1,11 +1,3 @@
-// Give the service worker access to Firebase Messaging.
-// Note that you can only use Firebase Messaging here, other Firebase libraries
-// are not available in the service worker.
-import image from "../src/assets/images/app_icon_without_bg.png";
-import { useEffect } from "react";
-import { title } from "../src/assets/jss/material-dashboard-react";
-// import * as firebase from "firebase";
-
 importScripts("https://www.gstatic.com/firebasejs/7.14.5/firebase-app.js");
 importScripts(
   "https://www.gstatic.com/firebasejs/7.14.5/firebase-messaging.js"
@@ -48,20 +40,15 @@ messaging.setBackgroundMessageHandler(function (payload) {
 
   //Customize notification here
   // const title =;
-
   const notificationTitle = payload.data.title;
-  const notificationOptions = {
-    // title: payload.data.title,
+  const options = {
     body: payload.data.message,
     click_action: "https://sswm-administration-dashboard.herokuapp.com/",
     icon:
       "https://res.cloudinary.com/dqtwwjmht/image/upload/v1597132441/jzomwpcgd2by0c1ta3tz.png",
     // icon: payload.notification.icon,
   };
-  return self.registration.showNotification(
-    notificationTitle,
-    notificationOptions
-  );
+  return self.registration.showNotification(notificationTitle, options);
 });
 
 self.addEventListener("notificationclick", function (event) {

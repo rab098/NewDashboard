@@ -97,6 +97,7 @@ function GenerateReports(props) {
     const [hideType, setHideType] = useState(false);
     const [hideTown, setHideTown] = useState(false);
     const [hideSupervisor, setHideSupervisor] = useState(false);
+    const [hideStepper, setHideStepper] = useState(false)
 
     const [reportObject, setReportObject] = useState({
         numberOfRows: 0,
@@ -147,6 +148,7 @@ function GenerateReports(props) {
 
                 if (res.data === null ){
                     setLoading(false)
+                    setHideStepper(true)
                     console.log("no data")
                 }
                 else {
@@ -976,56 +978,57 @@ function GenerateReports(props) {
                     are
                     complaints.</p>
             </div>
+            {hideStepper=== true ? null :
+                <div>
+                    <Stepper
+                        className={classes.stepperBg}
+                        activeStep={activeStep}
+                        orientation="vertical"
+                    >
+                        {steps.map((label, index) => (
+                            <Step key={label}>
+                                <StepLabel>{label}</StepLabel>
+                                <StepContent>
+                                    <Typography>{getStepContent(index)}</Typography>
+                                    {noComplaintsFound === true ? <p style={{color: 'red'}}>No complaints found.</p> : null}
+                                    {/*<p>Render count is {renderCount.current}</p>*/}
 
-            <div>
-                <Stepper
-                    className={classes.stepperBg}
-                    activeStep={activeStep}
-                    orientation="vertical"
-                >
-                    {steps.map((label, index) => (
-                        <Step key={label}>
-                            <StepLabel>{label}</StepLabel>
-                            <StepContent>
-                                <Typography>{getStepContent(index)}</Typography>
-                                {noComplaintsFound === true ? <p style={{color: 'red'}}>No complaints found.</p> : null}
-                                {/*<p>Render count is {renderCount.current}</p>*/}
-
-                                <div className={classes.actionsContainer}>
-                                    <div>
-                                        <Button
-                                            disabled={activeStep === 0}
-                                            onClick={() => handleBack(index)}
-                                            className={classes.button}
-                                        >
-                                            Back
-                                        </Button>
-                                        <Button
-                                            variant="contained"
-                                            color="primary"
-                                            onClick={() => handleNext(index)}
-                                            className={classes.button}
-                                            disabled={nextButton}
-                                        >
-                                            {activeStep === steps.length - 1
-                                                ? "Download Report"
-                                                : "Next"}
-                                        </Button>
+                                    <div className={classes.actionsContainer}>
+                                        <div>
+                                            <Button
+                                                disabled={activeStep === 0}
+                                                onClick={() => handleBack(index)}
+                                                className={classes.button}
+                                            >
+                                                Back
+                                            </Button>
+                                            <Button
+                                                variant="contained"
+                                                color="primary"
+                                                onClick={() => handleNext(index)}
+                                                className={classes.button}
+                                                disabled={nextButton}
+                                            >
+                                                {activeStep === steps.length - 1
+                                                    ? "Download Report"
+                                                    : "Next"}
+                                            </Button>
+                                        </div>
                                     </div>
-                                </div>
-                            </StepContent>
-                        </Step>
-                    ))}
-                </Stepper>
-                {activeStep === steps.length && (
-                    <Paper square elevation={0} className={classes.resetContainer}>
-                        <Typography>Your report has been generated.</Typography>
-                        <Button onClick={handleReset} className={classes.button}>
-                            Reset
-                        </Button>
-                    </Paper>
-                )}
-            </div>
+                                </StepContent>
+                            </Step>
+                        ))}
+                    </Stepper>
+                    {activeStep === steps.length && (
+                        <Paper square elevation={0} className={classes.resetContainer}>
+                            <Typography>Your report has been generated.</Typography>
+                            <Button onClick={handleReset} className={classes.button}>
+                                Reset
+                            </Button>
+                        </Paper>
+                    )}
+                </div>}
+
 
             <Backdrop className={classes.backdrop} open={loading}>
                 <ImpulseSpinner size={90} color="#008081"/>
