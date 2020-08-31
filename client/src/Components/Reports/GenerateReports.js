@@ -146,12 +146,21 @@ function GenerateReports(props) {
                 // console.log("complaints coming!", res.data);
                 console.log(res.data)
 
-                if (res.data === null ){
+                if (res.data[0].complain.id === "" ){
                     setLoading(false)
                     setHideStepper(true)
                     console.log("no data")
                 }
+
                 else {
+
+                    if (res.data.length === 1){
+                        setNone(true)
+                    }
+                    else
+                        setNone(false)
+
+
                     for (let i in res.data) {
                         datesObj[i] = res.data[i].complain.createdAt;
 
@@ -223,7 +232,7 @@ function GenerateReports(props) {
     useEffect(() => {
         getComplaints();
 
-    }, [userData]);
+    }, [userData,props.notifs]);
 
     // useEffect(() => {
     //     if (reportData.length === 0) {
@@ -273,7 +282,7 @@ function GenerateReports(props) {
                                 control={<Radio color="primary"/>}
                                 label="One day"
                                 labelPlacement="end"
-                                disabled={none}
+                                // disabled={none}
                             />
                             <FormControlLabel
                                 value="multiple"
@@ -884,7 +893,7 @@ function GenerateReports(props) {
         }
     }
 
-    // console.log("New report data", reportData);
+    console.log("New report data", reportData);
 
     useEffect(() => {
         if (radioValueStepTwo === "complaintType") {

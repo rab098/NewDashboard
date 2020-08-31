@@ -149,6 +149,8 @@ function Dashboard({ match }) {
     // console.log(window.location.pathname.split("/").pop(), "loccccc");
     // handleServerError("503");
   }, []);
+
+
   useEffect(() => {
     setImage(
       Object.keys(userData).length > 0 &&
@@ -156,12 +158,14 @@ function Dashboard({ match }) {
           ? userData.userData.image
           : avatarImage)
     );
-  }, [userData.userData]);
+  }, [userData]);
 
   const headers = {
     "Content-Type": "application/json",
     "x-access-token": userData.accessToken,
   };
+
+  console.log("profile??", profile)
 
   const handleLogoutAutomatically = () => {
     store.remove("userData");
@@ -603,7 +607,7 @@ function Dashboard({ match }) {
                     path={`${match.path}/reports`}
                     exact
                     render={() => (
-                      <GenerateReports handleError={handleServerError} />
+                      <GenerateReports handleError={handleServerError} notifs={notifications} />
                     )}
                   />
                   <Route
