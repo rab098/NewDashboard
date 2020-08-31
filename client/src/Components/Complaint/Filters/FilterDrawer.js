@@ -12,6 +12,7 @@ import InboxIcon from "@material-ui/icons/MoveToInbox";
 import MailIcon from "@material-ui/icons/Mail";
 import AllSelectFilters from "./AllSelectFilters";
 import Box from "@material-ui/core/Box";
+import FilterListIcon from "@material-ui/icons/FilterList";
 
 const useStyles = makeStyles({
   list: {
@@ -102,7 +103,8 @@ export default function FilterDrawer(props) {
             }}
             onClick={toggleDrawer(anchor, true)}
           >
-            {"Filters"}
+            {"Filters "}
+            <FilterListIcon style={{ padding: "5px" }} />
           </Button>
           <Drawer
             anchor={anchor}

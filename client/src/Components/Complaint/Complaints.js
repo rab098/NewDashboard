@@ -2,7 +2,7 @@ import "../../ComponentsCss/Complaints.css";
 import axios from "axios";
 import Box from "@material-ui/core/Box";
 import ErrorOutlineOutlinedIcon from "@material-ui/icons/ErrorOutlineOutlined";
-
+import FilterListIcon from "@material-ui/icons/FilterList";
 import Moment from "moment";
 
 import SelectFilter from "./Filters/SelectFilter";
@@ -536,7 +536,11 @@ export default function Complaints(props) {
         <Grid item xs={12} sm={12} md={12} lg={9}>
           <Paper className="filter elevationPaper">
             <Grid item xs={12} sm={12} md={12} lg={12}>
-              <div style={{ minHeight: "50px" }}>
+              <div
+                style={{
+                  minHeight: window.innerWidth < 500 ? "100px" : "50px",
+                }}
+              >
                 {window.innerWidth > 600 ? (
                   <Box
                     textAlign="left"
@@ -556,7 +560,9 @@ export default function Complaints(props) {
                     userData={userData}
                   />
                 )}
-                <Box style={{ float: "right" }}>
+                <Box
+                  style={{ float: window.innerWidth > 600 ? "right" : "none" }}
+                >
                   <FormControl className={classes.formControl}>
                     <Select
                       value={complaintFilter}
