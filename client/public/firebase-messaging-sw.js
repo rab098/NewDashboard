@@ -1,11 +1,3 @@
-// Give the service worker access to Firebase Messaging.
-// Note that you can only use Firebase Messaging here, other Firebase libraries
-// are not available in the service worker.
-import image from "../src/assets/images/app_icon_without_bg.png";
-import { useEffect } from "react";
-import { title } from "../src/assets/jss/material-dashboard-react";
-// import * as firebase from "firebase";
-
 importScripts("https://www.gstatic.com/firebasejs/7.14.5/firebase-app.js");
 importScripts(
   "https://www.gstatic.com/firebasejs/7.14.5/firebase-messaging.js"
