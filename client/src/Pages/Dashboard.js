@@ -116,7 +116,7 @@ function Dashboard({ match }) {
   const [dropdownNotifs, setDropDownNotifs] = useState([]);
   const [serverError, setServerError] = useState(false);
   const [notifCount, setNotifCount] = useState(0);
-  const [image,setImage] = useState(userData.userData.image)
+  const [image, setImage] = useState(userData.userData.image);
   const [open, setOpen] = React.useState(false);
 
   window.addEventListener("storage", function (e) {
@@ -132,7 +132,6 @@ function Dashboard({ match }) {
 
   const classes = useStyles();
 
-
   const handleClick = (event) => {
     event.preventDefault();
     setOpen((prev) => !prev);
@@ -141,10 +140,9 @@ function Dashboard({ match }) {
     setOpen(false);
   };
 
-
-  useEffect( () => {
-    setImage(userData.userData.image)
-  },[userData.userData.image])
+  useEffect(() => {
+    setImage(userData.userData.image);
+  }, [userData.userData.image]);
 
   useEffect(() => {
     setServerError(false);
@@ -213,7 +211,7 @@ function Dashboard({ match }) {
     }
   };
 
-  console.log(userData)
+  console.log(userData);
   function sentTokenToServer(Ntoken) {
     //console.log("suserrrrrr?????", userData.accessToken);
 
@@ -362,8 +360,7 @@ function Dashboard({ match }) {
     console.log("Message received!!! payload. ", payload);
 
     payload !== null ? setNotifications(payload) : setNotifications({});
-    console.log(payload.data.title)
-
+    console.log(payload.data.title);
   });
 
   const timeBox = (props) => {
@@ -545,9 +542,8 @@ function Dashboard({ match }) {
               <Avatar
                 className={classes.myAvatar}
                 src={
-                  Object.keys(userData).length > 0 && (userData.userData.image !== null
-                    ? image
-                    : avatarImage)
+                  Object.keys(userData).length > 0 &&
+                  (userData.userData.image !== null ? image : avatarImage)
                 }
               />
               <p key={userData.length} className="username-padding">
@@ -573,7 +569,11 @@ function Dashboard({ match }) {
                     path={`${match.path}/home`}
                     exact
                     render={(props) => (
-                      <Home {...props} handleError={handleServerError} notifs={notifications} />
+                      <Home
+                        {...props}
+                        handleError={handleServerError}
+                        notifs={notifications}
+                      />
                     )}
                   />
 
