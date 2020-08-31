@@ -127,6 +127,7 @@ function Profile(props) {
             image: null,
           },
         });
+        props.updateProfileImage(null);
         console.log("post hogayi" + res.data);
       })
       .catch((err) => {
@@ -174,6 +175,7 @@ function Profile(props) {
             image: response.data,
           },
         });
+        props.updateProfileImage(response.data);
       })
       .catch((err) => {
         setImageUpload(false);

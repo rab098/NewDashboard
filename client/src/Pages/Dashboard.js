@@ -116,7 +116,7 @@ function Dashboard({ match }) {
   const [dropdownNotifs, setDropDownNotifs] = useState([]);
   const [serverError, setServerError] = useState(false);
   const [notifCount, setNotifCount] = useState(0);
-  const [image, setImage] = useState(userData.userData.image);
+  const [image, setImage] = useState(null);
   const [open, setOpen] = React.useState(false);
 
   window.addEventListener("storage", function (e) {
@@ -140,15 +140,23 @@ function Dashboard({ match }) {
     setOpen(false);
   };
 
-  useEffect(() => {
-    setImage(userData.userData.image);
-  }, [userData.userData.image]);
-
+  const updateProfileImage = () => {
+    console.log("here" + userData.userData.image);
+    // setImage(userData.userData.image);
+  };
   useEffect(() => {
     setServerError(false);
     // console.log(window.location.pathname.split("/").pop(), "loccccc");
     // handleServerError("503");
   }, []);
+  useEffect(() => {
+    setImage(
+      Object.keys(userData).length > 0 &&
+        (userData.userData.image !== null
+          ? userData.userData.image
+          : avatarImage)
+    );
+  }, [userData.userData]);
 
   const headers = {
     "Content-Type": "application/json",
@@ -539,13 +547,7 @@ function Dashboard({ match }) {
                 </div>
               </ClickAwayListener>
 
-              <Avatar
-                className={classes.myAvatar}
-                src={
-                  Object.keys(userData).length > 0 &&
-                  (userData.userData.image !== null ? image : avatarImage)
-                }
-              />
+              <Avatar className={classes.myAvatar} key={image} src={image} />
               <p key={userData.length} className="username-padding">
                 {" "}
                 {Object.keys(userData).length > 0 &&
@@ -611,6 +613,7 @@ function Dashboard({ match }) {
                       <Profile
                         key={dropdownNotifs.length}
                         notification={dropdownNotifs}
+                        updateProfileImage={updateProfileImage}
                       />
                     )}
                   />
