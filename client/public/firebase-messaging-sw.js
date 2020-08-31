@@ -39,17 +39,15 @@ messaging.setBackgroundMessageHandler(function (payload) {
   console.log("Received background message ", payload);
 
   //Customize notification here
-  // const title =;
+  const title =payload.data.title
 
   const options = {
-    title: payload.data.title,
     body: payload.data.message,
     click_action: "https://sswm-administration-dashboard.herokuapp.com/",
-    // icon:
-    //     "https://res.cloudinary.com/dqtwwjmht/image/upload/v1597132441/jzomwpcgd2by0c1ta3tz.png",
+    icon: "https://res.cloudinary.com/dqtwwjmht/image/upload/v1597132441/jzomwpcgd2by0c1ta3tz.png",
     // icon: payload.notification.icon,
   };
-  return self.registration.showNotification(options);
+  return self.registration.showNotification(title, options);
 });
 
 self.addEventListener("notificationclick", function (event) {
