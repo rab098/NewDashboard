@@ -84,24 +84,24 @@ function Profile(props) {
     //     },
     //   })
     // );
-    setphoneNumber("+92" + phoneNumber);
+    setphoneNumber("+92" + phoneNumber.slice(-10));
     setLoading(true);
-    console.log(phoneNumber, fullName, email);
+    console.log("lalal" + phoneNumber, fullName, email);
     if (imageRemove) {
       onPhotoRemove();
-    }
-    if (imageUpload) {
+    } else if (imageUpload) {
       onPhotoUpload();
-    }
-    if (fullName != userData.userData.name) {
+    } else if (fullName != userData.userData.name) {
       update(fullName, "name", "Name");
-    }
-    if (email != userData.userData.email) {
+    } else if (email != userData.userData.email) {
       update(email, "email", "Email");
-    }
-    if ("+92" + phoneNumber != userData.userData.phoneNumber) {
-      update("+92" + phoneNumber, "phoneNumber", "phoneNumber");
-    }
+    } else if (
+      "+92" + phoneNumber.slice(-10) !=
+      userData.userData.phoneNumber
+    ) {
+      console.log("lalal" + phoneNumber, fullName, email);
+      update("+92" + phoneNumber.slice(-10), "phoneNumber", "phoneNumber");
+    } else setLoading(false);
   };
 
   const onPhotoRemove = () => {
@@ -361,6 +361,7 @@ function Profile(props) {
                     event.target.value === "" ||
                     re.test(event.target.value)
                   ) {
+                    console.log(event.target.value + "phonenumber");
                     setphoneNumber(event.target.value);
                   }
                 }}
