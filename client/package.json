@@ -52,6 +52,7 @@
     ]
   },
   "devDependencies": {
+    "babel-polyfill": "^6.26.0",
     "components": "^0.1.0",
     "hooks": "^0.3.2"
   }
