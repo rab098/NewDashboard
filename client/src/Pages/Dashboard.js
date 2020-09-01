@@ -150,6 +150,7 @@ function Dashboard({ match }) {
     // handleServerError("503");
   }, []);
 
+
   useEffect(() => {
     setImage(
       Object.keys(userData).length > 0 &&
@@ -164,7 +165,7 @@ function Dashboard({ match }) {
     "x-access-token": userData.accessToken,
   };
 
-  //console.log("profile??", profile)
+  console.log("profile??", profile)
 
   const handleLogoutAutomatically = () => {
     store.remove("userData");
@@ -606,10 +607,7 @@ function Dashboard({ match }) {
                     path={`${match.path}/reports`}
                     exact
                     render={() => (
-                      <GenerateReports
-                        handleError={handleServerError}
-                        notifs={notifications}
-                      />
+                      <GenerateReports handleError={handleServerError} notifs={notifications} />
                     )}
                   />
                   <Route
