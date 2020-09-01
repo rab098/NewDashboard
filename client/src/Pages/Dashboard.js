@@ -140,9 +140,9 @@ function Dashboard({ match }) {
     setOpen(false);
   };
 
-  const updateProfileImage = () => {
-    console.log("here" + userData.userData.image);
-    // setImage(userData.userData.image);
+  const updateProfileImage = (imagePath) => {
+    console.log("here" + imagePath);
+    setImage(imagePath);
   };
   useEffect(() => {
     setServerError(false);
@@ -150,13 +150,10 @@ function Dashboard({ match }) {
     // handleServerError("503");
   }, []);
 
-
   useEffect(() => {
     setImage(
       Object.keys(userData).length > 0 &&
-        (userData.userData.image !== null
-          ? userData.userData.image
-          : avatarImage)
+        (userData.userData.image !== null ? userData.userData.image : null)
     );
   }, [userData]);
 
@@ -164,7 +161,6 @@ function Dashboard({ match }) {
     "Content-Type": "application/json",
     "x-access-token": userData.accessToken,
   };
-
 
   const handleLogoutAutomatically = () => {
     store.remove("userData");
@@ -550,7 +546,11 @@ function Dashboard({ match }) {
                 </div>
               </ClickAwayListener>
 
-              <Avatar className={classes.myAvatar} key={image} src={image} />
+              <Avatar
+                className={classes.myAvatar}
+                key={image}
+                src={image != null ? image : avatarImage}
+              />
               <p key={userData.length} className="username-padding">
                 {" "}
                 {Object.keys(userData).length > 0 &&
@@ -606,7 +606,10 @@ function Dashboard({ match }) {
                     path={`${match.path}/reports`}
                     exact
                     render={() => (
-                      <GenerateReports handleError={handleServerError} notifs={notifications} />
+                      <GenerateReports
+                        handleError={handleServerError}
+                        notifs={notifications}
+                      />
                     )}
                   />
                   <Route
