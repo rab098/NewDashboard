@@ -82,6 +82,9 @@ function Charts(props) {
                         rejectedResultDaily: res.data.daily.map((a) => a.Rejected),
                         rejectedResultMonthly: res.data.monthly.map((a) => a.Rejected),
                         rejectedResultYearly: res.data.yearly.map((a) => a.Rejected),
+                        activeResultDaily: res.data.daily.map((a) => a.Active),
+                        activeResultMonthly: res.data.monthly.map((a) => a.Active),
+                        activeResultYearly: res.data.yearly.map((a) => a.Active),
                         labelForYearly: res.data.yearly.map((a) => a.year),
                     });
 
@@ -121,6 +124,9 @@ function Charts(props) {
         rejectedResultDaily: [],
         rejectedResultMonthly: [],
         rejectedResultYearly: [],
+        activeResultDaily: [],
+        activeResultMonthly: [],
+        activeResultYearly: [],
     });
 
     useEffect(() => {
@@ -199,6 +205,21 @@ function Charts(props) {
                     Math.max.apply(null, allData.rejectedResultMonthly) + 10,
                 highestValueYearly:
                     Math.max.apply(null, allData.rejectedResultYearly) + 10,
+            });
+        } else if (props.value === "Active") {
+            setWhichType({
+                seriesDaily: allData.activeResultDaily,
+                seriesMonthly: allData.activeResultMonthly,
+                seriesYearly: allData.activeResultYearly,
+            });
+
+            setHighestValue({
+                highestValueDaily:
+                    Math.max.apply(null, allData.activeResultDaily) + 10,
+                highestValueMonthly:
+                    Math.max.apply(null, allData.activeResultMonthly) + 10,
+                highestValueYearly:
+                    Math.max.apply(null, allData.activeResultYearly) + 10,
             });
         }
     }, [props]);
