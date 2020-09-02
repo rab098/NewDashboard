@@ -17,6 +17,7 @@ import "../../assets/css/charts-and-graphs.css";
 import "../../ComponentsCss/Home.css";
 import Backdrop from "@material-ui/core/Backdrop";
 import {ImpulseSpinner} from "react-spinners-kit";
+import Paper from "@material-ui/core/Paper";
 
 let store = require("store");
 
@@ -155,6 +156,9 @@ function Home(props) {
     useEffect(() => {
         getHomeData()
     }, [userData.accessToken, props.notifs]);
+
+    console.log("counts", counts)
+    console.log("time", lastUpdatedState)
 
     return (
 
@@ -334,6 +338,7 @@ function Home(props) {
             <div className="select-dropdown">
                 <p>Filter charts by : </p>
                 <select defaultValue="Total Complaints" onChange={handleChange}>
+                    {/*{counts.map}*/}
                     <option value="Total Complaints">Total Complaints</option>
                     <option value="Resolved">Resolved</option>
                     <option value="Unresolved">Unresolved</option>

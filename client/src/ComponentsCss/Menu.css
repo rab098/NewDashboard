@@ -29,8 +29,9 @@
 /*old menu css*/
 
 .menu-heading-main{
-    font-size: small;
+    font-size: medium;
     color: white;
+    font-weight: bold;
     padding-left: 5px;
 }
 
