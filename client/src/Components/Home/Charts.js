@@ -56,6 +56,28 @@ function Charts(props) {
         window.location = "/";
     };
 
+    const [allData, setData] = useState({
+        labelForYearly: [],
+        totalCountResultDaily: [],
+        totalCountResultMonthly: [],
+        totalCountResultYearly: [],
+        resolvedResultDaily: [],
+        resolvedResultMonthly: [],
+        resolvedResultYearly: [],
+        unresolvedResultDaily: [],
+        unresolvedResultMonthly: [],
+        unresolvedResultYearly: [],
+        assignedResultDaily: [],
+        assignedResultMonthly: [],
+        assignedResultYearly: [],
+        rejectedResultDaily: [],
+        rejectedResultMonthly: [],
+        rejectedResultYearly: [],
+        activeResultDaily: [],
+        activeResultMonthly: [],
+        activeResultYearly: [],
+    });
+
     useEffect(() => {
         if (userData.accessToken !== null) {
             axios
@@ -89,7 +111,7 @@ function Charts(props) {
                     });
 
 
-                    // console.log(res.data);
+                    console.log("charts",res.data);
                 })
                 .catch((err) => {
                     if (err.response) {
@@ -107,27 +129,8 @@ function Charts(props) {
         }
     }, []);
 
-    const [allData, setData] = useState({
-        labelForYearly: [],
-        totalCountResultDaily: [],
-        totalCountResultMonthly: [],
-        totalCountResultYearly: [],
-        resolvedResultDaily: [],
-        resolvedResultMonthly: [],
-        resolvedResultYearly: [],
-        unresolvedResultDaily: [],
-        unresolvedResultMonthly: [],
-        unresolvedResultYearly: [],
-        assignedResultDaily: [],
-        assignedResultMonthly: [],
-        assignedResultYearly: [],
-        rejectedResultDaily: [],
-        rejectedResultMonthly: [],
-        rejectedResultYearly: [],
-        activeResultDaily: [],
-        activeResultMonthly: [],
-        activeResultYearly: [],
-    });
+
+    console.log("props from dropdown?" , props)
 
     useEffect(() => {
         if (props.value === "Total Complaints") {
@@ -222,7 +225,7 @@ function Charts(props) {
                     Math.max.apply(null, allData.activeResultYearly) + 10,
             });
         }
-    }, [props]);
+    }, [props, allData]);
 
     let delays = 80,
         durations = 500;

@@ -79,6 +79,8 @@ function Home(props) {
 
     const [chartType, setChartType] = useState("Total Complaints");
 
+    const [dropdown, setDropdown] = useState([])
+
     const [lastUpdatedState, setLastUpdated] = useState({
         Complaints: "00:00",
         Resolved: "00:00",
@@ -100,24 +102,25 @@ function Home(props) {
     });
 
 
-
-
     const handleChange = (event) => {
         event.preventDefault();
+        setChartType(event.target.value)
 
-        let type = event.target.value;
+        // let type = event.target.value;
 
-        if (type === "Total Complaints") {
-            setChartType(type);
-        } else if (type === "Resolved") {
-            setChartType(type);
-        } else if (type === "Unresolved") {
-            setChartType(type);
-        } else if (type === "Assigned") {
-            setChartType(type);
-        } else if (type === "Rejected") {
-            setChartType(type);
-        }
+        // if (type === "Total Complaints") {
+        //     setChartType(type);
+        // } else if (type === "Resolved") {
+        //     setChartType(type);
+        // } else if (type === "Unresolved") {
+        //     setChartType(type);
+        // } else if (type === "Assigned") {
+        //     setChartType(type);
+        // } else if (type === "Rejected") {
+        //     setChartType(type);
+        // } else if (type === "Active") {
+        //     setChartType(type);
+        // }
     };
 
     const getHomeData = () => {
@@ -132,6 +135,7 @@ function Home(props) {
                     console.log("home data", res.data);
                     setCounts(res.data.Count);
                     setLastUpdated(res.data.LastUpdated);
+                    setDropdown(res.data.Dropdown)
                     setLoading(false)
                 })
                 .catch((err) => {
@@ -157,8 +161,8 @@ function Home(props) {
         getHomeData()
     }, [userData.accessToken, props.notifs]);
 
-    console.log("counts", counts)
-    console.log("time", lastUpdatedState)
+    console.log("dropdown", dropdown)
+    // console.log("time", lastUpdatedState)
 
     return (
 
@@ -338,12 +342,16 @@ function Home(props) {
             <div className="select-dropdown">
                 <p>Filter charts by : </p>
                 <select defaultValue="Total Complaints" onChange={handleChange}>
-                    {/*{counts.map}*/}
-                    <option value="Total Complaints">Total Complaints</option>
-                    <option value="Resolved">Resolved</option>
-                    <option value="Unresolved">Unresolved</option>
-                    {userData.Role === "ADMIN" && <option value="Assigned">Assigned</option>}
-                    <option value="Rejected">Rejected</option>
+                    {dropdown.map((obj) => {
+                        return (<option key={obj} value={obj}>{obj}</option>
+
+                        )
+                    })}
+                    {/*<option value="Total Complaints">Total Complaints</option>*/}
+                    {/*<option value="Resolved">Resolved</option>*/}
+                    {/*<option value="Unresolved">Unresolved</option>*/}
+                    {/*{userData.Role === "ADMIN" && <option value="Assigned">Assigned</option>}*/}
+                    {/*<option value="Rejected">Rejected</option>*/}
                 </select>
             </div>
 
