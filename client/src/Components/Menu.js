@@ -219,7 +219,7 @@ function Menu(props) {
                     }}
                 >
                     <LibraryBooksIcon className={classes.menuNames} fontSize="small"/>
-                    <p>Reports</p>
+                    <p>Generate Report</p>
                 </MenuItem>
             </Link>
             <Link to={"/dashboard/profile"}>
