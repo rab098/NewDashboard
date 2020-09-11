@@ -37,7 +37,7 @@ function ResolveTimeAnalysisStats() {
                 headers: headers,
             })
             .then((res) => {
-                // console.log("resolveTime coming", res.data);
+                console.log("resolveTime coming", res.data);
 
                 if (
                     res.data._0_2days !== null &&
@@ -62,7 +62,8 @@ function ResolveTimeAnalysisStats() {
                         handleLogoutAutomatically();
                     } else if (
                         err.response.status === 503 ||
-                        err.response.status === 500
+                        err.response.status === 500 ||
+                        err.response.status === 400
                     ) {
                         setResolveTimeCheck(1);
 
