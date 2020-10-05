@@ -122,7 +122,7 @@ function Dashboard({ match }) {
   window.addEventListener("storage", function (e) {
     if (e.key === "logoutEvent") {
       window.location = "/";
-      console.log("logout hogya ballay ballay");
+      console.log("logout done");
     }
   });
 
@@ -141,7 +141,7 @@ function Dashboard({ match }) {
   };
 
   const updateProfileImage = (imagePath) => {
-    console.log("here" + imagePath);
+    // console.log("here" + imagePath);
     setImage(imagePath);
   };
   useEffect(() => {
@@ -176,7 +176,7 @@ function Dashboard({ match }) {
     complainId
   ) => {
     event.preventDefault();
-    console.log("notificationId", notificationStatus);
+    // console.log("notificationId", notificationStatus);
     // setOpen(false);
     // window.location = "/dashboard/complaints";
 
@@ -218,9 +218,9 @@ function Dashboard({ match }) {
     }
   };
 
-  console.log(userData);
+  // console.log(userData);
   function sentTokenToServer(Ntoken) {
-    //console.log("suserrrrrr?????", userData.accessToken);
+    //console.log("userrrrrr?????", userData.accessToken);
 
     axios
       .post(
@@ -260,11 +260,11 @@ function Dashboard({ match }) {
         ///  sentTokenToServer(token);
 
         // console.log(
-        //   "suserrrrrr????? firebase wlaa ------  ",
+        //   "userrrrrr????? firebase ------  ",
         //   userData.accessToken
         // );
         // console.log(
-        //   "prper wala????? accessToken =====    ",
+        //   "proper????? accessToken =====    ",
         //   userData.accessToken
         // );
         if (userData.accessToken !== undefined) {
@@ -342,7 +342,7 @@ function Dashboard({ match }) {
           setDropDownNotifs(dropdownNotifications);
           setNotifCount(res.data.count);
 
-          // console.log("what the coming???????", dropdownNotifs);
+          // console.log("what is coming???????", dropdownNotifs);
         })
         .catch((err) => {
           if (err.response) {

@@ -111,7 +111,7 @@ function Charts(props) {
                     });
 
 
-                    console.log("charts",res.data);
+                    // console.log("charts",res.data);
                 })
                 .catch((err) => {
                     if (err.response) {
@@ -130,7 +130,7 @@ function Charts(props) {
     }, []);
 
 
-    console.log("props from dropdown?" , props)
+    // console.log("props from dropdown?" , props)
 
     useEffect(() => {
         if (props.value === "Total Complaints") {

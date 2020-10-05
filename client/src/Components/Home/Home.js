@@ -132,7 +132,7 @@ function Home(props) {
                 .then((res) => {
 
 
-                    console.log("home data", res.data);
+                    // console.log("home data", res.data);
                     setCounts(res.data.Count);
                     setLastUpdated(res.data.LastUpdated);
                     setDropdown(res.data.Dropdown)
@@ -161,7 +161,7 @@ function Home(props) {
         getHomeData()
     }, [userData.accessToken, props.notifs]);
 
-    console.log("dropdown", dropdown)
+    // console.log("dropdown", dropdown)
     // console.log("time", lastUpdatedState)
 
     return (

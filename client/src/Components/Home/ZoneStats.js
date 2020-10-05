@@ -44,7 +44,7 @@ function ZoneStats() {
                     headers: headers,
                 })
                 .then((res) => {
-                    // console.log("towsn agye", res.data);
+                    // console.log("towns coming", res.data);
 
                     for (let i in res.data) {
                         Labels[i] = res.data[i].Town;
