@@ -83,7 +83,7 @@ export default function Rejection(props) {
     console.log("iteemmmmmmmmmmmmm" + item);
     axios
       .post(
-        "http://m2r31169.herokuapp.com/api/deleteReasonForRejection",
+        "https://m2r31169.herokuapp.com/api/deleteReasonForRejection",
         { reason: item },
         {
           headers: {
