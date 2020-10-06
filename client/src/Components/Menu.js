@@ -120,7 +120,7 @@ function Menu(props) {
             )
             .then((res) => {
                 store.set("logoutEvent", "logout" + Math.random());
-                console.log(res.data);
+                // console.log(res.data);
                 store.remove("userData");
                 store.clearAll();
                 setUserData({});
@@ -128,7 +128,7 @@ function Menu(props) {
             })
             .catch((err) => {
                 console.error(err);
-                console.log("not working man");
+                console.log("not working");
             });
     };
 

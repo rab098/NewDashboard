@@ -8,7 +8,7 @@ export default (reportObject) => {
     const {vfs} = vfsFonts.pdfMake;
     pdfMake.vfs = vfs;
 
-    console.log(reportObject)
+    // console.log(reportObject)
 
 
     let bodyData = [['ID', 'TYPE', 'DATE', 'PRIORITY', 'TOWN', 'SUPERVISOR', 'STATUS'],]
@@ -48,7 +48,7 @@ export default (reportObject) => {
     }
 
 
-    console.log(bodyData)
+    // console.log(bodyData)
 
 
     const documentDefinition = {

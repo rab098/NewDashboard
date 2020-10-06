@@ -111,7 +111,7 @@ function Charts(props) {
                     });
 
 
-                    console.log("charts",res.data);
+                    // console.log("charts",res.data);
                 })
                 .catch((err) => {
                     if (err.response) {
@@ -130,7 +130,7 @@ function Charts(props) {
     }, []);
 
 
-    console.log("props from dropdown?" , props)
+    // console.log("props from dropdown?" , props)
 
     useEffect(() => {
         if (props.value === "Total Complaints") {
@@ -259,7 +259,7 @@ function Charts(props) {
         // for animation
         animation: {
             draw: function (data) {
-                if (animated <= whichType.seriesDaily.length) {
+                // if (animated <= whichType.seriesDaily.length) {
                     if (data.type === "line") {
                         data.element.animate({
                             d: {
@@ -285,9 +285,9 @@ function Charts(props) {
                             },
                         });
                     }
-                    animated++;
+                    // animated++;
 
-                }
+                // }
             },
         },
     };
@@ -328,7 +328,7 @@ function Charts(props) {
         ],
         animation: {
             draw: function (data) {
-                if (animatedMonthly <= whichType.seriesMonthly.length) {
+                // if (animatedMonthly <= whichType.seriesMonthly.length) {
 
                     if (data.type === "bar") {
                         data.element.animate({
@@ -341,8 +341,8 @@ function Charts(props) {
                             },
                         });
                     }
-                    animatedMonthly++
-                }
+                //     animatedMonthly++
+                // }
             },
         },
     };
@@ -369,7 +369,7 @@ function Charts(props) {
 
         animation: {
             draw: function (data) {
-                if (animatedYearly <= whichType.seriesYearly.length) {
+                // if (animatedYearly <= whichType.seriesYearly.length) {
 
                     if (data.type === "line") {
                         data.element.animate({
@@ -396,8 +396,8 @@ function Charts(props) {
                             },
                         });
                     }
-                    animatedYearly++
-                }
+                //     animatedYearly++
+                // }
             },
         },
     };
@@ -473,4 +473,4 @@ function Charts(props) {
     );
 }
 
-export default Charts;
+export default React.memo(Charts);

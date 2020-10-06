@@ -62,7 +62,8 @@ function ResolveTimeAnalysisStats() {
                         handleLogoutAutomatically();
                     } else if (
                         err.response.status === 503 ||
-                        err.response.status === 500
+                        err.response.status === 500 ||
+                        err.response.status === 400
                     ) {
                         setResolveTimeCheck(1);
 

@@ -747,14 +747,14 @@ function GenerateReports(props) {
                     if (oneDate !== null) {
                         setReportData(
                             mainData.filter((obj) => {
-                                console.log(
-                                    "db date :",
-                                    Moment(obj.date).format().substr(0, 10)
-                                );
-                                console.log(
-                                    "selected onDate :",
-                                    Moment(oneDate).format().substr(0, 10)
-                                );
+                                // console.log(
+                                //     "db date :",
+                                //     Moment(obj.date).format().substr(0, 10)
+                                // );
+                                // console.log(
+                                //     "selected onDate :",
+                                //     Moment(oneDate).format().substr(0, 10)
+                                // );
 
                                 return (
                                     Moment(obj.date).format().substr(0, 10) ===
@@ -766,14 +766,14 @@ function GenerateReports(props) {
                         setRawData(
                             mainData.filter((obj) => {
 
-                                console.log(
-                                    "db date :",
-                                    Moment(obj.date).format().substr(0, 10)
-                                );
-                                console.log(
-                                    "selected onDate :",
-                                    Moment(oneDate).format().substr(0, 10)
-                                );
+                                // console.log(
+                                //     "db date :",
+                                //     Moment(obj.date).format().substr(0, 10)
+                                // );
+                                // console.log(
+                                //     "selected onDate :",
+                                //     Moment(oneDate).format().substr(0, 10)
+                                // );
 
                                 return (
                                     Moment(obj.date).format().substr(0, 10) ===
@@ -893,7 +893,7 @@ function GenerateReports(props) {
         }
     }
 
-    console.log("New report data", reportData);
+    // console.log("New report data", reportData);
 
     useEffect(() => {
         if (radioValueStepTwo === "complaintType") {

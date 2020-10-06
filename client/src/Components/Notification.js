@@ -29,7 +29,7 @@ function Notification(props) {
         // showIcon: true
       })
 
-    console.log("new notif is here notif",props)
+    // console.log("new notif is here notif",props)
 
 
   }, [props]);

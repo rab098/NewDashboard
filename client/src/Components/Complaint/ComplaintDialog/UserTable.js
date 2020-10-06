@@ -85,8 +85,8 @@ export default function UserTable(props) {
           <TableHead>
             <TableRow>
               <TableCell align="center">User Name</TableCell>
-              <TableCell align="center">Email Address</TableCell>
               <TableCell align="center">Phone Number</TableCell>
+              <TableCell align="center">Email Address</TableCell>
 
               {status == "Resolved" && (
                 <TableCell align="center">Feedback</TableCell>
