@@ -50,7 +50,7 @@ export default function Rejection(props) {
     } else {
       axios
         .post(
-          "http://m2r31169.herokuapp.com/api/addReasonForRejection",
+          "https://m2r31169.herokuapp.com/api/addReasonForRejection",
           { reason: newReason },
           {
             headers: {
