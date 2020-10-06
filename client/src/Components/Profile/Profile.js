@@ -107,7 +107,7 @@ function Profile(props) {
   const onPhotoRemove = () => {
     axios
       .post(
-        "http://m2r31169.herokuapp.com/api/removeProfilePicture",
+        "https://m2r31169.herokuapp.com/api/removeProfilePicture",
         {},
 
         {
